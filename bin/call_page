@@ -1,4 +1,4 @@
-#! /app/bin/node
+#! /app/.heroku/node/bin/node
 var http = require('http'); 
 function callPage() {
   http.get('https://dtr-les.herokuapp.com/'); 
