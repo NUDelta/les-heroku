@@ -1,7 +1,7 @@
 #! /app/.heroku/node/bin/node
 var http = require('http'); 
 function callPage() {
-  http.get('https://dtr-les.herokuapp.com/'); 
+  https.get('https://dtr-les.herokuapp.com/'); 
 }
 
 callPage();
