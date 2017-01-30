@@ -1,0 +1,8 @@
+#! /app/bin/node
+var http = require('http'); 
+function callPage() {
+  http.get('https://dtr-les.herokuapp.com/'); 
+}
+
+callPage();
+process.exit();
