@@ -1,5 +1,5 @@
 #! /app/.heroku/node/bin/node
-var http = require('http'); 
+var https = require('https'); 
 function callPage() {
   https.get('https://dtr-les.herokuapp.com/'); 
 }
