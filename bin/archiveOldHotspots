@@ -4,7 +4,7 @@ Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://dtr-les.herokuapp.com/parse/';
 // Parse.Cloud.useMasterKey();
 
-function archiveOldHotspots {
+function archiveOldHotspots() {
   // setup time thresholding variables
   var currentTime = Math.round(Date.now() / 1000);
   var thresholdAmount = 60 * 60 * 12; // 60s * 60m * 12hr
