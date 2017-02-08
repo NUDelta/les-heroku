@@ -692,7 +692,7 @@ Parse.Cloud.define('fetchUserProfileData', function(request, response) {
               for (var i in responses) {
                 var newContributionLocation = {
                   'category': responses[i].get('tag').trim(),
-                  'timestamp': responses[i].get('timestamp') + responses[i].get('gmtOffset'),
+                  'timestamp': responses[i].get('timestamp'),
                   'contributionType': 'response',
                   'hotspotId': responses[i].get('hotspotId')
                 };
