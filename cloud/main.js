@@ -1,3 +1,10 @@
+var testRequire = require('./test.js');
+
+Parse.Cloud.define('fetchUserProfileData', function(request) {
+    console.log(testRequire.printHello());
+});
+
+
 // aggregates data and archives locations if they are no longer valid
 Parse.Cloud.afterSave('pingResponse', function(request) {
   // thresholds for adding info and archiving hotspot
