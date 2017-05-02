@@ -2,7 +2,7 @@ exports.sendPush = function () {
 	var apn = require('apn');
 	var options = {
 			token: {
-		        key: './push-certificates/apns.p8', // Path to the key p8 file
+		        key: __dirname + 'cloud/push-certificates/apns.p8', // Path to the key p8 file
 		        keyId: '8ZQHB4KZ62', // The Key ID of the p8 file (available at https://developer.apple.com/account/ios/certificate/key)
 		        teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account (available at https://developer.apple.com/account/#/membership/)
 		    },
