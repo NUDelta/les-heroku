@@ -1,5 +1,3 @@
-module.exports = {
-    printHello: function() {
-        return 'hello';
-    }
-};
+exports.printHello = function() {
+    return 'hello';
+}
