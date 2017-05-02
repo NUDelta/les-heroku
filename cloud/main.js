@@ -1,7 +1,7 @@
 var test = require('./push.js');
 
 Parse.Cloud.define('testPush', function(request, response) {
-    console.log(test.sendPush());
+    console.log(test.sendPush('EFE4AB5EED2C0E829E08EAD1A0AB421F597EA3FEFE6C30AA24BD874ED79A3E30'));
     response.success();
 });
 
@@ -26,7 +26,7 @@ Parse.Cloud.afterSave('pingResponse', function(request) {
     'com.apple.UNNotificationDefaultActionIdentifier',
     'com.apple.UNNotificationDismissActionIdentifier'
   ];
-  if (responseExceptions.indexOf(questionResponse) != -1) {
+  if (responseExceptions.indexOf(questionResponse) !== -1) {
     return;
   }
 
@@ -48,7 +48,7 @@ Parse.Cloud.afterSave('pingResponse', function(request) {
           for (var i = 0; i < hotspotResponses.length; i++) {
             var currentResponse = hotspotResponses[i].get('response');
 
-            if (currentResponse == questionResponse) {
+            if (currentResponse === questionResponse) {
               similarResponseCount++;
             }
           }
@@ -181,7 +181,7 @@ Parse.Cloud.afterSave('hotspot', function(request) {
 
 var checkForTerminators = function(terminators, info) {
   for (var i in terminators) {
-    if (info[i] == terminators[i]) {
+    if (info[i] === terminators[i]) {
       return true;
     }
   }
@@ -790,7 +790,8 @@ Parse.Cloud.define('fetchUserProfileData', function(request, response) {
 
 /*jshint ignore:start*/
 // multicolumn sorting function
-// from: http://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
+// from:
+// http://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
 /*jshint ignore:end*/
 
 var sortBy;
@@ -798,7 +799,7 @@ var sortBy;
 (function() {
   // utility functions
   var defaultCmp = function(a, b) {
-      if (a == b) {
+      if (a === b) {
         return 0;
       }
       return a < b ? -1 : 1;
