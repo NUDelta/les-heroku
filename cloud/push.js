@@ -6,7 +6,7 @@ exports.sendPush = function () {
 		        keyId: '8ZQHB4KZ62', // The Key ID of the p8 file (available at https://developer.apple.com/account/ios/certificate/key)
 		        teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account (available at https://developer.apple.com/account/#/membership/)
 		    },
-	        production: true //working with production certificate!!!!
+	        production: false //working with production certificate!!!!
 	    };
 
 	var apnError = function(err){
