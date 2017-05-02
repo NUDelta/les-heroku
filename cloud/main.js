@@ -1,8 +1,8 @@
-var test = require('./test.js');
+var test = require('./push.js');
 
-Parse.Cloud.define('testRequire', function(request, response) {
-    console.log(test.printHello());
-    response.success(); 
+Parse.Cloud.define('testPush', function(request, response) {
+    console.log(test.sendPush());
+    response.success();
 });
 
 
