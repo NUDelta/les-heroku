@@ -1,4 +1,4 @@
-var testRequire = require('./test.js');
+var testRequire = require('cloud/test.js');
 
 Parse.Cloud.define('testRequire', function(request) {
     console.log(testRequire);
