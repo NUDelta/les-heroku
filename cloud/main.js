@@ -1,6 +1,6 @@
 var testRequire = require('./test.js');
 
-Parse.Cloud.define('fetchUserProfileData', function(request) {
+Parse.Cloud.define('testRequire', function(request) {
     console.log(testRequire.printHello());
 });
 
