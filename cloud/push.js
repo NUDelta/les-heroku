@@ -60,13 +60,8 @@ exports.sendSilentRefreshNotification = function(tokenArray) {
 
     var note = new apn.Notification();
     note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
-    note.badge = 0;
-    note.sound = 'ping.aiff';
-    note.alert = '';
     note.payload = {
-        'aps': {
-            'content-available': 1
-        }
+        'content-available': 1
     };
     note.topic = topic;
 
