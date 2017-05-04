@@ -467,6 +467,8 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
 
   var prevNotifiedQuery = new Parse.Query('notificationSent');
   prevNotifiedQuery.equalTo('vendorId', request.params.vendorId);
+  prevNotifiedQuery.descending('createdAt');
+  prevNotifiedQuery.limit(1000);
   prevNotifiedQuery.find({
     success: function(prevNotifications) {
       console.log(prevNotifications);
