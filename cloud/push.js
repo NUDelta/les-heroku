@@ -7,7 +7,7 @@ var options = {
         keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
         teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
     },
-    production: true //working with production certificate!!!!
+    production: false //working with production certificate!!!!
 };
 
 var topic = 'edu.northwestern.delta.les';
