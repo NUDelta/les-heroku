@@ -59,12 +59,9 @@ exports.sendSilentRefreshNotification = function(tokenArray) {
     var apnConnection = new apn.Provider(options);
 
     var note = new apn.Notification();
-    note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
-    note.payload = {
-        contentAvailable: 1
-    };
+    note.setContentAvailable(1);
     note.topic = topic;
-    console.log(note); 
+    console.log(note);
     // send notification for each token
     apnConnection.send(note, tokenArray).then((result) => {
         console.log(result);
