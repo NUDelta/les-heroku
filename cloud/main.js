@@ -26,8 +26,6 @@ Parse.Cloud.define('sendPushToAllUsers', function() {
       var message = 'Hi! Welcome to LES! ' +
                     'If you have any questions, please don\'t hesistate to ask!';
       push.sendPushWithMessage(pushTokens, message);
-
-      response.success();
     },
     error: function(error) {
       /*jshint ignore:start*/
@@ -35,6 +33,7 @@ Parse.Cloud.define('sendPushToAllUsers', function() {
       /*jshint ignore:end*/
     }
   });
+  response.success();
 });
 
 Parse.Cloud.define('testPushRefresh', function(request, response) {
