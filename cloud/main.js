@@ -8,12 +8,14 @@ Parse.Cloud.define('testPush', function(request, response) {
 Parse.Cloud.define('testPushRefresh', function(request, response) {
     // send push update for data
     var userQuery = new Parse.Query('user');
+    userQuery.descending('createdAt');
     userQuery.find({
       success: function(users) {
         var pushTokens = [];
 
         for (var i in users) {
           var currentUser = users[i];
+          console.log(currentUser.pushToken);
           if (currentUser.pushToken !== undefined) {
             pushTokens.push(currentUser.get('pushToken'));
           }
