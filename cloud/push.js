@@ -31,7 +31,7 @@ exports.sendPush = function(deviceToken) {
     note.topic = topic;
 
     apnConnection.send(note, deviceToken).then((result) => {
-        console.log(result);
+        console.log(result.failed[0].response)
         apnConnection.shutdown();
     });
 };
