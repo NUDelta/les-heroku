@@ -62,6 +62,7 @@ exports.sendSilentRefreshNotification = function(tokenArray) {
     note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
     note.payload = {
         'content-available': 1
+        'sound': ''
     };
     note.topic = topic;
 
