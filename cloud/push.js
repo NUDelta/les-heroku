@@ -61,7 +61,7 @@ exports.sendSilentRefreshNotification = function(tokenArray) {
     var note = new apn.Notification();
     note.setContentAvailable(1);
     note.topic = topic;
-    console.log(note);
+
     // send notification for each token
     apnConnection.send(note, tokenArray).then((result) => {
         console.log(result);

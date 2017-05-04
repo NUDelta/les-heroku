@@ -228,13 +228,15 @@ Parse.Cloud.afterSave('hotspot', function(request) {
 
   // send push update for data
   var userQuery = new Parse.Query('user');
+  userQuery.descending('createdAt');
   userQuery.find({
     success: function(users) {
       var pushTokens = [];
 
       for (var i in users) {
         var currentUser = users[i];
-        if (currentUser.pushToken !== undefined) {
+
+        if (currentUser.get('pushToken') !== undefined) {
           pushTokens.push(currentUser.get('pushToken'));
         }
       }
