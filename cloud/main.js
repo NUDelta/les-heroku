@@ -5,6 +5,32 @@ Parse.Cloud.define('testPush', function(request, response) {
     response.success();
 });
 
+Parse.Cloud.define('testPushRefresh', function(request, response) {
+    // send push update for data
+    var userQuery = new Parse.Query('user');
+    userQuery.find({
+      success: function(users) {
+        var pushTokens = [];
+
+        for (var i in users) {
+          var currentUser = users[i];
+          if (currentUser.pushToken !== undefined) {
+            pushTokens.push(currentUser.get('pushToken'));
+          }
+        }
+
+        console.log(pushTokens);
+        push.sendSilentRefreshNotification(pushTokens);
+      },
+      error: function(error) {
+        /*jshint ignore:start*/
+        console.log(error);
+        /*jshint ignore:end*/
+      }
+    });
+    response.success();
+});
+
 // check if explicit app termination has happened
 Parse.Cloud.afterSave('pretracking_debug', function(request) {
   if (request.object.get('console_string') === 'App about to terminate') {
@@ -110,7 +136,7 @@ Parse.Cloud.beforeSave('hotspot', function(request, response) {
   response.success();
 });
 
-// Archives old hotspots on either user response or system archive
+// Archives old hotspots on either user response or system archive and sends data update to app
 Parse.Cloud.afterSave('hotspot', function(request) {
   var hotspot = request.object;
   var tag = hotspot.get('tag');
@@ -197,6 +223,29 @@ Parse.Cloud.afterSave('hotspot', function(request) {
       newHotspot.save();
     }
   }
+
+  // send push update for data
+  var userQuery = new Parse.Query('user');
+  userQuery.find({
+    success: function(users) {
+      var pushTokens = [];
+
+      for (var i in users) {
+        var currentUser = users[i];
+        if (currentUser.pushToken !== undefined) {
+          pushTokens.push(currentUser.get('pushToken'));
+        }
+      }
+
+      console.log(pushTokens);
+      push.sendSilentRefreshNotification(pushTokens);
+    },
+    error: function(error) {
+      /*jshint ignore:start*/
+      console.log(error);
+      /*jshint ignore:end*/
+    }
+  });
 });
 
 var checkForTerminators = function(terminators, info) {

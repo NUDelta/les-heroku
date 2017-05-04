@@ -54,3 +54,26 @@ exports.sendPushWithMessage = function(deviceToken, message) {
         apnConnection.shutdown();
     });
 };
+
+exports.sendSilentRefreshNotification = function(tokenArray) {
+    var apnConnection = new apn.Provider(options);
+
+    var note = new apn.Notification();
+    note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+    note.badge = 0;
+    note.sound = 'ping.aiff';
+    note.alert = '';
+    note.payload = {
+        'aps': {
+            'content-available': 1
+        }
+    };
+    note.topic = topic;
+
+    // send notification for each token
+    apnConnection.send(note, tokenArray).then((result) => {
+        console.log(result);
+    });
+
+    apnConnection.shutdown();
+};
