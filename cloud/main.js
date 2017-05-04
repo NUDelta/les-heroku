@@ -481,7 +481,7 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
       var locationQuery = new Parse.Query('hotspot');
       locationQuery.limit(1000);
       locationQuery.notEqualTo('archived', true); // check if not archived
-      // locationQuery.notEqualTo('vendorId', request.params.vendorId); // current user did not create
+      locationQuery.notEqualTo('vendorId', request.params.vendorId); // current user did not create
       locationQuery.notContainedIn('objectId', prevHotspotList); // user has not contributed to it
       locationQuery.find({
         success: function(locations) {
