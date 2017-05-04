@@ -471,13 +471,20 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
     success: function(prevNotifications) {
       var prevNotificationLen = prevNotifications.length;
 
+      var prevHotspotList = [];
+      for (var prevNotification in prevNotifications) {
+        prevHotspotList.push(prevNotifications[prevNotification].get('hotspotId'));
+      }
+
       // return locations sorted by distance and ranking for user
       var locationQuery = new Parse.Query('hotspot');
       locationQuery.limit(1000);
       locationQuery.notEqualTo('archived', true);
+      locationQuery.notContainedIn('objectId', prevHotspotList);
 
       locationQuery.find({
         success: function(locations) {
+          console.log(locations); 
           for (var i = 0; i < locations.length; i++) {
             var currentHotspot = {
               'objectId': locations[i].id,
@@ -486,8 +493,7 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
               'archived': locations[i].get('archived')
             };
 
-            currentHotspot.distance = getDistance(currentLocation,
-              currentHotspot.location);
+            currentHotspot.distance = getDistance(currentLocation, currentHotspot.location);
             currentHotspot.distance = Math.round(currentHotspot.distance);
 
             // check if user has already been notified for the location
