@@ -1,5 +1,6 @@
 // setup apn and options for pushing
 var apn = require('apn');
+
 var options = {
     token: {
         key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
@@ -9,6 +10,8 @@ var options = {
     production: false //working with production certificate!!!!
 };
 
+var topic = 'edu.northwestern.delta.les-debug';
+
 var apnError = function(err) {
     console.log('APN Error:', err);
 };
@@ -16,7 +19,6 @@ options.errorCallback = apnError;
 
 exports.sendPush = function(deviceToken) {
     var apnConnection = new apn.Provider(options);
-    console.log(apnConnection);
 
     var note = new apn.Notification();
     note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
@@ -24,9 +26,28 @@ exports.sendPush = function(deviceToken) {
     note.sound = 'ping.aiff';
     note.alert = 'Welcome to LES!';
     note.payload = {
-        'messageFrom': 'Caroline'
+        'messageFrom': 'LES'
     };
-    note.topic = 'edu.northwestern.delta.les-debug';
+    note.topic = topic;
+
+    apnConnection.send(note, deviceToken).then((result) => {
+        console.log(result);
+        apnConnection.shutdown();
+    });
+};
+
+exports.sendPushWithMessage = function(deviceToken, message) {
+    var apnConnection = new apn.Provider(options);
+
+    var note = new apn.Notification();
+    note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+    note.badge = 0;
+    note.sound = 'ping.aiff';
+    note.alert = message;
+    note.payload = {
+        'messageFrom': 'LES'
+    };
+    note.topic = topic;
 
     apnConnection.send(note, deviceToken).then((result) => {
         console.log(result);

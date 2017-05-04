@@ -1,10 +1,30 @@
-var test = require('./push.js');
+var push = require('./push.js');
 
 Parse.Cloud.define('testPush', function(request, response) {
-    console.log(test.sendPush(request.params.token));
+    console.log(push.sendPush(request.params.token));
     response.success();
 });
 
+// check if explicit app termination has happened
+Parse.Cloud.afterSave('pingResponse', function(request) {
+  if (request.object.get('console_string') === 'App about to terminate') {
+    var getUserForVendorId = new Parse.Query('user');
+    getUserForVendorId.equalTo('vendorId', request.object.get('vendor_id'));
+    getUserForVendorId.orderByDescending('createdAt');
+    getUserForVendorId.first({
+      success: function(userObject) {
+        var message = 'Hey ' + userObject.get('firstName') +
+                      '! It seems that LES closed on your phone. Swipe right to start me again!';
+        push.sendPushWithMessage(userObject.get('pushToken'), message);
+      },
+      error: function(error) {
+        /*jshint ignore:start*/
+        console.log(error);
+        /*jshint ignore:end*/
+      }
+    });
+  }
+});
 
 // aggregates data and archives locations if they are no longer valid
 Parse.Cloud.afterSave('pingResponse', function(request) {
