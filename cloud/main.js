@@ -458,6 +458,7 @@ Parse.Cloud.define('retrieveLocationsForTracking', function(request, response) {
 });
 
 // return closest n locations for tracking without preference weighting
+// do not include location if user has already answered a question about it
 Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, response) {
   var currentLocation = {
     'latitude': request.params.latitude,
@@ -465,15 +466,12 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
   };
   var distanceToHotspots = [];
 
-  var prevNotifiedQuery = new Parse.Query('notificationSent');
-  prevNotifiedQuery.equalTo('vendorId', request.params.vendorId);
-  prevNotifiedQuery.descending('createdAt');
-  prevNotifiedQuery.limit(1000);
-  prevNotifiedQuery.find({
+  var prevRespondQuery = new Parse.Query('pingResponse');
+  prevRespondQuery.equalTo('vendorId', request.params.vendorId);
+  prevRespondQuery.descending('createdAt');
+  prevRespondQuery.limit(1000);
+  prevRespondQuery.find({
     success: function(prevNotifications) {
-      console.log(prevNotifications);
-      var prevNotificationLen = prevNotifications.length;
-
       var prevHotspotList = [];
       for (var prevNotification in prevNotifications) {
         prevHotspotList.push(prevNotifications[prevNotification].get('hotspotId'));
@@ -482,12 +480,12 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
       // return locations sorted by distance and ranking for user
       var locationQuery = new Parse.Query('hotspot');
       locationQuery.limit(1000);
-      locationQuery.notEqualTo('archived', true);
-      locationQuery.notContainedIn('objectId', prevHotspotList);
-
+      locationQuery.notEqualTo('archived', true); // check if not archived
+      // locationQuery.notEqualTo('vendorId', request.params.vendorId); // current user did not create
+      locationQuery.notContainedIn('objectId', prevHotspotList); // user has not contributed to it
       locationQuery.find({
         success: function(locations) {
-
+          console.log(locations);
           for (var i = 0; i < locations.length; i++) {
             var currentHotspot = {
               'objectId': locations[i].id,
@@ -498,33 +496,7 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
 
             currentHotspot.distance = getDistance(currentLocation, currentHotspot.location);
             currentHotspot.distance = Math.round(currentHotspot.distance);
-
-            // check if user has already been notified for the location
-            var hotspotPrevNotified = false;
-            if (prevNotificationLen > 0) {
-              for (var j = 0; j < prevNotificationLen; j++) {
-                var currentHotpotId = prevNotifications[j].get('hotspotId');
-                if (currentHotpotId === currentHotspot.objectId) {
-                  hotspotPrevNotified = true;
-                  break;
-                }
-              }
-            }
-
-            // check if user is one who initially marked it
-            var didUserCreateLocation = false;
-            if (locations[i].get('vendorId') === request.params.vendorId) {
-              didUserCreateLocation = true;
-            }
-
-            // check if current hotspot is archived from previous responses
-            var isArchived = currentHotspot.archived;
-
-            // push hotspot to array if conditions are met
-            if (!hotspotPrevNotified && !didUserCreateLocation &&
-              !isArchived) {
-              distanceToHotspots.push(currentHotspot);
-            }
+            distanceToHotspots.push(currentHotspot);
           }
 
           distanceToHotspots.sort(function(a, b) {
