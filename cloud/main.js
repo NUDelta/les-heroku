@@ -15,8 +15,8 @@ Parse.Cloud.define('testPushRefresh', function(request, response) {
 
         for (var i in users) {
           var currentUser = users[i];
-          console.log(currentUser.pushToken);
-          if (currentUser.pushToken !== undefined) {
+
+          if (currentUser.get('pushToken') !== undefined) {
             pushTokens.push(currentUser.get('pushToken'));
           }
         }
