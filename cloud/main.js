@@ -1,7 +1,7 @@
 var test = require('./push.js');
 
 Parse.Cloud.define('testPush', function(request, response) {
-    console.log(test.sendPush('EFE4AB5EED2C0E829E08EAD1A0AB421F597EA3FEFE6C30AA24BD874ED79A3E30'));
+    console.log(test.sendPush(request.params.token));
     response.success();
 });
 
