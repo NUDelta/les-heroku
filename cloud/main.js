@@ -6,7 +6,7 @@ Parse.Cloud.define('testPush', function(request, response) {
 });
 
 // check if explicit app termination has happened
-Parse.Cloud.define('sendPushToAllUsers', function() {
+Parse.Cloud.define('sendPushToAllUsers', function(response) {
   // send push update for data
   var userQuery = new Parse.Query('user');
   userQuery.descending('createdAt');
@@ -26,6 +26,8 @@ Parse.Cloud.define('sendPushToAllUsers', function() {
       var message = 'Hi! Welcome to LES! ' +
                     'If you have any questions, please don\'t hesistate to ask!';
       push.sendPushWithMessage(pushTokens, message);
+
+      response.success();
     },
     error: function(error) {
       /*jshint ignore:start*/
@@ -33,7 +35,7 @@ Parse.Cloud.define('sendPushToAllUsers', function() {
       /*jshint ignore:end*/
     }
   });
-  response.success();
+
 });
 
 Parse.Cloud.define('testPushRefresh', function(request, response) {
@@ -55,6 +57,8 @@ Parse.Cloud.define('testPushRefresh', function(request, response) {
         console.log(pushTokens);
         push.sendSilentRefreshNotification(pushTokens, 'hotspot');
         push.sendSilentRefreshNotification(pushTokens, 'beacon');
+
+        response.success();
       },
       error: function(error) {
         /*jshint ignore:start*/
@@ -62,7 +66,6 @@ Parse.Cloud.define('testPushRefresh', function(request, response) {
         /*jshint ignore:end*/
       }
     });
-    response.success();
 });
 
 // check if explicit app termination has happened
