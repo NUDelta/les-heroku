@@ -22,7 +22,8 @@ Parse.Cloud.define('testPushRefresh', function(request, response) {
         }
 
         console.log(pushTokens);
-        push.sendSilentRefreshNotification(pushTokens);
+        push.sendSilentRefreshNotification(pushTokens, 'hotspot');
+        push.sendSilentRefreshNotification(pushTokens, 'beacon');
       },
       error: function(error) {
         /*jshint ignore:start*/

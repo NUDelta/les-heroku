@@ -55,11 +55,14 @@ exports.sendPushWithMessage = function(deviceToken, message) {
     });
 };
 
-exports.sendSilentRefreshNotification = function(tokenArray) {
+exports.sendSilentRefreshNotification = function(tokenArray, dataSet) {
     var apnConnection = new apn.Provider(options);
 
     var note = new apn.Notification();
     note.setContentAvailable(1);
+    note.payload = {
+        'updateType': dataSet
+    };
     note.topic = topic;
 
     // send notification for each token
