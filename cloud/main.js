@@ -7,6 +7,8 @@ Parse.Cloud.define('testPush', function(request, response) {
 
 // check if explicit app termination has happened
 Parse.Cloud.afterSave('pretracking_debug', function(request) {
+  console.log('pretracking debug update');
+  console.log(request);
   if (request.object.get('console_string') === 'App about to terminate') {
     var getUserForVendorId = new Parse.Query('user');
     getUserForVendorId.equalTo('vendorId', request.object.get('vendor_id'));
