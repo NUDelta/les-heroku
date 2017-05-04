@@ -469,6 +469,7 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
   prevNotifiedQuery.equalTo('vendorId', request.params.vendorId);
   prevNotifiedQuery.find({
     success: function(prevNotifications) {
+      console.log(prevNotifications);
       var prevNotificationLen = prevNotifications.length;
 
       var prevHotspotList = [];
@@ -484,7 +485,7 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
 
       locationQuery.find({
         success: function(locations) {
-          console.log(locations); 
+
           for (var i = 0; i < locations.length; i++) {
             var currentHotspot = {
               'objectId': locations[i].id,
