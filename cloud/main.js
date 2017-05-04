@@ -12,7 +12,7 @@ Parse.Cloud.afterSave('pretracking_debug', function(request) {
   if (request.object.get('console_string') === 'App about to terminate') {
     var getUserForVendorId = new Parse.Query('user');
     getUserForVendorId.equalTo('vendorId', request.object.get('vendor_id'));
-    getUserForVendorId.orderByDescending('createdAt');
+    getUserForVendorId.descending('createdAt');
     getUserForVendorId.first({
       success: function(userObject) {
         var message = 'Hey ' + userObject.get('firstName') +
