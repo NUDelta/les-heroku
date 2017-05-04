@@ -2,15 +2,17 @@
 var apn = require('apn');
 
 var options = {
-    token: {
-        key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
-        keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
-        teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
-    },
+    // token: {
+    //     key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
+    //     keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
+    //     teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
+    // },
+    cert: __dirname + '/push-certificates/cert.pem',
+    key: __dirname + '/push-certificates/key.pem',
     production: true //working with production certificate!!!!
 };
 
-var topic = 'edu.northwestern.delta.les-debug';
+var topic = 'edu.northwestern.delta.les';
 
 var apnError = function(err) {
     console.log('APN Error:', err);
