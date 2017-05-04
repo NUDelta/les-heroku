@@ -10,7 +10,7 @@ var options = {
     production: false //working with production certificate!!!!
 };
 
-var topic = 'edu.northwestern.delta.les-debug';
+var topic = 'edu.northwestern.delta.les';
 
 var apnError = function(err) {
     console.log('APN Error:', err);
