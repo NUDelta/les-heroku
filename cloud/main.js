@@ -2,7 +2,39 @@ var push = require('./push.js');
 
 Parse.Cloud.define('testPush', function(request, response) {
     console.log(push.sendPush(request.params.token));
-    response.success();
+
+});
+
+// check if explicit app termination has happened
+Parse.Cloud.define('sendPushToAllUsers', function() {
+  // send push update for data
+  var userQuery = new Parse.Query('user');
+  userQuery.descending('createdAt');
+  userQuery.find({
+    success: function(users) {
+      var pushTokens = [];
+
+      for (var i in users) {
+        var currentUser = users[i];
+
+        if (currentUser.get('pushToken') !== undefined) {
+          pushTokens.push(currentUser.get('pushToken'));
+        }
+      }
+
+      console.log(pushTokens);
+      var message = 'Hi! Welcome to LES! ' +
+                    'If you have any questions, please don\'t hesistate to ask!';
+      push.sendPushWithMessage(pushTokens, message);
+
+      response.success();
+    },
+    error: function(error) {
+      /*jshint ignore:start*/
+      console.log(error);
+      /*jshint ignore:end*/
+    }
+  });
 });
 
 Parse.Cloud.define('testPushRefresh', function(request, response) {

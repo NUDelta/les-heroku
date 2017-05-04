@@ -1,15 +1,23 @@
 // setup apn and options for pushing
 var apn = require('apn');
 
+// DEBUG PUSH
+// var options = {
+//     token: {
+//         key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
+//         keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
+//         teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
+//     },
+//     production: false //working with development certificate
+// };
+//
+// var topic = 'edu.northwestern.delta.les-debug';
+
+// ENTERPRISE PUSH
 var options = {
-    // token: {
-    //     key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
-    //     keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
-    //     teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
-    // },
     cert: __dirname + '/push-certificates/cert.pem',
     key: __dirname + '/push-certificates/key.pem',
-    production: true //working with production certificate!!!!
+    production: true //working with production certificate
 };
 
 var topic = 'edu.northwestern.delta.les';
@@ -33,12 +41,12 @@ exports.sendPush = function(deviceToken) {
     note.topic = topic;
 
     apnConnection.send(note, deviceToken).then((result) => {
-        console.log(result.failed[0].response)
-        apnConnection.shutdown();
+        console.log(result);
     });
+    apnConnection.shutdown();
 };
 
-exports.sendPushWithMessage = function(deviceToken, message) {
+exports.sendPushWithMessage = function(deviceTokens, message) {
     var apnConnection = new apn.Provider(options);
 
     var note = new apn.Notification();
@@ -51,10 +59,10 @@ exports.sendPushWithMessage = function(deviceToken, message) {
     };
     note.topic = topic;
 
-    apnConnection.send(note, deviceToken).then((result) => {
+    apnConnection.send(note, deviceTokens).then((result) => {
         console.log(result);
-        apnConnection.shutdown();
     });
+    apnConnection.shutdown();
 };
 
 exports.sendSilentRefreshNotification = function(tokenArray, dataSet) {
