@@ -243,7 +243,35 @@ Parse.Cloud.afterSave('hotspot', function(request) {
       }
 
       console.log(pushTokens);
-      push.sendSilentRefreshNotification(pushTokens);
+      push.sendSilentRefreshNotification(pushTokens, 'hotspot');
+    },
+    error: function(error) {
+      /*jshint ignore:start*/
+      console.log(error);
+      /*jshint ignore:end*/
+    }
+  });
+});
+
+// send data refresh request if beacons are changed
+Parse.Cloud.afterSave('beacons', function() {
+  // send push update for data
+  var userQuery = new Parse.Query('user');
+  userQuery.descending('createdAt');
+  userQuery.find({
+    success: function(users) {
+      var pushTokens = [];
+
+      for (var i in users) {
+        var currentUser = users[i];
+
+        if (currentUser.get('pushToken') !== undefined) {
+          pushTokens.push(currentUser.get('pushToken'));
+        }
+      }
+
+      console.log(pushTokens);
+      push.sendSilentRefreshNotification(pushTokens, 'beacon');
     },
     error: function(error) {
       /*jshint ignore:start*/
