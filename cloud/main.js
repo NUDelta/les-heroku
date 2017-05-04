@@ -842,8 +842,8 @@ Parse.Cloud.define('fetchUserProfileData', function(request, response) {
                     } else {
                       for (var k in contribLocationList) {
                         if (contribLocationList[k].hotspotId === hotspots[j].id) {
-                          contribLocationList[k].latitude = hotspots[i].get('location').latitude;
-                          contribLocationList[k].longitude = hotspots[i].get('location').longitude;
+                          contribLocationList[k].latitude = hotspots[j].get('location').latitude;
+                          contribLocationList[k].longitude = hotspots[j].get('location').longitude;
 
                           output.contributionLocations.push(contribLocationList[k]);
                         }
