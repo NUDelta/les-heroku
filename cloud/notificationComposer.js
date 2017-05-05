@@ -371,10 +371,12 @@ function createNotificationForWorkspaces(currentInfo, locationCommonName) {
     output.contextualResponses = workspaces.answers.monitorscomps;
     return output;
   } else if (currentInfo.monitorscomps === 'yes, monitors' || currentInfo.monitorscomps === 'yes, both') {
-    output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.monitorscompsdongles;
-    output.message = 'Looks like there are monitors available  ' + locationPhrase + '! Do you see dongle and cables available present for use?';
-    output.contextualResponses = workspaces.answers.monitorscompsdongles;
-    return output;
+    if (currentInfo.monitorscompsdongles === '') {
+      output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.monitorscompsdongles;
+      output.message = 'Looks like there are monitors available  ' + locationPhrase + '! Do you see dongle and cables available present for use?';
+      output.contextualResponses = workspaces.answers.monitorscompsdongles;
+      return output;
+    }
   }
 
   // check for whiteboards availability
