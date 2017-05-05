@@ -409,7 +409,7 @@ function createNotificationForWorkspaces(currentInfo, locationCommonName) {
   } else if (currentInfo.whiteboards === 'yes') {
     if (currentInfo.whiteboardsmarkers === '') {
       output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.whiteboardsmarkers;
-      output.message = 'Looks like there are whiteboards ' + locationPhrase + ' to work on! Are there any dry erase markers nearby that you can borrow';
+      output.message = 'Looks like there are whiteboards ' + locationPhrase + ' to work on! Are there any dry erase markers nearby that you can borrow?';
       output.contextualResponses = workspaces.answers.whiteboardsmarkers;
       return output;
     }
