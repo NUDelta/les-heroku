@@ -187,44 +187,45 @@ Parse.Cloud.afterSave('hotspot', function(request) {
   }
 
   // check if any tracking terminators have been saved to info object
-  var foodTerminators = {
-    'isfood': 'no',
-    'foodtype': 'no food here',
-    'howmuchfood': 'none'
-  };
-  var queueTerminators = {
-    'isline': 'no'
-  };
-  var spaceTerminators = {
-    'isspace': 'no'
-  };
-  var surprisingTerminators = {
-    'whatshappening': 'no',
-    'famefrom': 'no longer here',
-    'vehicles': 'no longer here',
-    'peopledoing': 'no longer here'
-  };
+  // var foodTerminators = {
+  //   'isfood': 'no',
+  //   'foodtype': 'no food here',
+  //   'howmuchfood': 'none'
+  // };
+  // var queueTerminators = {
+  //   'isline': 'no'
+  // };
+  // var spaceTerminators = {
+  //   'isspace': 'no'
+  // };
+  // var surprisingTerminators = {
+  //   'whatshappening': 'no',
+  //   'famefrom': 'no longer here',
+  //   'vehicles': 'no longer here',
+  //   'peopledoing': 'no longer here'
+  // };
+  //
+  // var terminatorsExist = false;
+  // switch (tag) {
+  //   case 'food':
+  //     terminatorsExist = checkForTerminators(foodTerminators, hotspotInfo);
+  //     break;
+  //   case 'queue':
+  //     terminatorsExist = checkForTerminators(queueTerminators, hotspotInfo);
+  //     break;
+  //   case 'space':
+  //     terminatorsExist = checkForTerminators(spaceTerminators, hotspotInfo);
+  //     break;
+  //   case 'surprising':
+  //     terminatorsExist = checkForTerminators(surprisingTerminators,
+  //       hotspotInfo);
+  //     break;
+  //   default:
+  //     break;
+  // }
 
-  var terminatorsExist = false;
-  switch (tag) {
-    case 'food':
-      terminatorsExist = checkForTerminators(foodTerminators, hotspotInfo);
-      break;
-    case 'queue':
-      terminatorsExist = checkForTerminators(queueTerminators, hotspotInfo);
-      break;
-    case 'space':
-      terminatorsExist = checkForTerminators(spaceTerminators, hotspotInfo);
-      break;
-    case 'surprising':
-      terminatorsExist = checkForTerminators(surprisingTerminators,
-        hotspotInfo);
-      break;
-    default:
-      break;
-  }
-
-  if (terminatorsExist || hotspot.get('archiver') === 'system') {
+  // if (terminatorsExist || hotspot.get('archiver') === 'system') {
+  if (hotspot.get('archiver') === 'system') {
     // archive old hotspot (user is archiver unless background job archives)
     hotspot.set('archived', true);
     if (hotspot.get('archiver') === '') {
@@ -553,7 +554,36 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
 
           hotspotQuery.find({
             success: function(selectedHotspots) {
-              response.success(selectedHotspots);
+              var output = [];
+              for (var hotspot in selectedHotspots) {
+                var currentHotspot = {
+                  'objectId': selectedHotspots[hotspot].id,
+                  'vendorId': selectedHotspots[hotspot].get('vendorId'),
+                  'tag': selectedHotspots[hotspot].get('tag'),
+                  'info': selectedHotspots[hotspot].get('info'),
+                  'location': selectedHotspots[hotspot].get('location'),
+                  'beaconId': selectedHotspots[hotspot].get('beaconId'),
+                  'locationCommonName': selectedHotspots[hotspot].get('locationCommonName'),
+                  'archived': selectedHotspots[hotspot].get('archived'),
+                  'notificationCategory': '',
+                  'message': '',
+                  'contextualResponses': []
+                };
+
+                var notification = notificationComposer.createNotificationForTag(
+                                                                 currentHotspot.tag,
+                                                                 currentHotspot.info,
+                                                                 currentHotspot.locationCommonName);
+                if (notification !== undefined) {
+                  currentHotspot.notificationCategory = notification.notificationCategory;
+                  currentHotspot.message = notification.message;
+                  currentHotspot.contextualResponses = notification.contextualResponses;
+
+                  output.push(currentHotspot);
+                }
+              }
+
+              response.success(output);
             },
             error: function(error) {
               /*jshint ignore:start*/
