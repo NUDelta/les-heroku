@@ -1,11 +1,11 @@
 {
-  "name": "parse-server-example",
-  "version": "1.4.0",
-  "description": "An example Parse API server using the parse-server module",
+  "name": "les-heroku",
+  "version": "2.0.0",
+  "description": "A backend for LES built on Parse Server and deployed to Heroku",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ParsePlatform/parse-server-example"
+    "url": "https://github.com/NUDelta/les-heroku"
   },
   "license": "MIT",
   "dependencies": {
