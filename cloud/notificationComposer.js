@@ -518,10 +518,12 @@ function createNotificationForGyms(currentInfo, locationCommonName) {
       output.contextualResponses = gyms.answers.dumbbells;
       return output;
     } else if (currentInfo.dumbbells === 'yes') {
-      output.notificationCategory = gyms.tag + '_' + gyms.questionTag.dumbbellsbenches;
-      output.message = 'There are dumbbells currently available ' + locationPhrase + '! Are there any benches available to use with them?';
-      output.contextualResponses = gyms.answers.dumbbellsbenches;
-      return output;
+      if (currentInfo.dumbbellsbenches === '') {
+        output.notificationCategory = gyms.tag + '_' + gyms.questionTag.dumbbellsbenches;
+        output.message = 'There are dumbbells currently available ' + locationPhrase + '! Are there any benches available to use with them?';
+        output.contextualResponses = gyms.answers.dumbbellsbenches;
+        return output;
+      }
     }
   }
 
