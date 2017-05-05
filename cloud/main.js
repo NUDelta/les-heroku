@@ -1,4 +1,5 @@
 var push = require('./push.js');
+var notificationComposer = require('./notificationComposer.js');
 
 Parse.Cloud.define('testPush', function(request, response) {
     console.log(push.sendPush(request.params.token));
