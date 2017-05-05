@@ -482,10 +482,10 @@ function createNotificationForGyms(currentInfo, locationCommonName) {
     output.contextualResponses = gyms.answers.cardio;
     return output;
   } else if (currentInfo.cardio === 'yes') {
-    if (currentInfo.treadmill === '') {
-      output.notificationCategory = gyms.tag + '_' + gyms.questionTag.treadmill;
+    if (currentInfo.treadmills === '') {
+      output.notificationCategory = gyms.tag + '_' + gyms.questionTag.treadmills;
       output.message = 'Are there treadmill machines currently available ' + locationPhrase + '?';
-      output.contextualResponses = gyms.answers.treadmill;
+      output.contextualResponses = gyms.answers.treadmills;
       return output;
     } else if (currentInfo.ellipticalbike === '') {
       output.notificationCategory = gyms.tag + '_' + gyms.questionTag.ellipticalbike;
