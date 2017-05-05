@@ -144,6 +144,20 @@ let gyms = {
     'stretchroller': '',
     'basketballcourts': ''
   },
+  'questionTag': {
+    'cardio': 'cardio',
+    'treadmills': 'treadmills',
+    'ellipticalbike': 'ellipticalbike',
+    'freeweights': 'freeweights',
+    'benches': 'benches',
+    'squatracks': 'squatracks',
+    'dumbbells': 'dumbbells',
+    'dumbbellsbenches': 'dumbbellsbenches',
+    'stretch': 'stretch',
+    'stretchmats': 'stretchmats',
+    'stretchroller': 'stretchroller',
+    'basketballcourts': 'basketballcourts'
+  },
   'questions': {
     'cardio': 'Is there cardio equipment available currently?',
     'treadmills': 'Can you tell us if there are treadmills available currently?',
@@ -183,6 +197,13 @@ let food = {
     'freesold': '',
     'cost': '',
     'sellingreason': ''
+  },
+  'questionTag': {
+    'type': 'type',
+    'quantity': 'quantity',
+    'freesold': 'freesold',
+    'cost': 'cost',
+    'sellingreason': 'sellingreason'
   },
   'questions': {
     'type': 'What kind of food is here?',
