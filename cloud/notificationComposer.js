@@ -190,7 +190,7 @@ let gyms = {
 
 let food = {
   'tag': 'food',
-  'refreshTime': 2 * 60 * 60, // 1 hr * 60 mins/hr * 60 seconds/min
+  'refreshTime': 2 * 60 * 60, // 2 hr * 60 mins/hr * 60 seconds/min
   'info': {
     'type': '',
     'quantity': '',
