@@ -1,0 +1,66 @@
+#! /app/.heroku/node/bin/node
+var Parse = require('parse/node');
+var push = require('../cloud/push.js');
+
+Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
+Parse.serverURL = 'https://dtr-les.herokuapp.com/parse/';
+// Parse.Cloud.useMasterKey();
+
+function notifyDeadApps() {
+  // setup time thresholding variables
+  var currentTime = Math.round(Date.now() / 1000);
+  var thresholdAmount = 60 * 60 * 8; // 60s * 60m * 8hr
+  var timeExpiryThreshold = currentTime - thresholdAmount;
+
+  // find all users who have had a heartbeat in the last 8 hours
+  var heartbeatQuery = new Parse.Query('pretracking_debug');
+  heartbeatQuery.equalTo('console_string', 'Application heartbeat');
+  heartbeatQuery.greaterThanOrEqualTo('timestamp_epoch', timeExpiryThreshold);
+  heartbeatQuery.find({
+    success: function(heartbeats) {
+      // get all users with valid heartbeats
+      var vendorIdSet = new Set();
+      for (var heartbeat in heartbeats) {
+        vendorIdSet.add(heartbeats[heartbeat].get('vendor_id'));
+      }
+
+      // query for all users who do not have valid heartbeats
+      var userQuery = new Parse.Query('user');
+      userQuery.notContainedIn('vendorId', Array.from(vendorIdSet));
+      userQuery.descending('createdAt');
+      userQuery.find({
+        success: function(users) {
+          var pushTokens = [];
+
+          for (var i in users) {
+            var currentUser = users[i];
+
+            if (currentUser.get('pushToken') !== undefined) {
+              pushTokens.push(currentUser.get('pushToken'));
+            }
+          }
+
+          console.log(pushTokens);
+          var message = 'Hi!' +
+                        'It seems that LES closed on your phone. Swipe right to start it up again!';
+          push.sendPushWithMessage(pushTokens, message);
+
+          response.success();
+        },
+        error: function(error) {
+          /*jshint ignore:start*/
+          console.log(error);
+          /*jshint ignore:end*/
+        }
+      });
+    },
+    error: function(error) {
+      /*jshint ignore:start*/
+      console.log(error);
+      /*jshint ignore:end*/
+    }
+  });
+
+};
+
+notifyDeadApps();
