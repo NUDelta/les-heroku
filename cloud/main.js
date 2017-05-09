@@ -251,6 +251,7 @@ Parse.Cloud.afterSave('hotspot', function(request) {
       newHotspot.set('tag', tag);
       newHotspot.set('info', newInfo);
       newHotspot.set('location', hotspot.get('location'));
+      newHotspot.set('beaconId', hotspot.get('beaconId'));
       newHotspot.set('archived', false);
       newHotspot.set('archiver', '');
       newHotspot.set('timestampCreated', timestamp);
