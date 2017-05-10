@@ -70,25 +70,25 @@ Parse.Cloud.define('testPushRefresh', function(request, response) {
 });
 
 // check if explicit app termination has happened
-Parse.Cloud.afterSave('pretracking_debug', function(request) {
-  if (request.object.get('console_string') === 'App about to terminate') {
-    var getUserForVendorId = new Parse.Query('user');
-    getUserForVendorId.equalTo('vendorId', request.object.get('vendor_id'));
-    getUserForVendorId.descending('createdAt');
-    getUserForVendorId.first({
-      success: function(userObject) {
-        var message = 'Hey ' + userObject.get('firstName') +
-                      '! It seems that LES closed on your phone. Swipe right to start me again!';
-        push.sendPushWithMessage(userObject.get('pushToken'), message);
-      },
-      error: function(error) {
-        /*jshint ignore:start*/
-        console.log(error);
-        /*jshint ignore:end*/
-      }
-    });
-  }
-});
+// Parse.Cloud.afterSave('pretracking_debug', function(request) {
+//   if (request.object.get('console_string') === 'App about to terminate') {
+//     var getUserForVendorId = new Parse.Query('user');
+//     getUserForVendorId.equalTo('vendorId', request.object.get('vendor_id'));
+//     getUserForVendorId.descending('createdAt');
+//     getUserForVendorId.first({
+//       success: function(userObject) {
+//         var message = 'Hey ' + userObject.get('firstName') +
+//                       '! It seems that LES closed on your phone. Swipe right to start me again!';
+//         push.sendPushWithMessage(userObject.get('pushToken'), message);
+//       },
+//       error: function(error) {
+//         /*jshint ignore:start*/
+//         console.log(error);
+//         /*jshint ignore:end*/
+//       }
+//     });
+//   }
+// });
 
 // aggregates data and archives locations if they are no longer valid
 Parse.Cloud.afterSave('pingResponse', function(request) {
@@ -522,7 +522,7 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
       locationQuery.notContainedIn('objectId', prevHotspotList); // user has not contributed to it
       locationQuery.find({
         success: function(locations) {
-          console.log(locations);
+
           for (var i = 0; i < locations.length; i++) {
             var currentHotspot = {
               'objectId': locations[i].id,
@@ -541,9 +541,10 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
           });
 
           var topHotspots = distanceToHotspots;
-          if (typeof request.params.count != 'undefined') {
-            topHotspots = distanceToHotspots.slice(0, request.params.count);
-          }
+          // if (typeof request.params.count != 'undefined') {
+          //   topHotspots = distanceToHotspots.slice(0, request.params.count);
+          // }
+          topHotspots = distanceToHotspots.slice(0, 20);
 
           var hotspotList = [];
           for (var k = 0; k < topHotspots.length; k++) {
