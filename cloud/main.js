@@ -816,6 +816,7 @@ Parse.Cloud.define('fetchUserProfileData', function(request, response) {
 
   var userQuery = new Parse.Query('user');
   userQuery.equalTo('vendorId', request.params.vendorId);
+  userQuery.descending('createdAt');
   userQuery.find({
     success: function(users) {
       if (users.length > 0) {
