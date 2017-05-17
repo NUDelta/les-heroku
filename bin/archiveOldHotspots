@@ -1,7 +1,7 @@
 #! /app/.heroku/node/bin/node
 var Parse = require('parse/node');
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
-Parse.serverURL = 'https://dtr-les.herokuapp.com/parse/';
+Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
 // Parse.Cloud.useMasterKey();
 
 function archiveOldHotspots() {

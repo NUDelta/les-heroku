@@ -100,3 +100,21 @@ exports.sendSilentHeartbeatNotification = function(tokenArray) {
 
     apnConnection.shutdown();
 };
+
+exports.requestUserLocation = function(tokenArray) {
+    var apnConnection = new apn.Provider(options);
+
+    var note = new apn.Notification();
+    note.setContentAvailable(1);
+    note.payload = {
+        'updateType': 'location'
+    };
+    note.topic = topic;
+
+    // send notification for each token
+    apnConnection.send(note, tokenArray).then((result) => {
+        console.log(result);
+    });
+
+    apnConnection.shutdown();
+};

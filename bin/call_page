@@ -1,7 +1,7 @@
 #! /app/.heroku/node/bin/node
 var https = require('https');
 function callPage() {
-  https.get('https://dtr-les.herokuapp.com/');
+  https.get('https://les-expand.herokuapp.com/');
 }
 
 callPage();

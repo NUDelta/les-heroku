@@ -53,3 +53,42 @@ httpServer.listen(port, function() {
 
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
+
+// schedule recurring task to get location updates
+var Parse = require('parse/node');
+var push = require(__dirname + '/cloud/push.js');
+var schedule = require('node-schedule');
+
+Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
+Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
+
+function requestCurrentUserLocation() {
+  // get all users currently using application
+  var userQuery = new Parse.Query('user');
+  userQuery.descending('createdAt');
+  userQuery.find({
+    success: function(users) {
+      var pushTokens = [];
+
+      for (var i in users) {
+        var currentUser = users[i];
+
+        if (currentUser.get('pushToken') !== undefined) {
+          pushTokens.push(currentUser.get('pushToken'));
+        }
+      }
+
+      console.log(pushTokens);
+      push.requestUserLocation(pushTokens);
+
+      status.success('Location requests sent.');
+    },
+    error: function(error) {
+      status.error('Requesting location failed with error: ' + error);
+    }
+  });
+};
+
+var locationJob = schedule.scheduleJob('*/30 * * * * *', function(){
+  requestCurrentUserLocation();
+});
