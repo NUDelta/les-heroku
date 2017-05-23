@@ -336,6 +336,7 @@ Parse.Cloud.afterSave('beacons', function() {
   });
 });
 
+// setup study conditions for each user after they register
 Parse.Cloud.afterSave('user', function(request) {
   var vendorId = request.object.get('vendorId');
   var conditions = [
@@ -384,6 +385,42 @@ Parse.Cloud.afterSave('user', function(request) {
       console.log(error);
       /*jshint ignore:end*/
     }
+  });
+});
+
+/*
+ * Study condition functions
+ */
+Parse.Cloud.define('toggleExploitCondition', function(request, response) {
+  var studyConditionQuery = new Parse.Query('studyConditions');
+  studyConditionQuery.each(function(user) {
+    user.set('underExploit', !user.get('underExploit'));
+    user.save();
+  }).then(function() {
+    response.success();
+  }, function(error) {
+    response.error(error);
+  });
+});
+
+Parse.Cloud.define('rotateDistanceCondition', function(request, response) {
+  var studyConditionQuery = new Parse.Query('studyConditions');
+  studyConditionQuery.each(function(user) {
+    // get current condition
+    var conditionArray = user.get('conditionOrdering');
+    var currentCondition = user.get('currentCondition');
+
+    // find condition index and increment by 1
+    var newConditionIndex = (conditionArray.indexOf(currentCondition) + 1) % conditionArray.length;
+    var nextCondition = conditionArray[newConditionIndex];
+
+    // save new condition
+    user.set('currentCondition', nextCondition);
+    user.save();
+  }).then(function() {
+    response.success();
+  }, function(error) {
+    response.error(error);
   });
 });
 
