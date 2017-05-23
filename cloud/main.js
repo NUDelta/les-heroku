@@ -1,12 +1,17 @@
+/*
+ * Imports
+ */
 var push = require('./push.js');
 var notificationComposer = require('./notificationComposer.js');
 
+/*
+ * Push Functions
+ */
 Parse.Cloud.define('testPush', function(request, response) {
     console.log(push.sendPush(request.params.token));
 
 });
 
-// check if explicit app termination has happened
 Parse.Cloud.define('sendPushToAllUsers', function(response) {
   // send push update for data
   var userQuery = new Parse.Query('user');
@@ -89,6 +94,19 @@ Parse.Cloud.define('testPushRefresh', function(request, response) {
 //     });
 //   }
 // });
+
+/*
+ * Save triggers
+ */
+var checkForTerminators = function(terminators, info) {
+   for (var i in terminators) {
+     if (info[i] === terminators[i]) {
+       return true;
+     }
+   }
+
+   return false;
+ };
 
 // aggregates data and archives locations if they are no longer valid
 Parse.Cloud.afterSave('pingResponse', function(request) {
@@ -318,36 +336,40 @@ Parse.Cloud.afterSave('beacons', function() {
   });
 });
 
-var checkForTerminators = function(terminators, info) {
-  for (var i in terminators) {
-    if (info[i] === terminators[i]) {
-      return true;
-    }
-  }
+/*
+ * Location functions
+ */
 
-  return false;
-};
+// Haversine formula for getting distance in miles.
+var getDistance = function(p1, p2) {
+   var R = 6378137; // Earth’s mean radius in meter
+   var degToRad = Math.PI / 180; // Degree to radian conversion.
 
-// // Background job to reset all locations after 12 hours if not already archived
-// Parse.Cloud.job('archiveOldHotspots', function(request, status) {
-//   // setup time thresholding variables
-//   var currentTime = Math.round(Date.now() / 1000);
-//   var thresholdAmount = 60 * 60 * 12; // 60s * 60m * 12hr
-//   var timeExpiryThreshold = currentTime - thresholdAmount;
+   var dLat = (p2.latitude - p1.latitude) * degToRad;
+   var dLong = (p2.longitude - p1.longitude) * degToRad;
 
-//   // fetch objects that are ready to be archived
-//   var hotspotQuery = new Parse.Query('hotspot');
-//   hotspotQuery.notEqualTo('archived', true);
-//   hotspotQuery.lessThan('timestampCreated', timeExpiryThreshold);
-//   hotspotQuery.each(function(hotspot) {
-//     hotspot.set('archiver', 'system');
-//     hotspot.save();
-//   }).then(function() {
-//     status.success('Routine archiving completed successfully.');
-//   }, function(error) {
-//     status.error('Routine archiving failed with error ' + error);
-//   });
-// });
+   var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+     Math.cos(p1.latitude * degToRad) * Math.cos(p2.latitude * degToRad) *
+     Math.sin(dLong / 2) * Math.sin(dLong / 2);
+   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+   var d = R * c; // d = distance in meters
+
+   return d;
+ };
+
+var getRankForCategory = function(category, preferences) {
+   if (preferences.firstPreference === category) {
+     return 1;
+   } else if (preferences.secondPreference === category) {
+     return 2;
+   } else if (preferences.thirdPreference === category) {
+     return 3;
+   } else if (preferences.fourthPreference === category) {
+     return 4;
+   } else {
+     return 0;
+   }
+ };
 
 // Get n closest hotspots ranked by distance and preference
 // request = {latitude: Int, longitude: Int, vendorId: Str, count: Int}
@@ -609,37 +631,9 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
   });
 });
 
-// Haversine formula for getting distance in miles.
-var getDistance = function(p1, p2) {
-  var R = 6378137; // Earth’s mean radius in meter
-  var degToRad = Math.PI / 180; // Degree to radian conversion.
-
-  var dLat = (p2.latitude - p1.latitude) * degToRad;
-  var dLong = (p2.longitude - p1.longitude) * degToRad;
-
-  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(p1.latitude * degToRad) * Math.cos(p2.latitude * degToRad) *
-    Math.sin(dLong / 2) * Math.sin(dLong / 2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var d = R * c; // d = distance in meters
-
-  return d;
-};
-
-var getRankForCategory = function(category, preferences) {
-  if (preferences.firstPreference === category) {
-    return 1;
-  } else if (preferences.secondPreference === category) {
-    return 2;
-  } else if (preferences.thirdPreference === category) {
-    return 3;
-  } else if (preferences.fourthPreference === category) {
-    return 4;
-  } else {
-    return 0;
-  }
-};
-
+/*
+ * UI Routes
+ */
 // Get ranking for each user by contribution
 // Weight primary contribute as 2x more than response to ping
 Parse.Cloud.define('rankingsByContribution', function(request, response) {
@@ -939,14 +933,11 @@ Parse.Cloud.define('fetchUserProfileData', function(request, response) {
   });
 });
 
-/*jshint ignore:start*/
-// multicolumn sorting function
-// from:
-// http://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
-/*jshint ignore:end*/
-
+/* multicolumn sorting function
+ * from:
+ * http://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
+ */
 var sortBy;
-
 (function() {
   // utility functions
   var defaultCmp = function(a, b) {
