@@ -336,6 +336,57 @@ Parse.Cloud.afterSave('beacons', function() {
   });
 });
 
+Parse.Cloud.afterSave('user', function(request) {
+  var vendorId = request.object.get('vendorId');
+  var conditions = [
+    '200-300-400',
+    '200-400-300',
+    '300-200-400',
+    '300-400-200',
+    '400-200-300',
+    '400-300-200'
+  ];
+
+  // find last condition stored
+  var conditionQuery = new Parse.Query('studyConditions');
+  conditionQuery.descending('createdAt');
+  conditionQuery.first({
+    success: function(lastCondition) {
+      // get next condition ordering and if should eXploit
+      var newConditionString = '';
+      var newConditionArray = [];
+      var shouldExploit = false;
+
+      if (lastCondition === undefined) {
+        newConditionString = conditions[0];
+      } else {
+        var currentConditionOrdering = lastCondition.get('stringConditionOrdering');
+        var conditionIndex = (conditions.indexOf(currentConditionOrdering) + 1) % conditions.length;
+        newConditionString = conditions[conditionIndex];
+
+        shouldExploit = !lastCondition.get('underExploit');
+      }
+
+      newConditionArray = newConditionString.split('-').map(Number);
+
+      // save new studyCondition object
+      var StudyCondition = Parse.Object.extend('studyConditions');
+      var newStudyCondition = new StudyCondition();
+      newStudyCondition.set('vendorId', vendorId);
+      newStudyCondition.set('stringConditionOrdering', newConditionString);
+      newStudyCondition.set('conditionOrdering', newConditionArray);
+      newStudyCondition.set('currentCondition', newConditionArray[0]);
+      newStudyCondition.set('underExploit', shouldExploit);
+      newStudyCondition.save();
+    },
+    error: function(error) {
+      /*jshint ignore:start*/
+      console.log(error);
+      /*jshint ignore:end*/
+    }
+  });
+});
+
 /*
  * Location functions
  */
