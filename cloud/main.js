@@ -791,7 +791,7 @@ Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response)
                       'location': exploitLocations[exploitLocation].get('location'),
                       'locationCommonName': '',
                       'beaconId': '',
-                      'notificationCategory': '',
+                      'notificationCategory': 'exploit',
                       'message': exploitLocations[exploitLocation].get('question'),
                       'contextualResponses': ['yes', 'no'],
                       'locationType': 'exploit'
