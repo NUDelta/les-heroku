@@ -761,6 +761,7 @@ Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response)
                   'beaconId': selectedHotspots[hotspot].get('beaconId'),
                   'notificationCategory': '',
                   'message': '',
+                  'scaffoldedMessage': '',
                   'contextualResponses': [],
                   'locationType': 'expand'
                 };
@@ -793,6 +794,7 @@ Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response)
                       'beaconId': '',
                       'notificationCategory': 'exploit',
                       'message': exploitLocations[exploitLocation].get('question'),
+                      'scaffoldedMessage': '',
                       'contextualResponses': ['yes', 'no'],
                       'locationType': 'exploit'
                     };
