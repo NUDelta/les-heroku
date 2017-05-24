@@ -36,9 +36,7 @@ Parse.Cloud.define('sendPushToAllUsers', function(response) {
       response.success();
     },
     error: function(error) {
-      /*jshint ignore:start*/
       console.log(error);
-      /*jshint ignore:end*/
     }
   });
 
@@ -67,9 +65,7 @@ Parse.Cloud.define('testPushRefresh', function(request, response) {
         response.success();
       },
       error: function(error) {
-        /*jshint ignore:start*/
         console.log(error);
-        /*jshint ignore:end*/
       }
     });
 });
@@ -87,9 +83,7 @@ Parse.Cloud.define('testPushRefresh', function(request, response) {
 //         push.sendPushWithMessage(userObject.get('pushToken'), message);
 //       },
 //       error: function(error) {
-//         /*jshint ignore:start*/
 //         console.log(error);
-//         /*jshint ignore:end*/
 //       }
 //     });
 //   }
@@ -167,16 +161,12 @@ Parse.Cloud.afterSave('pingResponse', function(request) {
           }
         },
         error: function(error) {
-          /*jshint ignore:start*/
           console.log(error);
-          /*jshint ignore:end*/
         }
       });
     },
     error: function(error) {
-      /*jshint ignore:start*/
       console.log(error);
-      /*jshint ignore:end*/
     }
   });
 });
@@ -301,9 +291,7 @@ Parse.Cloud.afterSave('hotspot', function(request) {
       push.sendSilentRefreshNotification(pushTokens, 'hotspot');
     },
     error: function(error) {
-      /*jshint ignore:start*/
       console.log(error);
-      /*jshint ignore:end*/
     }
   });
 });
@@ -329,9 +317,7 @@ Parse.Cloud.afterSave('beacons', function() {
       push.sendSilentRefreshNotification(pushTokens, 'beacon');
     },
     error: function(error) {
-      /*jshint ignore:start*/
       console.log(error);
-      /*jshint ignore:end*/
     }
   });
 });
@@ -381,9 +367,7 @@ Parse.Cloud.afterSave('user', function(request) {
       newStudyCondition.save();
     },
     error: function(error) {
-      /*jshint ignore:start*/
       console.log(error);
-      /*jshint ignore:end*/
     }
   });
 });
@@ -576,30 +560,22 @@ Parse.Cloud.define('retrieveLocationsForTracking', function(request, response) {
                   response.success(selectedHotspots);
                 },
                 error: function(error) {
-                  /*jshint ignore:start*/
                   console.log(error);
-                  /*jshint ignore:end*/
                 }
               });
             },
             error: function(error) {
-              /*jshint ignore:start*/
               console.log(error);
-              /*jshint ignore:end*/
             }
           });
         },
         error: function(error) {
-          /*jshint ignore:start*/
           console.log(error);
-          /*jshint ignore:end*/
         }
       });
     },
     error: function(error) {
-      /*jshint ignore:start*/
       console.log(error);
-      /*jshint ignore:end*/
     }
   });
 });
@@ -698,23 +674,170 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
               response.success(output);
             },
             error: function(error) {
-              /*jshint ignore:start*/
               console.log(error);
-              /*jshint ignore:end*/
             }
           });
         },
         error: function(error) {
-          /*jshint ignore:start*/
           console.log(error);
-          /*jshint ignore:end*/
         }
       });
     },
     error: function(error) {
-      /*jshint ignore:start*/
       console.log(error);
-      /*jshint ignore:end*/
+    }
+  });
+});
+
+// return closest n locations for tracking without preference weighting
+// do not include location if user has already answered a question about it
+Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response) {
+  var currentLocation = {
+    'latitude': request.params.latitude,
+    'longitude': request.params.longitude
+  };
+  var distanceToHotspots = [];
+
+  var prevRespondQuery = new Parse.Query('pingResponse');
+  prevRespondQuery.equalTo('vendorId', request.params.vendorId);
+  prevRespondQuery.descending('createdAt');
+  prevRespondQuery.limit(1000);
+  prevRespondQuery.find({
+    success: function(prevNotifications) {
+      var prevHotspotList = [];
+      for (var prevNotification in prevNotifications) {
+        prevHotspotList.push(prevNotifications[prevNotification].get('hotspotId'));
+      }
+
+      // return locations sorted by distance and ranking for user
+      var locationQuery = new Parse.Query('hotspot');
+      locationQuery.limit(1000);
+      locationQuery.notEqualTo('archived', true); // check if not archived
+      locationQuery.notEqualTo('vendorId', request.params.vendorId); // current user did not create
+      locationQuery.notContainedIn('objectId', prevHotspotList); // user has not contributed to it
+      locationQuery.find({
+        success: function(locations) {
+
+          for (var i = 0; i < locations.length; i++) {
+            var currentHotspot = {
+              'objectId': locations[i].id,
+              'location': locations[i].get('location'),
+              'tag': locations[i].get('tag'),
+              'archived': locations[i].get('archived')
+            };
+
+            currentHotspot.distance = getDistance(currentLocation, currentHotspot.location);
+            currentHotspot.distance = Math.round(currentHotspot.distance);
+            distanceToHotspots.push(currentHotspot);
+          }
+
+          distanceToHotspots.sort(function(a, b) {
+            return (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0);
+          });
+
+          var topHotspots = distanceToHotspots;
+          topHotspots = distanceToHotspots.slice(0, 20);
+
+          var hotspotList = [];
+          for (var k = 0; k < topHotspots.length; k++) {
+            hotspotList.push(topHotspots[k].objectId);
+          }
+
+          // from filtered list, get expand locations
+          var hotspotQuery = new Parse.Query('hotspot');
+          hotspotQuery.containedIn('objectId', hotspotList);
+          hotspotQuery.find({
+            success: function(selectedHotspots) {
+              // store both expand and exploit locations
+              var locationsToTrack = [];
+
+              for (var hotspot in selectedHotspots) {
+                var currExpandLoc = {
+                  'objectId': selectedHotspots[hotspot].id,
+                  'vendorId': selectedHotspots[hotspot].get('vendorId'),
+                  'tag': selectedHotspots[hotspot].get('tag'),
+                  'location': selectedHotspots[hotspot].get('location'),
+                  'locationCommonName': selectedHotspots[hotspot].get('locationCommonName'),
+                  'beaconId': selectedHotspots[hotspot].get('beaconId'),
+                  'notificationCategory': '',
+                  'message': '',
+                  'contextualResponses': [],
+                  'locationType': 'expand'
+                };
+                var currentInfo = selectedHotspots[hotspot].get('info');
+
+                var notification = notificationComposer.createNotificationForTag(
+                                                                 currExpandLoc.tag,
+                                                                 currentInfo,
+                                                                 currExpandLoc.locationCommonName);
+                if (notification !== undefined) {
+                  currExpandLoc.notificationCategory = notification.notificationCategory;
+                  currExpandLoc.message = notification.message;
+                  currExpandLoc.contextualResponses = notification.contextualResponses;
+
+                  locationsToTrack.push(currExpandLoc);
+                }
+              }
+
+              // fetch exploit locations
+              var exploitLocQuery = new Parse.Query('exploitLocations');
+              exploitLocQuery.find({
+                success: function(exploitLocations) {
+                  for (var exploitLocation in exploitLocations) {
+                    var currExploitLoc = {
+                      'objectId': exploitLocations[exploitLocation].id,
+                      'vendorId': exploitLocations[exploitLocation].get('vendorId'),
+                      'tag': exploitLocations[exploitLocation].get('tag'),
+                      'location': exploitLocations[exploitLocation].get('location'),
+                      'locationCommonName': '',
+                      'beaconId': '',
+                      'notificationCategory': '',
+                      'message': exploitLocations[exploitLocation].get('question'),
+                      'contextualResponses': [],
+                      'locationType': 'exploit'
+                    };
+
+                    locationsToTrack.push(currExploitLoc);
+                  }
+
+                  // get study conditions for user
+                  var studyConditionQuery = new Parse.Query('studyConditions');
+                  studyConditionQuery.equalTo('vendorId', request.params.vendorId);
+                  studyConditionQuery.descending('createdAt');
+                  studyConditionQuery.first({
+                    success: function(conditions) {
+                      // return output
+                      var output = {
+                        'expandDistance': conditions.get('currentCondition'),
+                        'allConditionDistances': [200, 300, 400],
+                        'underExploit': conditions.get('underExploit'),
+                        'locations': locationsToTrack
+                      };
+
+                      response.success(output);
+                    },
+                    error: function(error) {
+                      console.log(error);
+                    }
+                  });
+                },
+                error: function(error) {
+                  console.log(error);
+                }
+              });
+            },
+            error: function(error) {
+              console.log(error);
+            }
+          });
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    },
+    error: function(error) {
+      console.log(error);
     }
   });
 });
@@ -789,23 +912,17 @@ Parse.Cloud.define('rankingsByContribution', function(request, response) {
               response.success(leaderBoard);
             },
             error: function(error) {
-              /*jshint ignore:start*/
               console.log(error);
-              /*jshint ignore:end*/
             }
           });
         },
         error: function(error) {
-          /*jshint ignore:start*/
           console.log(error);
-          /*jshint ignore:end*/
         }
       });
     },
     error: function(error) {
-      /*jshint ignore:start*/
       console.log(error);
-      /*jshint ignore:end*/
     }
   });
 });
@@ -869,9 +986,7 @@ Parse.Cloud.define('fetchMapDataView', function(request, response) {
             response.success(output);
           },
           error: function(error) {
-            /*jshint ignore:start*/
             console.log(error);
-            /*jshint ignore:end*/
           }
         });
       } else {
@@ -879,9 +994,7 @@ Parse.Cloud.define('fetchMapDataView', function(request, response) {
       }
     },
     error: function(error) {
-      /*jshint ignore:start*/
       console.log(error);
-      /*jshint ignore:end*/
     }
   });
 });
@@ -990,16 +1103,12 @@ Parse.Cloud.define('fetchUserProfileData', function(request, response) {
                 response.success(output);
               },
               error: function(error) {
-                /*jshint ignore:start*/
                 console.log(error);
-                /*jshint ignore:end*/
               }
             });
           },
           error: function(error) {
-            /*jshint ignore:start*/
             console.log(error);
-            /*jshint ignore:end*/
           }
         });
       } else {
@@ -1014,9 +1123,7 @@ Parse.Cloud.define('fetchUserProfileData', function(request, response) {
       }
     },
     error: function(error) {
-      /*jshint ignore:start*/
       console.log(error);
-      /*jshint ignore:end*/
     }
   });
 });
