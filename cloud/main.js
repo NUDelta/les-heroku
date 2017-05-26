@@ -774,6 +774,7 @@ Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response)
                 if (notification !== undefined) {
                   currExpandLoc.notificationCategory = notification.notificationCategory;
                   currExpandLoc.message = notification.message;
+                  currExpandLoc.scaffoldedMessage = 'SCAFFOLDED ' + notification.message;
                   currExpandLoc.contextualResponses = notification.contextualResponses;
 
                   locationsToTrack.push(currExpandLoc);
