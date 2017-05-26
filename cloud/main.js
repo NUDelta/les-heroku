@@ -763,7 +763,8 @@ Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response)
                   'message': '',
                   'scaffoldedMessage': '',
                   'contextualResponses': [],
-                  'locationType': 'expand'
+                  'locationType': 'expand',
+                  'levelOfInformation': '0'
                 };
                 var currentInfo = selectedHotspots[hotspot].get('info');
 
@@ -797,7 +798,8 @@ Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response)
                       'message': exploitLocations[exploitLocation].get('question'),
                       'scaffoldedMessage': '',
                       'contextualResponses': ['yes', 'no'],
-                      'locationType': 'exploit'
+                      'locationType': 'exploit',
+                      'levelOfInformation': '-1'
                     };
 
                     locationsToTrack.push(currExploitLoc);
