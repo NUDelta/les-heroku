@@ -7,7 +7,7 @@ Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
 function archiveOldHotspots() {
   // setup time thresholding variables
   var currentTime = Math.round(Date.now() / 1000);
-  var thresholdAmount = 60 * 60 * 12; // 60s * 60m * 12hr
+  var thresholdAmount = 60 * 60 * 6; // 60s * 60m * 6hr
   var timeExpiryThreshold = currentTime - thresholdAmount;
 
   // fetch objects that are ready to be archived
