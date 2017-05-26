@@ -2,25 +2,25 @@
 var apn = require('apn');
 
 // DEBUG PUSH
-var options = {
-    token: {
-        key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
-        keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
-        teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
-    },
-    production: false //working with development certificate
-};
-
-var topic = 'edu.northwestern.delta.les-debug';
-
-// ENTERPRISE PUSH
 // var options = {
-//     cert: __dirname + '/push-certificates/cert.pem',
-//     key: __dirname + '/push-certificates/key.pem',
-//     production: true //working with production certificate
+//     token: {
+//         key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
+//         keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
+//         teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
+//     },
+//     production: false //working with development certificate
 // };
 //
-// var topic = 'edu.northwestern.delta.les';
+// var topic = 'edu.northwestern.delta.les-debug';
+
+// ENTERPRISE PUSH
+var options = {
+    cert: __dirname + '/push-certificates/cert.pem',
+    key: __dirname + '/push-certificates/key.pem',
+    production: true //working with production certificate
+};
+
+var topic = 'edu.northwestern.delta.les';
 
 var apnError = function(err) {
     console.log('APN Error:', err);
