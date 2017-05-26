@@ -821,26 +821,31 @@ Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response)
                     },
                     error: function(error) {
                       console.log(error);
+                      setTimeout(response.error('an error has occurred', 10000));
                     }
                   });
                 },
                 error: function(error) {
                   console.log(error);
+                  setTimeout(response.error('an error has occurred', 10000));
                 }
               });
             },
             error: function(error) {
               console.log(error);
+              setTimeout(response.error('an error has occurred', 10000));
             }
           });
         },
         error: function(error) {
           console.log(error);
+          setTimeout(response.error('an error has occurred', 10000));
         }
       });
     },
     error: function(error) {
       console.log(error);
+      setTimeout(response.error('an error has occurred', 10000));
     }
   });
 });
