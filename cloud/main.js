@@ -689,6 +689,26 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', function(request, resp
   });
 });
 
+// test scaffolded message creator
+Parse.Cloud.define('createScaffoldedMessageForHotspot', function(request, response) {
+  var hotspotId = request.params.hotspotId;
+
+  var hotspotQuery = new Parse.Query('hotspot');
+  hotspotQuery.equalTo('objectId', hotspotId);
+  hotspotQuery.first({
+    success: function(hotspot) {
+      var message = notificationComposer.fetchScaffoldedInformationForTag(
+                                         hotspot.get('tag'),
+                                         hotspot.get('info'),
+                                         hotspot.get('locationCommonName'));
+     response.success(message);
+    },
+    error: function(error) {
+      console.log(error);
+    }
+  });
+});
+
 // return closest n locations for tracking without preference weighting
 // do not include location if user has already answered a question about it
 Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response) {
@@ -1015,7 +1035,7 @@ Parse.Cloud.define('fetchUserProfileData', function(request, response) {
     'initials': '',
     'contributionCount': 0,
     'markedLocationCount': 0,
-    'peopleHelped': 5,
+    'peopleHelped': 1,
     'contributionLocations': []
   };
 
