@@ -637,7 +637,7 @@ exports.fetchScaffoldedInformationForTag = function(tag, currentInfo, locationCo
 function createScaffoldedInfoForCoffeeshops(currentInfo, locationCommonName) {
   let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
   var output = {
-    'scaffoldedMessage': '', // notification message to present
+    'message': '', // notification message to present
     'levelOfInformation': ''
   };
 
@@ -686,13 +686,13 @@ function createScaffoldedInfoForCoffeeshops(currentInfo, locationCommonName) {
 
     // compose full message
     if (smallTableAvailableBy !== '') {
-      output.scaffoldedMessage = ['There are currently', smallTableType, '(near',
+      output.message = ['There are currently', smallTableType, '(near',
                                   smallTableAvailableBy, ')', 'available at',
-                                  locationPhrase].join(' ');
+                                  locationPhrase + '.'].join(' ');
      output.levelOfInformation = '2';
     } else {
-      output.scaffoldedMessage = ['There are currently', smallTableType,
-                                  'available at', locationPhrase].join(' ');
+      output.message = ['There are currently', smallTableType,
+                                  'available at', locationPhrase + '.'].join(' ');
       output.levelOfInformation = '1';
     }
 
@@ -710,13 +710,13 @@ function createScaffoldedInfoForCoffeeshops(currentInfo, locationCommonName) {
 
     // compose full message
     if (largeTableAvailableBy !== '') {
-      output.scaffoldedMessage = ['There are currently large tables for', largeTableType, '(near',
-                                  largeTableAvailableBy, ')', 'available at',
-                                  locationPhrase].join(' ');
+      output.message = ['There are currently large tables for', largeTableType, '(near',
+                                  largeTableAvailableBy + ')', 'available at',
+                                  locationPhrase + '.'].join(' ');
       output.levelOfInformation = '2';
     } else {
-      output.scaffoldedMessage = ['There are currently large tables for', largeTableType,
-                                  'available at', locationPhrase].join(' ');
+      output.message = ['There are currently large tables for', largeTableType,
+                                  'available at', locationPhrase + '.'].join(' ');
       output.levelOfInformation = '1';
     }
 
@@ -746,18 +746,18 @@ function createScaffoldedInfoForCoffeeshops(currentInfo, locationCommonName) {
     var outputMessage = '';
     if (smallTableAvailableBy !== '') {
       outputMessage = ['There are currently', smallTableType, '(near',
-                        smallTableAvailableBy, ')'].join(' ');
+                        smallTableAvailableBy + ')'].join(' ');
     } else {
       outputMessage = ['There are currently', smallTableType].join(' ');
     }
 
     if (largeTableAvailableBy !== '') {
-      output.scaffoldedMessage = [outputMessage, 'and large tables for', largeTableType, '(near',
-                                  largeTableAvailableBy, ')', 'available at',
-                                  locationPhrase].join(' ');
+      output.message = [outputMessage, 'and large tables for', largeTableType, '(near',
+                                  largeTableAvailableBy + ')', 'available at',
+                                  locationPhrase + '.'].join(' ');
     } else {
-      output.scaffoldedMessage = [outputMessage, 'and large tables for', largeTableType,
-                                  'available at', locationPhrase].join(' ');
+      output.message = [outputMessage, 'and large tables for', largeTableType,
+                                  'available at', locationPhrase + '.'].join(' ');
       output.levelOfInformation = '2';
     }
 

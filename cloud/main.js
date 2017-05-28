@@ -787,16 +787,23 @@ Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response)
                   'levelOfInformation': '0'
                 };
                 var currentInfo = selectedHotspots[hotspot].get('info');
-
                 var notification = notificationComposer.createNotificationForTag(
                                                                  currExpandLoc.tag,
                                                                  currentInfo,
                                                                  currExpandLoc.locationCommonName);
-                if (notification !== undefined) {
+                var scaffoldedMessage = notificationComposer.fetchScaffoldedInformationForTag(
+                                                                currExpandLoc.tag,
+                                                                currentInfo,
+                                                                currExpandLoc.locationCommonName);
+
+                // include location iff it has a valid notification for at location and expand outer
+                if (notification !== undefined & scaffoldedMessage !== undefined) {
                   currExpandLoc.notificationCategory = notification.notificationCategory;
                   currExpandLoc.message = notification.message;
-                  currExpandLoc.scaffoldedMessage = 'SCAFFOLDED ' + notification.message;
                   currExpandLoc.contextualResponses = notification.contextualResponses;
+
+                  currExpandLoc.scaffoldedMessage = scaffoldedMessage.message;
+                  currExpandLoc.levelOfInformation = scaffoldedMessage.levelOfInformation;
 
                   locationsToTrack.push(currExpandLoc);
                 }
