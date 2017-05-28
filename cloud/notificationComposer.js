@@ -687,12 +687,12 @@ function createScaffoldedInfoForCoffeeshops(currentInfo, locationCommonName) {
     // compose full message
     if (smallTableAvailableBy !== '') {
       output.message = ['There are currently', smallTableType, '(near',
-                                  smallTableAvailableBy, ')', 'available at',
+                                  smallTableAvailableBy, ')', 'available',
                                   locationPhrase + '.'].join(' ');
      output.levelOfInformation = '2';
     } else {
       output.message = ['There are currently', smallTableType,
-                                  'available at', locationPhrase + '.'].join(' ');
+                                  'available', locationPhrase + '.'].join(' ');
       output.levelOfInformation = '1';
     }
 
@@ -711,12 +711,12 @@ function createScaffoldedInfoForCoffeeshops(currentInfo, locationCommonName) {
     // compose full message
     if (largeTableAvailableBy !== '') {
       output.message = ['There are currently large tables for', largeTableType, '(near',
-                                  largeTableAvailableBy + ')', 'available at',
+                                  largeTableAvailableBy + ')', 'available',
                                   locationPhrase + '.'].join(' ');
       output.levelOfInformation = '2';
     } else {
       output.message = ['There are currently large tables for', largeTableType,
-                                  'available at', locationPhrase + '.'].join(' ');
+                                  'available', locationPhrase + '.'].join(' ');
       output.levelOfInformation = '1';
     }
 
@@ -753,11 +753,11 @@ function createScaffoldedInfoForCoffeeshops(currentInfo, locationCommonName) {
 
     if (largeTableAvailableBy !== '') {
       output.message = [outputMessage, 'and large tables for', largeTableType, '(near',
-                                  largeTableAvailableBy + ')', 'available at',
+                                  largeTableAvailableBy + ')', 'available',
                                   locationPhrase + '.'].join(' ');
     } else {
       output.message = [outputMessage, 'and large tables for', largeTableType,
-                                  'available at', locationPhrase + '.'].join(' ');
+                                  'available', locationPhrase + '.'].join(' ');
       output.levelOfInformation = '2';
     }
 
