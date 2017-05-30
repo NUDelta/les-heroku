@@ -214,7 +214,8 @@ let food = {
   },
   'answers': {
     'type': ['pizzas', 'buns', 'pastries/sweets/candy', 'other'],
-    'quantity': ['lots, plenty to go around',  'some, going quickly',  'very little, only couple items left', 'none'],
+    'quantity': ['lots, plenty to go around',  'some, going quickly',
+                 'very little, only couple items left', 'none'],
     'freesold': ['free', 'sold'],
     'cost': ['< $2', '$2-4',  '$5+'],
     'sellingreason': ['charity', 'student group fundraising', 'other']
@@ -1001,13 +1002,97 @@ function createScaffoldedInfoForGyms(currentInfo, locationCommonName) {
 };
 
 function createScaffoldedInfoForFood(currentInfo, locationCommonName) {
-  // let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  // var output = {
-  //   'notificationCategory': '', // classtag_questiontag
-  //   'message': '', // notification message to present
-  //   'contextualResponses': [] // responses for contextual handler
-  // };
-  //
+  let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
+  var output = {
+    'message': '',
+    'levelOfInformation': ''
+  };
+
+  // L0: there is food here/there
+  if (currentInfo.type === '') {
+    output.message = ['Someone told us that there is free or sold food',
+                      locationPhrase + '!'].join(' ');
+    output.levelOfInformation = '0';
+
+    return output;
+  } else if (currentInfo.type !== '') {
+    var currentMessage = '',
+        currentLOI = '0';
+
+    // what kind of food is there?
+    if (currentInfo.type !== 'other') {
+      currentMessage = ['Someone told us that there are', currentInfo.type,
+                        locationPhrase + '!'].join(' ');
+      currentLOI = '1';
+    } else {
+      currentMessage = ['Someone told us that there is some kind of food',
+                        locationPhrase + '!'].join(' ');
+      currentLOI = '1';
+    }
+
+    // how much is left?
+    // quantity is known
+    if (currentInfo.quantity !== '' & currentInfo.quantity !== 'none') {
+      var quantityType = '';
+
+      switch (currentInfo.quantity) {
+        case 'lots, plenty to go around':
+          quantityType = 'lots left';
+          break;
+        case 'some, going quickly':
+          quantityType = 'some left, but going fast';
+          break;
+        case 'very little, only couple items left':
+          quantityType = 'very little left, only a couple items';
+          break;
+        default:
+          break;
+      }
+
+      currentMessage = [currentMessage, 'Additionally, there seems to be',
+                        quantityType + '.'].join('');
+      currentLOI = '2';
+
+      // is the food free or sold?
+      if (currentInfo.freesold === 'free') {
+        currentMessage = 'FREE FOOD!!! ' + currentMessage;
+        currentLOI = '3';
+
+        output.message = currentMessage;
+        output.levelOfInformation = currentLOI;
+        return output;
+      } else if (currentInfo.freesold === 'sold') {
+        currentMessage = 'FOOD FOR SALE! ' + currentMessage;
+        currentLOI = '3';
+
+        if (currentInfo.cost !== '') {
+          currentMessage = currentMessage + 'Price is ' + currentInfo.cost + ' .';
+          currentLOI = '4';
+
+          output.message = currentMessage;
+          output.levelOfInformation = currentLOI;
+          return output;
+        } else { // cost information unknown
+          output.message = currentMessage;
+          output.levelOfInformation = currentLOI;
+          return output;
+        }
+      } else { // free/sold information unknown
+        output.message = currentMessage;
+        output.levelOfInformation = currentLOI;
+        return output;
+      }
+    } else if (currentInfo.quantity === 'none') { // do not notify if there is no food left
+      return undefined;
+    } else { // quantity information unknown
+      output.message = currentMessage;
+      output.levelOfInformation = currentLOI;
+
+      return output;
+    }
+
+  }
+
   // if (currentInfo.type === '') {
   //   output.notificationCategory = food.tag + '_' + food.questionTag.type;
   //   output.message = 'There is food ' + locationPhrase + '! Do you know what kind it is?';
@@ -1048,6 +1133,6 @@ function createScaffoldedInfoForFood(currentInfo, locationCommonName) {
   //   }
   // }
 
-  // return a default undefined if there's nothing to ask
+  // return a default undefined if there's not any more information to compose
   return undefined;
 };
