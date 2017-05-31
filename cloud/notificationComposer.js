@@ -688,7 +688,7 @@ function createScaffoldedInfoForCoffeeshops(currentInfo, locationCommonName) {
     // compose full message
     if (smallTableAvailableBy !== '') {
       output.message = ['There are currently', smallTableType, '(near',
-                                  smallTableAvailableBy, ')', 'available',
+                                  smallTableAvailableBy + ')' , 'available',
                                   locationPhrase + '.'].join(' ');
      output.levelOfInformation = '2';
     } else {
