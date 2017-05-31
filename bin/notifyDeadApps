@@ -16,6 +16,8 @@ function notifyDeadApps() {
   var heartbeatQuery = new Parse.Query('pretracking_debug');
   heartbeatQuery.equalTo('console_string', 'Application heartbeat');
   heartbeatQuery.greaterThanOrEqualTo('timestamp_epoch', timeExpiryThreshold);
+  heartbeatQuery.descending('timestamp_epoch');
+  heartbeatQuery.limit(10000);
   heartbeatQuery.find({
     success: function(heartbeats) {
       // get all users with valid heartbeats
@@ -23,8 +25,6 @@ function notifyDeadApps() {
       for (var heartbeat in heartbeats) {
         vendorIdSet.add(heartbeats[heartbeat].get('vendor_id'));
       }
-
-      console.log(vendorIdSet);
 
       // query for all users who do not have valid heartbeats
       var userQuery = new Parse.Query('user');
@@ -46,7 +46,7 @@ function notifyDeadApps() {
           var message = 'Hi! ' +
                         'It seems that LES closed on your phone. ' +
                         'Swipe right or tap to start it up again!';
-          // push.sendPushWithMessage(pushTokens, message);
+          push.sendPushWithMessage(pushTokens, message);
 
           response.success();
         },
