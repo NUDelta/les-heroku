@@ -322,8 +322,29 @@ Parse.Cloud.afterSave('beacons', function() {
   });
 });
 
+Parse.Cloud.define('saveNewPushTokenForUser', function(request, response) {
+  var vendorId = request.params.vendorId,
+      pushToken = request.params.pushToken;
+
+  var userQuery = new Parse.Query('user');
+  userQuery.equalTo('vendorId', vendorId);
+  userQuery.first({
+    success: function(user) {
+      if (user !== undefined) {
+        user.set('pushToken', pushToken);
+        user.save();
+      }
+
+      response.success();
+    },
+    error: function(error) {
+      console.log(error);
+    }
+  });
+});
+
 // setup study conditions for each user after they register
-Parse.Cloud.afterSave('user', function(request) {
+Parse.Cloud.afterSave('user', function(request, response) {
   var vendorId = request.object.get('vendorId');
   var conditions = [
     '200-300-400',
@@ -356,15 +377,30 @@ Parse.Cloud.afterSave('user', function(request) {
 
       newConditionArray = newConditionString.split('-').map(Number);
 
-      // save new studyCondition object
-      var StudyCondition = Parse.Object.extend('studyConditions');
-      var newStudyCondition = new StudyCondition();
-      newStudyCondition.set('vendorId', vendorId);
-      newStudyCondition.set('stringConditionOrdering', newConditionString);
-      newStudyCondition.set('conditionOrdering', newConditionArray);
-      newStudyCondition.set('currentCondition', newConditionArray[0]);
-      newStudyCondition.set('underExploit', shouldExploit);
-      newStudyCondition.save();
+      // check if conditons already exist for user
+      var conditionQueryExists = new Parse.Query('studyConditions');
+      conditionQueryExists.equalTo('vendorId', vendorId);
+      conditionQueryExists.descending('createdAt');
+      conditionQueryExists.first({
+        success: function(condition) {
+          if (condition === undefined) {
+            // save new studyCondition object
+            var StudyCondition = Parse.Object.extend('studyConditions');
+            var newStudyCondition = new StudyCondition();
+            newStudyCondition.set('vendorId', vendorId);
+            newStudyCondition.set('stringConditionOrdering', newConditionString);
+            newStudyCondition.set('conditionOrdering', newConditionArray);
+            newStudyCondition.set('currentCondition', newConditionArray[0]);
+            newStudyCondition.set('underExploit', shouldExploit);
+            newStudyCondition.save();
+          }
+
+          response.success();
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
     },
     error: function(error) {
       console.log(error);
@@ -406,7 +442,7 @@ Parse.Cloud.define('rotateDistanceCondition', function(request, response) {
   }, function(error) {
     response.error(error);
   });
-});
+})
 
 /*
  * Location functions
