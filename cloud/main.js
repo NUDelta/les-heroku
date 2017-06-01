@@ -442,7 +442,7 @@ Parse.Cloud.define('rotateDistanceCondition', function(request, response) {
   }, function(error) {
     response.error(error);
   });
-})
+});
 
 /*
  * Location functions
@@ -747,6 +747,7 @@ Parse.Cloud.define('createScaffoldedMessageForHotspot', function(request, respon
 
 // return closest n locations for tracking without preference weighting
 // do not include location if user has already answered a question about it
+// do not include location if user has respondedly to eXpand negatively
 Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response) {
   var currentLocation = {
     'latitude': request.params.latitude,
@@ -760,129 +761,155 @@ Parse.Cloud.define('retrieveExpandExploitLocations', function(request, response)
   prevRespondQuery.limit(1000);
   prevRespondQuery.find({
     success: function(prevNotifications) {
-      var prevHotspotList = [];
+      var prevHotspotList = new Set();
       for (var prevNotification in prevNotifications) {
-        prevHotspotList.push(prevNotifications[prevNotification].get('hotspotId'));
+        prevHotspotList.add(prevNotifications[prevNotification].get('hotspotId'));
       }
 
-      // return locations sorted by distance and ranking for user
-      var locationQuery = new Parse.Query('hotspot');
-      locationQuery.limit(1000);
-      locationQuery.notEqualTo('archived', true); // check if not archived
-      locationQuery.notEqualTo('vendorId', request.params.vendorId); // current user did not create
-      locationQuery.notContainedIn('objectId', prevHotspotList); // user has not contributed to it
-      locationQuery.find({
-        success: function(locations) {
-
-          for (var i = 0; i < locations.length; i++) {
-            var currentHotspot = {
-              'objectId': locations[i].id,
-              'location': locations[i].get('location'),
-              'tag': locations[i].get('tag'),
-              'archived': locations[i].get('archived')
-            };
-
-            currentHotspot.distance = getDistance(currentLocation, currentHotspot.location);
-            currentHotspot.distance = Math.round(currentHotspot.distance);
-            distanceToHotspots.push(currentHotspot);
+      // fetch expand data
+      var negativeExpandResponses = [
+        'No, I have somewhere that I need to be.',
+        'No, I\'m not interested.',
+        'No, other reason.'
+      ];
+      var expandResponseQuery = new Parse.Query('expandResponses');
+      expandResponseQuery.equalTo('vendorId', request.params.vendorId);
+      expandResponseQuery.descending('createdAt');
+      expandResponseQuery.containedIn('emaResponse', negativeExpandResponses);
+      expandResponseQuery.limit(1000);
+      expandResponseQuery.find({
+        success: function(expandResponses) {
+          for (var expandResponse in expandResponses) {
+            prevHotspotList.add(expandResponses[expandResponse].get('hotspotId'));
           }
 
-          distanceToHotspots.sort(function(a, b) {
-            return (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0);
-          });
+          // return locations sorted by distance and ranking for user
+          // check if not archived
+          // curr user did not create
+          // user has not contributed to it
+          var locationQuery = new Parse.Query('hotspot');
+          locationQuery.limit(1000);
+          locationQuery.notEqualTo('archived', true);
+          locationQuery.notEqualTo('vendorId', request.params.vendorId);
+          locationQuery.notContainedIn('objectId', Array.from(prevHotspotList));
+          locationQuery.find({
+            success: function(locations) {
 
-          var topHotspots = distanceToHotspots;
-          topHotspots = distanceToHotspots.slice(0, 20);
-
-          var hotspotList = [];
-          for (var k = 0; k < topHotspots.length; k++) {
-            hotspotList.push(topHotspots[k].objectId);
-          }
-
-          // from filtered list, get expand locations
-          var hotspotQuery = new Parse.Query('hotspot');
-          hotspotQuery.containedIn('objectId', hotspotList);
-          hotspotQuery.find({
-            success: function(selectedHotspots) {
-              // store both expand and exploit locations
-              var locationsToTrack = [];
-
-              for (var hotspot in selectedHotspots) {
-                var currExpandLoc = {
-                  'objectId': selectedHotspots[hotspot].id,
-                  'vendorId': selectedHotspots[hotspot].get('vendorId'),
-                  'tag': selectedHotspots[hotspot].get('tag'),
-                  'location': selectedHotspots[hotspot].get('location'),
-                  'locationCommonName': selectedHotspots[hotspot].get('locationCommonName'),
-                  'beaconId': selectedHotspots[hotspot].get('beaconId'),
-                  'notificationCategory': '',
-                  'message': '',
-                  'scaffoldedMessage': '',
-                  'contextualResponses': [],
-                  'locationType': 'expand',
-                  'levelOfInformation': '0'
+              for (var i = 0; i < locations.length; i++) {
+                var currentHotspot = {
+                  'objectId': locations[i].id,
+                  'location': locations[i].get('location'),
+                  'tag': locations[i].get('tag'),
+                  'archived': locations[i].get('archived')
                 };
-                var currentInfo = selectedHotspots[hotspot].get('info');
-                var notification = notificationComposer.createNotificationForTag(
-                                                                 currExpandLoc.tag,
-                                                                 currentInfo,
-                                                                 currExpandLoc.locationCommonName);
-                var scaffoldedMessage = notificationComposer.fetchScaffoldedInformationForTag(
-                                                                currExpandLoc.tag,
-                                                                currentInfo,
-                                                                currExpandLoc.locationCommonName);
 
-                // include location iff it has a valid notification for at location and expand outer
-                if (notification !== undefined & scaffoldedMessage !== undefined) {
-                  currExpandLoc.notificationCategory = notification.notificationCategory;
-                  currExpandLoc.message = notification.message;
-                  currExpandLoc.contextualResponses = notification.contextualResponses;
-
-                  currExpandLoc.scaffoldedMessage = scaffoldedMessage.message;
-                  currExpandLoc.levelOfInformation = scaffoldedMessage.levelOfInformation;
-
-                  locationsToTrack.push(currExpandLoc);
-                }
+                currentHotspot.distance = getDistance(currentLocation, currentHotspot.location);
+                currentHotspot.distance = Math.round(currentHotspot.distance);
+                distanceToHotspots.push(currentHotspot);
               }
 
-              // fetch exploit locations
-              var exploitLocQuery = new Parse.Query('exploitLocations');
-              exploitLocQuery.find({
-                success: function(exploitLocations) {
-                  for (var exploitLocation in exploitLocations) {
-                    var currExploitLoc = {
-                      'objectId': exploitLocations[exploitLocation].id,
-                      'vendorId': exploitLocations[exploitLocation].get('vendorId'),
-                      'tag': exploitLocations[exploitLocation].get('tag'),
-                      'location': exploitLocations[exploitLocation].get('location'),
-                      'locationCommonName': '',
-                      'beaconId': '',
-                      'notificationCategory': 'exploit',
-                      'message': exploitLocations[exploitLocation].get('question'),
-                      'scaffoldedMessage': '',
-                      'contextualResponses': ['yes', 'no'],
-                      'locationType': 'exploit',
-                      'levelOfInformation': '-1'
-                    };
+              distanceToHotspots.sort(function(a, b) {
+                return (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0);
+              });
 
-                    locationsToTrack.push(currExploitLoc);
+              var topHotspots = distanceToHotspots;
+              topHotspots = distanceToHotspots.slice(0, 20);
+
+              var hotspotList = [];
+              for (var k = 0; k < topHotspots.length; k++) {
+                hotspotList.push(topHotspots[k].objectId);
+              }
+
+              // from filtered list, get expand locations
+              var hotspotQuery = new Parse.Query('hotspot');
+              hotspotQuery.containedIn('objectId', hotspotList);
+              hotspotQuery.find({
+                success: function(selectedHotspots) {
+                  // store both expand and exploit locations
+                  var locationsToTrack = [];
+
+                  for (var hotspot in selectedHotspots) {
+                    var currExpandLoc = {
+                      'objectId': selectedHotspots[hotspot].id,
+                      'vendorId': selectedHotspots[hotspot].get('vendorId'),
+                      'tag': selectedHotspots[hotspot].get('tag'),
+                      'location': selectedHotspots[hotspot].get('location'),
+                      'locationCommonName': selectedHotspots[hotspot].get('locationCommonName'),
+                      'beaconId': selectedHotspots[hotspot].get('beaconId'),
+                      'notificationCategory': '',
+                      'message': '',
+                      'scaffoldedMessage': '',
+                      'contextualResponses': [],
+                      'locationType': 'expand',
+                      'levelOfInformation': '0'
+                    };
+                    var currentInfo = selectedHotspots[hotspot].get('info');
+                    var notification = notificationComposer.createNotificationForTag(
+                                                                  currExpandLoc.tag,
+                                                                  currentInfo,
+                                                                  currExpandLoc.locationCommonName);
+                    var scaffoldedMessage = notificationComposer.fetchScaffoldedInformationForTag(
+                                                                  currExpandLoc.tag,
+                                                                  currentInfo,
+                                                                  currExpandLoc.locationCommonName);
+
+                    // include location iff it valid notification  at location and expand outer
+                    if (notification !== undefined & scaffoldedMessage !== undefined) {
+                      currExpandLoc.notificationCategory = notification.notificationCategory;
+                      currExpandLoc.message = notification.message;
+                      currExpandLoc.contextualResponses = notification.contextualResponses;
+
+                      currExpandLoc.scaffoldedMessage = scaffoldedMessage.message;
+                      currExpandLoc.levelOfInformation = scaffoldedMessage.levelOfInformation;
+
+                      locationsToTrack.push(currExpandLoc);
+                    }
                   }
 
-                  // get study conditions for user
-                  var studyConditionQuery = new Parse.Query('studyConditions');
-                  studyConditionQuery.equalTo('vendorId', request.params.vendorId);
-                  studyConditionQuery.descending('createdAt');
-                  studyConditionQuery.first({
-                    success: function(conditions) {
-                      // return output
-                      var output = {
-                        'expandDistance': conditions.get('currentCondition'),
-                        'allConditionDistances': [200, 300, 400],
-                        'underExploit': conditions.get('underExploit'),
-                        'locations': locationsToTrack
-                      };
+                  // fetch exploit locations
+                  var exploitLocQuery = new Parse.Query('exploitLocations');
+                  exploitLocQuery.find({
+                    success: function(exploitLocations) {
+                      for (var exploitLocation in exploitLocations) {
+                        var currExploitLoc = {
+                          'objectId': exploitLocations[exploitLocation].id,
+                          'vendorId': exploitLocations[exploitLocation].get('vendorId'),
+                          'tag': exploitLocations[exploitLocation].get('tag'),
+                          'location': exploitLocations[exploitLocation].get('location'),
+                          'locationCommonName': '',
+                          'beaconId': '',
+                          'notificationCategory': 'exploit',
+                          'message': exploitLocations[exploitLocation].get('question'),
+                          'scaffoldedMessage': '',
+                          'contextualResponses': ['yes', 'no'],
+                          'locationType': 'exploit',
+                          'levelOfInformation': '-1'
+                        };
 
-                      response.success(output);
+                        locationsToTrack.push(currExploitLoc);
+                      }
+
+                      // get study conditions for user
+                      var studyConditionQuery = new Parse.Query('studyConditions');
+                      studyConditionQuery.equalTo('vendorId', request.params.vendorId);
+                      studyConditionQuery.descending('createdAt');
+                      studyConditionQuery.first({
+                        success: function(conditions) {
+                          // return output
+                          var output = {
+                            'expandDistance': conditions.get('currentCondition'),
+                            'allConditionDistances': [200, 300, 400],
+                            'underExploit': conditions.get('underExploit'),
+                            'locations': locationsToTrack
+                          };
+
+                          response.success(output);
+                        },
+                        error: function(error) {
+                          console.log(error);
+                          setTimeout(response.error('an error has occurred', 10000));
+                        }
+                      });
                     },
                     error: function(error) {
                       console.log(error);
