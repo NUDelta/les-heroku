@@ -213,7 +213,7 @@ let food = {
     'sellingreason': 'Why is it being sold?'
   },
   'answers': {
-    'type': ['pizzas', 'buns', 'pastries/sweets/candy', 'other'],
+    'type': ['pizzas', 'samosas', 'donuts', 'bagels', 'other'],
     'quantity': ['lots, plenty to go around',  'some, going quickly',
                  'very little, only couple items left', 'none'],
     'freesold': ['free', 'sold'],
@@ -607,6 +607,12 @@ function createNotificationForFood(currentInfo, locationCommonName) {
       }
     }
   }
+
+  // if all the information is filled, ask how much quantity is left
+  output.notificationCategory = food.tag + '_' + food.questionTag.quantity;
+  output.message = currentMessage + ' Do you know how much is left?';
+  output.contextualResponses = food.answers.quantity;
+  return output;
 
   // return a default undefined if there's nothing to ask
   return undefined;
