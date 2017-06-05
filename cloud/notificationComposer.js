@@ -213,7 +213,7 @@ let food = {
     'sellingreason': 'Why is it being sold?'
   },
   'answers': {
-    'type': ['pizzas', 'samosas', 'donuts', 'bagels', 'other'],
+    'type': ['pizzas', 'donuts', 'bagels', 'other'],
     'quantity': ['lots, plenty to go around',  'some, going quickly',
                  'very little, only couple items left', 'none'],
     'freesold': ['free', 'sold'],
@@ -608,11 +608,13 @@ function createNotificationForFood(currentInfo, locationCommonName) {
     }
   }
 
-  // if all the information is filled, ask how much quantity is left
-  output.notificationCategory = food.tag + '_' + food.questionTag.quantity;
-  output.message = currentMessage + ' Do you know how much is left?';
-  output.contextualResponses = food.answers.quantity;
-  return output;
+  // if all the information is filled, ask how much quantity is left if quantity is not none
+  if (currentInfo.quantity !== 'none') {
+    output.notificationCategory = food.tag + '_' + food.questionTag.quantity;
+    output.message = currentMessage + ' Do you know how much is left?';
+    output.contextualResponses = food.answers.quantity;
+    return output;
+  }
 
   // return a default undefined if there's nothing to ask
   return undefined;
@@ -1098,46 +1100,6 @@ function createScaffoldedInfoForFood(currentInfo, locationCommonName) {
     }
 
   }
-
-  // if (currentInfo.type === '') {
-  //   output.notificationCategory = food.tag + '_' + food.questionTag.type;
-  //   output.message = 'There is food ' + locationPhrase + '! Do you know what kind it is?';
-  //   output.contextualResponses = food.answers.type;
-  //   return output;
-  // } else if (currentInfo.type !== '') {
-  //   var currentMessage = '';
-  //   if (currentInfo.type !== 'other') {
-  //     currentMessage = 'There are ' + currentInfo.type + ' ' + locationPhrase + '!';
-  //   } else {
-  //     currentMessage = 'There is some kind of food ' + locationPhrase + '!';
-  //   }
-  //
-  //   if (currentInfo.quantity === '') {
-  //     output.notificationCategory = food.tag + '_' + food.questionTag.quantity;
-  //     output.message = currentMessage + ' Do you know how much is left?';
-  //     output.contextualResponses = food.answers.quantity;
-  //     return output;
-  //   } else if (currentInfo.quantity !== 'none') {
-  //     if (currentInfo.freesold === '') {
-  //       output.notificationCategory = food.tag + '_' + food.questionTag.freesold;
-  //       output.message = currentMessage + ' Do you know if it is free or being sold?';
-  //       output.contextualResponses = food.answers.freesold;
-  //       return output;
-  //     } else if (currentInfo.freesold === 'sold') {
-  //       if (currentInfo.cost === '') {
-  //         output.notificationCategory = food.tag + '_' + food.questionTag.cost;
-  //         output.message = currentMessage + ' Do you know how much it is being sold for?';
-  //         output.contextualResponses = food.answers.cost;
-  //         return output;
-  //       } else if (currentInfo.sellingreason === '') {
-  //         output.notificationCategory = food.tag + '_' + food.questionTag.sellingreason;
-  //         output.message = currentMessage + ' Do you know why the food is being sold?';
-  //         output.contextualResponses = food.answers.sellingreason;
-  //         return output;
-  //       }
-  //     }
-  //   }
-  // }
 
   // return a default undefined if there's not any more information to compose
   return undefined;
