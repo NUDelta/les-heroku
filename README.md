@@ -1,2 +1,2 @@
-# LES Heroku
-A Parse Server backend for LES hosted using Heroku and mLab
+# Low-Effort Sensing (LES) Backend
+A Node.js + Parse Server backend for Low-Effort Sensing (LES) deployed via Heroku and mLab.
