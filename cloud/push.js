@@ -1,26 +1,38 @@
 // setup apn and options for pushing
 var apn = require('apn');
 
-// DEBUG PUSH
-// var options = {
-//     token: {
-//         key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
-//         keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
-//         teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
-//     },
-//     production: false //working with development certificate
-// };
-//
-// var topic = 'edu.northwestern.delta.les-debug';
+// setup certs
+var nodeEnv = process.env.NODE_ENV || '',
+    options = {},
+    topic = '';
 
-// ENTERPRISE PUSH
-var options = {
-    cert: __dirname + '/push-certificates/cert.pem',
-    key: __dirname + '/push-certificates/key.pem',
-    production: true //working with production certificate
-};
+if (nodeEnv === 'development') {
+    // Development Push
+    console.log('Using DEVELOPMENT push.');
 
-var topic = 'edu.northwestern.delta.les';
+    options = {
+        token: {
+            key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
+            keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
+            teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
+        },
+        production: false //working with development certificate
+    };
+
+    topic = 'edu.northwestern.delta.les-debug';
+} else {
+    // Enterprise push
+    console.log('Using ENTERPRISE push.');
+
+    options = {
+        cert: __dirname + '/push-certificates/cert.pem',
+        key: __dirname + '/push-certificates/key.pem',
+        production: true //working with production certificate
+    };
+
+    topic = 'edu.northwestern.delta.les';
+}
+
 
 var apnError = function(err) {
     console.log('APN Error:', err);
