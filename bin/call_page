@@ -1,8 +1,9 @@
 #! /app/.heroku/node/bin/node
-var https = require('https');
-function callPage() {
+const https = require('https');
+
+callPage = () => {
   https.get('https://les-expand.herokuapp.com/');
-}
+};
 
 callPage();
 process.exit();

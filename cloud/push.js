@@ -1,9 +1,9 @@
 // setup apn and options for pushing
-var apn = require('apn');
+const apn = require('apn');
 
 // setup certs
-var nodeEnv = process.env.NODE_ENV || '',
-    options = {},
+const nodeEnv = process.env.NODE_ENV || '';
+let options = {},
     topic = '';
 
 if (nodeEnv === 'development') {
@@ -34,15 +34,15 @@ if (nodeEnv === 'development') {
 }
 
 
-var apnError = function(err) {
+const apnError =  (err) => {
     console.log('APN Error:', err);
 };
 options.errorCallback = apnError;
 
-exports.sendPush = function(deviceToken) {
-    var apnConnection = new apn.Provider(options);
+exports.sendPush = (deviceToken) => {
+    const apnConnection = new apn.Provider(options);
 
-    var note = new apn.Notification();
+    const note = new apn.Notification();
     note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
     note.badge = 0;
     note.sound = 'ping.aiff';
@@ -58,10 +58,10 @@ exports.sendPush = function(deviceToken) {
     apnConnection.shutdown();
 };
 
-exports.sendPushWithMessage = function(deviceTokens, message) {
-    var apnConnection = new apn.Provider(options);
+exports.sendPushWithMessage = (deviceTokens, message) => {
+    const apnConnection = new apn.Provider(options);
 
-    var note = new apn.Notification();
+    const note = new apn.Notification();
     note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
     note.badge = 0;
     note.sound = 'ping.aiff';
@@ -77,10 +77,10 @@ exports.sendPushWithMessage = function(deviceTokens, message) {
     apnConnection.shutdown();
 };
 
-exports.sendSilentRefreshNotification = function(tokenArray, dataSet) {
-    var apnConnection = new apn.Provider(options);
+exports.sendSilentRefreshNotification = (tokenArray, dataSet) => {
+    const apnConnection = new apn.Provider(options);
 
-    var note = new apn.Notification();
+    const note = new apn.Notification();
     note.setContentAvailable(1);
     note.payload = {
         'updateType': dataSet
@@ -95,10 +95,10 @@ exports.sendSilentRefreshNotification = function(tokenArray, dataSet) {
     apnConnection.shutdown();
 };
 
-exports.sendSilentHeartbeatNotification = function(tokenArray) {
-    var apnConnection = new apn.Provider(options);
+exports.sendSilentHeartbeatNotification = (tokenArray) => {
+    const apnConnection = new apn.Provider(options);
 
-    var note = new apn.Notification();
+    const note = new apn.Notification();
     note.setContentAvailable(1);
     note.payload = {
         'updateType': 'heartbeat'
@@ -113,10 +113,10 @@ exports.sendSilentHeartbeatNotification = function(tokenArray) {
     apnConnection.shutdown();
 };
 
-exports.requestUserLocation = function(tokenArray) {
-    var apnConnection = new apn.Provider(options);
+exports.requestUserLocation = (tokenArray) => {
+    const apnConnection = new apn.Provider(options);
 
-    var note = new apn.Notification();
+    const note = new apn.Notification();
     note.setContentAvailable(1);
     note.payload = {
         'updateType': 'location'

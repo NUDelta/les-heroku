@@ -1,36 +1,36 @@
 #! /app/.heroku/node/bin/node
-var Parse = require('parse/node');
-var push = require('../cloud/push.js');
+const Parse = require('parse/node');
+const push = require('../cloud/push.js');
 
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
 // Parse.Cloud.useMasterKey();
 
-function sendHeartbeatRequest() {
-  // get all users currently using application
-  var userQuery = new Parse.Query('user');
-  userQuery.descending('createdAt');
-  userQuery.find({
-    success: function(users) {
-      var pushTokens = [];
+const sendHeartbeatRequest = () => {
+    // get all users currently using application
+    const userQuery = new Parse.Query('user');
+    userQuery.descending('createdAt');
+    userQuery.find({
+        success: function(users) {
+            const pushTokens = [];
 
-      for (var i in users) {
-        var currentUser = users[i];
+            for (let i in users) {
+                const currentUser = users[i];
 
-        if (currentUser.get('pushToken') !== undefined) {
-          pushTokens.push(currentUser.get('pushToken'));
+                if (currentUser.get('pushToken') !== undefined) {
+                    pushTokens.push(currentUser.get('pushToken'));
+                }
+            }
+
+            console.log(pushTokens);
+            push.sendSilentHeartbeatNotification(pushTokens);
+
+            status.success('Heartbeat requests sent.');
+        },
+        error: function(error) {
+            status.error('Requesting heartbeats failed with error: ' + error);
         }
-      }
-
-      console.log(pushTokens);
-      push.sendSilentHeartbeatNotification(pushTokens);
-
-      status.success('Heartbeat requests sent.');
-    },
-    error: function(error) {
-      status.error('Requesting heartbeats failed with error: ' + error);
-    }
-  });
+    });
 };
 
 sendHeartbeatRequest();

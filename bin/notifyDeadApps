@@ -1,68 +1,63 @@
 #! /app/.heroku/node/bin/node
-var Parse = require('parse/node');
-var push = require('../cloud/push.js');
+const Parse = require('parse/node');
+const push = require('../cloud/push.js');
 
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
-// Parse.Cloud.useMasterKey();
 
 function notifyDeadApps() {
-  // setup time thresholding variables
-  var currentTime = Math.round(Date.now() / 1000);
-  var thresholdAmount = 60 * 60 * 8; // 60s * 60m * 8hr
-  var timeExpiryThreshold = currentTime - thresholdAmount;
+    // setup time thresholding variables
+    const currentTime = Math.round(Date.now() / 1000);
+    const thresholdAmount = 60 * 60 * 8; // 60s * 60m * 8hr
+    const timeExpiryThreshold = currentTime - thresholdAmount;
 
-  // find all users who have had a heartbeat in the last 8 hours
-  var heartbeatQuery = new Parse.Query('pretracking_debug');
-  heartbeatQuery.equalTo('console_string', 'Application heartbeat');
-  heartbeatQuery.greaterThanOrEqualTo('timestamp_epoch', timeExpiryThreshold);
-  heartbeatQuery.descending('timestamp_epoch');
-  heartbeatQuery.limit(10000);
-  heartbeatQuery.find({
-    success: function(heartbeats) {
-      // get all users with valid heartbeats
-      var vendorIdSet = new Set();
-      for (var heartbeat in heartbeats) {
-        vendorIdSet.add(heartbeats[heartbeat].get('vendor_id'));
-      }
-
-      // query for all users who do not have valid heartbeats
-      var userQuery = new Parse.Query('user');
-      userQuery.notContainedIn('vendorId', Array.from(vendorIdSet));
-      userQuery.descending('createdAt');
-      userQuery.find({
-        success: function(users) {
-          var pushTokens = [];
-
-          for (var i in users) {
-            var currentUser = users[i];
-
-            if (currentUser.get('pushToken') !== undefined) {
-              pushTokens.push(currentUser.get('pushToken'));
+    // find all users who have had a heartbeat in the last 8 hours
+    const heartbeatQuery = new Parse.Query('pretracking_debug');
+    heartbeatQuery.equalTo('console_string', 'Application heartbeat');
+    heartbeatQuery.greaterThanOrEqualTo('timestamp_epoch', timeExpiryThreshold);
+    heartbeatQuery.descending('timestamp_epoch');
+    heartbeatQuery.limit(10000);
+    heartbeatQuery.find({
+        success: function(heartbeats) {
+            // get all users with valid heartbeats
+            const vendorIdSet = new Set();
+            for (let heartbeat in heartbeats) {
+                vendorIdSet.add(heartbeats[heartbeat].get('vendor_id'));
             }
-          }
 
-          console.log(pushTokens);
-          var message = 'Hi! ' +
+            // query for all users who do not have valid heartbeats
+            const userQuery = new Parse.Query('user');
+            userQuery.notContainedIn('vendorId', Array.from(vendorIdSet));
+            userQuery.descending('createdAt');
+            userQuery.find({
+                success: function(users) {
+                    const pushTokens = [];
+
+                    for (let i in users) {
+                        const currentUser = users[i];
+
+                        if (currentUser.get('pushToken') !== undefined) {
+                            pushTokens.push(currentUser.get('pushToken'));
+                        }
+                    }
+
+                    console.log(pushTokens);
+                    const message = 'Hi! ' +
                         'It seems that LES closed on your phone. ' +
                         'Swipe right or tap to start it up again!';
-          push.sendPushWithMessage(pushTokens, message);
+                    push.sendPushWithMessage(pushTokens, message);
 
-          response.success();
+                    status.success();
+                },
+                error: function(error) {
+                    status.error(error);
+                }
+            });
         },
         error: function(error) {
-          /*jshint ignore:start*/
-          console.log(error);
-          /*jshint ignore:end*/
+            status.error(error);
         }
-      });
-    },
-    error: function(error) {
-      /*jshint ignore:start*/
-      console.log(error);
-      /*jshint ignore:end*/
-    }
-  });
+    });
 
 };
 
