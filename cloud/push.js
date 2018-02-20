@@ -5,33 +5,33 @@ const apn = require('apn');
  */
 const nodeEnv = process.env.NODE_ENV || '';
 let options = {},
-    topic = '';
+  topic = '';
 
 if (nodeEnv === 'development') {
-    // Development Push
-    console.log('Using DEVELOPMENT push.');
+  // Development Push
+  console.log('Using DEVELOPMENT push.');
 
-    options = {
-        token: {
-            key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
-            keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
-            teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
-        },
-        production: false //working with development certificate
-    };
+  options = {
+    token: {
+      key: __dirname + '/push-certificates/apns.p8', // Path to the key p8 file
+      keyId: '8ZQHB4KZ62', // The Key ID of the p8 file
+      teamId: 'W4E2C6X642', // The Team ID of your Apple Developer Account
+    },
+    production: false //working with development certificate
+  };
 
-    topic = 'edu.northwestern.delta.les-debug';
+  topic = 'edu.northwestern.delta.les-debug';
 } else {
-    // Enterprise push
-    console.log('Using ENTERPRISE push.');
+  // Enterprise push
+  console.log('Using ENTERPRISE push.');
 
-    options = {
-        cert: __dirname + '/push-certificates/cert.pem',
-        key: __dirname + '/push-certificates/key.pem',
-        production: true //working with production certificate
-    };
+  options = {
+    cert: __dirname + '/push-certificates/cert.pem',
+    key: __dirname + '/push-certificates/key.pem',
+    production: true //working with production certificate
+  };
 
-    topic = 'edu.northwestern.delta.les';
+  topic = 'edu.northwestern.delta.les';
 }
 
 options.errorCallback = (err) => {
@@ -46,25 +46,29 @@ options.errorCallback = (err) => {
  * @param response {object} response object to return once notification is complete
  */
 exports.sendPushWithMessage = (deviceTokens, message, response) => {
-    const apnConnection = new apn.Provider(options);
+  const apnConnection = new apn.Provider(options);
 
-    const note = new apn.Notification();
-    note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
-    note.badge = 0;
-    note.sound = 'ping.aiff';
-    note.alert = message;
-    note.payload = {
-        'messageFrom': 'LES'
-    };
-    note.topic = topic;
+  const note = new apn.Notification();
+  note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+  note.badge = 0;
+  note.sound = 'ping.aiff';
+  note.alert = message;
+  note.payload = {
+    'messageFrom': 'LES'
+  };
+  note.topic = topic;
 
-    apnConnection.send(note, deviceTokens).then((result) => {
-        if (response !== undefined) { response.success(result); }
-    }).catch((err) => {
-        if (response !== undefined) { response.error(err); }
-    });
+  apnConnection.send(note, deviceTokens).then((result) => {
+    if (response !== undefined) {
+      response.success(result);
+    }
+  }).catch((err) => {
+    if (response !== undefined) {
+      response.error(err);
+    }
+  });
 
-    apnConnection.shutdown();
+  apnConnection.shutdown();
 };
 
 /**
@@ -75,23 +79,27 @@ exports.sendPushWithMessage = (deviceTokens, message, response) => {
  * @param response {object} response object to return once complete
  */
 exports.sendSilentRefreshNotification = (deviceTokens, dataSet, response) => {
-    const apnConnection = new apn.Provider(options);
+  const apnConnection = new apn.Provider(options);
 
-    const note = new apn.Notification();
-    note.setContentAvailable(1);
-    note.payload = {
-        'updateType': dataSet
-    };
-    note.topic = topic;
+  const note = new apn.Notification();
+  note.setContentAvailable(1);
+  note.payload = {
+    'updateType': dataSet
+  };
+  note.topic = topic;
 
-    // send notification for each token
-    apnConnection.send(note, deviceTokens).then((result) => {
-        if (response !== undefined) { response.success(result); }
-    }).catch((err) => {
-        if (response !== undefined) { response.error(err); }
-    });
+  // send notification for each token
+  apnConnection.send(note, deviceTokens).then((result) => {
+    if (response !== undefined) {
+      response.success(result);
+    }
+  }).catch((err) => {
+    if (response !== undefined) {
+      response.error(err);
+    }
+  });
 
-    apnConnection.shutdown();
+  apnConnection.shutdown();
 };
 
 /**
@@ -101,23 +109,23 @@ exports.sendSilentRefreshNotification = (deviceTokens, dataSet, response) => {
  * @param response {object} response object to return once complete
  */
 exports.sendSilentHeartbeatNotification = (deviceTokens, response) => {
-    const apnConnection = new apn.Provider(options);
+  const apnConnection = new apn.Provider(options);
 
-    const note = new apn.Notification();
-    note.setContentAvailable(1);
-    note.payload = {
-        'updateType': 'heartbeat'
-    };
-    note.topic = topic;
+  const note = new apn.Notification();
+  note.setContentAvailable(1);
+  note.payload = {
+    'updateType': 'heartbeat'
+  };
+  note.topic = topic;
 
-    // send notification for each token
-    apnConnection.send(note, deviceTokens).then((result) => {
-        response.success(result);
-    }).catch((err) => {
-        response.error(err);
-    });
+  // send notification for each token
+  apnConnection.send(note, deviceTokens).then((result) => {
+    response.success(result);
+  }).catch((err) => {
+    response.error(err);
+  });
 
-    apnConnection.shutdown();
+  apnConnection.shutdown();
 };
 
 /**
@@ -127,21 +135,25 @@ exports.sendSilentHeartbeatNotification = (deviceTokens, response) => {
  * @param response {object} response object to return once complete
  */
 exports.requestUserLocation = (deviceTokens, response) => {
-    const apnConnection = new apn.Provider(options);
+  const apnConnection = new apn.Provider(options);
 
-    const note = new apn.Notification();
-    note.setContentAvailable(1);
-    note.payload = {
-        'updateType': 'location'
-    };
-    note.topic = topic;
+  const note = new apn.Notification();
+  note.setContentAvailable(1);
+  note.payload = {
+    'updateType': 'location'
+  };
+  note.topic = topic;
 
-    // send notification for each token
-    apnConnection.send(note, deviceTokens).then((result) => {
-        if (response !== undefined) { response.success(result); }
-    }).catch((err) => {
-        if (response !== undefined) { response.error(err); }
-    });
+  // send notification for each token
+  apnConnection.send(note, deviceTokens).then((result) => {
+    if (response !== undefined) {
+      response.success(result);
+    }
+  }).catch((err) => {
+    if (response !== undefined) {
+      response.error(err);
+    }
+  });
 
-    apnConnection.shutdown();
+  apnConnection.shutdown();
 };

@@ -3,27 +3,28 @@ const Parse = require('parse/node');
 
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
+
 // Parse.Cloud.useMasterKey();
 
 function rotateConditions() {
-    const studyConditionQuery = new Parse.Query('studyConditions');
-    studyConditionQuery.each(function(user) {
-        // get current condition
-        const conditionArray = user.get('conditionOrdering');
-        const currentCondition = user.get('currentCondition');
+  const studyConditionQuery = new Parse.Query('studyConditions');
+  studyConditionQuery.each(function (user) {
+    // get current condition
+    const conditionArray = user.get('conditionOrdering');
+    const currentCondition = user.get('currentCondition');
 
-        // find condition index and increment by 1
-        const newConditionIndex = (conditionArray.indexOf(currentCondition) + 1) % conditionArray.length;
-        const nextCondition = conditionArray[newConditionIndex];
+    // find condition index and increment by 1
+    const newConditionIndex = (conditionArray.indexOf(currentCondition) + 1) % conditionArray.length;
+    const nextCondition = conditionArray[newConditionIndex];
 
-        // save new condition
-        user.set('currentCondition', nextCondition);
-        user.save();
-    }).then(function() {
-        status.success();
-    }, function(error) {
-        status.error(error);
-    });
+    // save new condition
+    user.set('currentCondition', nextCondition);
+    user.save();
+  }).then(function () {
+    status.success();
+  }, function (error) {
+    status.error(error);
+  });
 }
 
 rotateConditions();

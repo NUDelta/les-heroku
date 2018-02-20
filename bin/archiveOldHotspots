@@ -2,6 +2,7 @@
 var Parse = require('parse/node');
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
+
 // Parse.Cloud.useMasterKey();
 
 function archiveOldHotspots() {
@@ -14,12 +15,12 @@ function archiveOldHotspots() {
   var hotspotQuery = new Parse.Query('hotspot');
   hotspotQuery.notEqualTo('archived', true);
   hotspotQuery.lessThan('timestampCreated', timeExpiryThreshold);
-  hotspotQuery.each(function(hotspot) {
+  hotspotQuery.each(function (hotspot) {
     hotspot.set('archiver', 'system');
     hotspot.save();
-  }).then(function() {
+  }).then(function () {
     status.success('Routine archiving completed successfully.');
-  }, function(error) {
+  }, function (error) {
     status.error('Routine archiving failed with error ' + error);
   });
 };

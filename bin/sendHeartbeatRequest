@@ -7,30 +7,30 @@ Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
 // Parse.Cloud.useMasterKey();
 
 const sendHeartbeatRequest = () => {
-    // get all users currently using application
-    const userQuery = new Parse.Query('user');
-    userQuery.descending('createdAt');
-    userQuery.find({
-        success: function(users) {
-            const pushTokens = [];
+  // get all users currently using application
+  const userQuery = new Parse.Query('user');
+  userQuery.descending('createdAt');
+  userQuery.find({
+    success: function (users) {
+      const pushTokens = [];
 
-            for (let i in users) {
-                const currentUser = users[i];
+      for (let i in users) {
+        const currentUser = users[i];
 
-                if (currentUser.get('pushToken') !== undefined) {
-                    pushTokens.push(currentUser.get('pushToken'));
-                }
-            }
-
-            console.log(pushTokens);
-            push.sendSilentHeartbeatNotification(pushTokens);
-
-            status.success('Heartbeat requests sent.');
-        },
-        error: function(error) {
-            status.error('Requesting heartbeats failed with error: ' + error);
+        if (currentUser.get('pushToken') !== undefined) {
+          pushTokens.push(currentUser.get('pushToken'));
         }
-    });
+      }
+
+      console.log(pushTokens);
+      push.sendSilentHeartbeatNotification(pushTokens);
+
+      status.success('Heartbeat requests sent.');
+    },
+    error: function (error) {
+      status.error('Requesting heartbeats failed with error: ' + error);
+    }
+  });
 };
 
 sendHeartbeatRequest();

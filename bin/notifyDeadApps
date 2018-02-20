@@ -1,64 +1,58 @@
 #! /app/.heroku/node/bin/node
 const Parse = require('parse/node');
 const push = require('../cloud/push.js');
+const _ = require('lodash');
 
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
 
-function notifyDeadApps() {
-    // setup time thresholding variables
-    const currentTime = Math.round(Date.now() / 1000);
-    const thresholdAmount = 60 * 60 * 8; // 60s * 60m * 8hr
-    const timeExpiryThreshold = currentTime - thresholdAmount;
+const notifyDeadApps = function notifyDeadApps() {
+  // setup time threshold variables
+  const currentTime = Math.round(Date.now() / 1000);
+  const thresholdAmount = 60 * 60 * 8; // 60s * 60m * 8hr
+  const timeExpiryThreshold = currentTime - thresholdAmount;
 
-    // find all users who have had a heartbeat in the last 8 hours
-    const heartbeatQuery = new Parse.Query('pretracking_debug');
-    heartbeatQuery.equalTo('console_string', 'Application heartbeat');
-    heartbeatQuery.greaterThanOrEqualTo('timestamp_epoch', timeExpiryThreshold);
-    heartbeatQuery.descending('timestamp_epoch');
-    heartbeatQuery.limit(10000);
-    heartbeatQuery.find({
-        success: function(heartbeats) {
-            // get all users with valid heartbeats
-            const vendorIdSet = new Set();
-            for (let heartbeat in heartbeats) {
-                vendorIdSet.add(heartbeats[heartbeat].get('vendor_id'));
+  // find all users who have had a heartbeat in the last 8 hours
+  const heartbeatQuery = new Parse.Query('pretracking_debug');
+  heartbeatQuery.equalTo('console_string', 'Application heartbeat');
+  heartbeatQuery.greaterThanOrEqualTo('timestamp_epoch', timeExpiryThreshold);
+  heartbeatQuery.descending('timestamp_epoch');
+  heartbeatQuery.limit(10000);
+  heartbeatQuery.find({
+    success: function (heartbeats) {
+      // get all users with valid heartbeats
+      const vendorIdSet = new Set();
+      _.forEach(heartbeats, (currentHeartbeat) => {
+        vendorIdSet.add(currentHeartbeat.get('vendor_id'));
+      });
+
+      // query for all users who do not have valid heartbeats
+      const userQuery = new Parse.Query('user');
+      userQuery.notContainedIn('vendorId', Array.from(vendorIdSet));
+      userQuery.descending('createdAt');
+      userQuery.find({
+        success: function (users) {
+          const pushTokens = [];
+          _.forEach(users, (currentUser) => {
+            if (currentUser.get('pushToken') !== undefined) {
+              pushTokens.push(currentUser.get('pushToken'));
             }
+          });
 
-            // query for all users who do not have valid heartbeats
-            const userQuery = new Parse.Query('user');
-            userQuery.notContainedIn('vendorId', Array.from(vendorIdSet));
-            userQuery.descending('createdAt');
-            userQuery.find({
-                success: function(users) {
-                    const pushTokens = [];
-
-                    for (let i in users) {
-                        const currentUser = users[i];
-
-                        if (currentUser.get('pushToken') !== undefined) {
-                            pushTokens.push(currentUser.get('pushToken'));
-                        }
-                    }
-
-                    console.log(pushTokens);
-                    const message = 'Hi! ' +
-                        'It seems that LES closed on your phone. ' +
-                        'Swipe right or tap to start it up again!';
-                    push.sendPushWithMessage(pushTokens, message);
-
-                    status.success();
-                },
-                error: function(error) {
-                    status.error(error);
-                }
-            });
+          const message = 'Hi! ' +
+            'It seems that LES closed on your phone. ' +
+            'Swipe right or tap to start it up again!';
+          push.sendPushWithMessage(pushTokens, message, status);
         },
-        error: function(error) {
-            status.error(error);
+        error: function (error) {
+          status.error(error);
         }
-    });
-
+      });
+    },
+    error: function (error) {
+      status.error(error);
+    }
+  });
 };
 
 notifyDeadApps();
