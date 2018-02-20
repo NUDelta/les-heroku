@@ -1,74 +1,101 @@
-/*
- * Imports
- */
+const _ = require('lodash');
+
 const push = require('./push.js');
 const notificationComposer = require('./notificationComposer.js');
 
 /*
  * Push Functions
  */
-Parse.Cloud.define('testPush', (request, response) => {
-    console.log(push.sendPush(request.params.token));
 
+/**
+ * Sends a push message to specified pushToken
+ * @param request.params {object} token and message to send
+ */
+Parse.Cloud.define('sendPushToOne', (request, response) => {
+    const token = request.params.token;
+    let message = request.params.message;
+    if (message === undefined) {
+        message = ''
+    }
+
+    push.sendPushWithMessage([token], message, response);
 });
 
-Parse.Cloud.define('sendPushToAllUsers', (response) => {
+/**
+ * Sends a push message to all users in DB
+ */
+Parse.Cloud.define('sendPushToAllUsers', (request, response) => {
     // send push update for data
-    const userQuery = new Parse.Query('user');
-    userQuery.descending('createdAt');
+    const userQuery = new Parse.Query(Parse.User);
     userQuery.find({
-        success: (users) => {
+        success: function(users) {
             const pushTokens = [];
+            _.forEach(users, (currentUser) => {
+              if (currentUser.get('pushToken') !== undefined) {
+                pushTokens.push(currentUser.get('pushToken'));
+              }
+            });
 
-            for (let i in users) {
-                const currentUser = users[i];
-
-                if (currentUser.get('pushToken') !== undefined) {
-                    pushTokens.push(currentUser.get('pushToken'));
-                }
-            }
-
-            console.log(pushTokens);
             const message = 'Hi! Welcome to LES! ' +
-                'If you have any questions, please don\'t hesistate to ask!';
-            push.sendPushWithMessage(pushTokens, message);
-
-            response.success();
+              'If you have any questions, please don\'t hesistate to ask!';
+            push.sendPushWithMessage(pushTokens, message, response);
         },
         error: (error) => {
-            console.log(error);
+            response.error(error);
         }
     });
 
 });
 
-Parse.Cloud.define('testPushRefresh', (request, response) => {
+/**
+ * Sends a silent push message to all users in DB.
+ * Causes client to pull new data from DB
+ */
+Parse.Cloud.define('sendPushSilentRefresh', (request, response) => {
     // send push update for data
-    const userQuery = new Parse.Query('user');
+    const userQuery = new Parse.Query(Parse.User);
     userQuery.descending('createdAt');
     userQuery.find({
         success: (users) => {
             const pushTokens = [];
+            _.forEach(users, (currentUser) => {
+              if (currentUser.get('pushToken') !== undefined) {
+                pushTokens.push(currentUser.get('pushToken'));
+              }
+            });
 
-            for (let i in users) {
-                const currentUser = users[i];
+            console.log('Sending silent refresh for hotspots');
+            push.sendSilentRefreshNotification(pushTokens, 'hotspot', response);
 
-                if (currentUser.get('pushToken') !== undefined) {
-                    pushTokens.push(currentUser.get('pushToken'));
-                }
-            }
-
-            console.log(pushTokens);
-            push.sendSilentRefreshNotification(pushTokens, 'hotspot');
-            push.sendSilentRefreshNotification(pushTokens, 'beacon');
-
-            response.success();
+            console.log('Sending silent refresh for beacons');
+            push.sendSilentRefreshNotification(pushTokens, 'beacon', response);
         },
         error: (error) => {
-            console.log(error);
+            response.error(error);
         }
     });
 });
+
+/*
+ * Save triggers
+ */
+
+/**
+ * Checks if any pieces of info are currently a terminator.
+ *
+ * @param terminators {object} mapping of keys to terminators
+ * @param info {object} mapping of keys to current info value
+ * @returns {boolean} if any pieces of info matches a corresponding terminator.
+ */
+const checkForTerminators = (terminators, info) => {
+    for (let i in terminators) {
+        if (info[i] === terminators[i]) {
+            return true;
+        }
+    }
+
+    return false;
+};
 
 // check if explicit app termination has happened
 // Parse.Cloud.afterSave('pretracking_debug', (request) => {
@@ -89,20 +116,9 @@ Parse.Cloud.define('testPushRefresh', (request, response) => {
 //   }
 // });
 
-/*
- * Save triggers
+/**
+ * Aggregates data and archives locations if they are no longer valid
  */
-const checkForTerminators = (terminators, info) => {
-    for (let i in terminators) {
-        if (info[i] === terminators[i]) {
-            return true;
-        }
-    }
-
-    return false;
-};
-
-// aggregates data and archives locations if they are no longer valid
 Parse.Cloud.afterSave('pingResponse', (request) => {
     // thresholds for adding info and archiving hotspot
     const infoAddThreshold = 1;
@@ -171,7 +187,9 @@ Parse.Cloud.afterSave('pingResponse', (request) => {
     });
 });
 
-// Set Archiver value before saving
+/**
+ * Set Archiver value before saving
+ */
 Parse.Cloud.beforeSave('hotspot', (request, response) => {
     if (!request.object.get('archiver')) {
         request.object.set('archiver', '');
@@ -182,7 +200,9 @@ Parse.Cloud.beforeSave('hotspot', (request, response) => {
     response.success();
 });
 
-// Archives old hotspots on either user response or system archive and sends data update to app
+/**
+ * Archives old hotspots on either user response or system archive and sends data update to app
+ */
 Parse.Cloud.afterSave('hotspot', (request) => {
     const hotspot = request.object;
     const tag = hotspot.get('tag');
@@ -296,7 +316,9 @@ Parse.Cloud.afterSave('hotspot', (request) => {
     });
 });
 
-// send data refresh request if beacons are changed
+/**
+ * Send data refresh request if beacons are changed
+ */
 Parse.Cloud.afterSave('beacons', () => {
     // send push update for data
     const userQuery = new Parse.Query('user');
@@ -322,28 +344,9 @@ Parse.Cloud.afterSave('beacons', () => {
     });
 });
 
-Parse.Cloud.define('saveNewPushTokenForUser', (request, response) => {
-    const vendorId = request.params.vendorId,
-        pushToken = request.params.pushToken;
-
-    const userQuery = new Parse.Query('user');
-    userQuery.equalTo('vendorId', vendorId);
-    userQuery.first({
-        success: (user) => {
-            if (user !== undefined) {
-                user.set('pushToken', pushToken);
-                user.save();
-            }
-
-            response.success();
-        },
-        error: (error) => {
-            console.log(error);
-        }
-    });
-});
-
-// setup study conditions for each user after they register
+/**
+ * Setup study conditions for each user after they register
+ */
 Parse.Cloud.afterSave('user', (request, response) => {
     const vendorId = request.object.get('vendorId');
     const conditions = [
@@ -411,6 +414,10 @@ Parse.Cloud.afterSave('user', (request, response) => {
 /*
  * Study condition functions
  */
+
+/**
+ * Toggle whether user is currently under eXploit
+ */
 Parse.Cloud.define('toggleExploitCondition', (request, response) => {
     const studyConditionQuery = new Parse.Query('studyConditions');
     studyConditionQuery.each((user) => {
@@ -423,6 +430,9 @@ Parse.Cloud.define('toggleExploitCondition', (request, response) => {
     });
 });
 
+/**
+ * Toggle what distance condition user is currently in
+ */
 Parse.Cloud.define('rotateDistanceCondition', (request, response) => {
     const studyConditionQuery = new Parse.Query('studyConditions');
     studyConditionQuery.each((user) => {
@@ -445,10 +455,17 @@ Parse.Cloud.define('rotateDistanceCondition', (request, response) => {
 });
 
 /*
- * Location functions
+ * Location Functions.
+ * The functions below are used to retrieve locations for tracking.
  */
 
-// Haversine formula for getting distance in miles.
+/**
+ * Compute distance between two latitude, longitude pairs in meters using the Haversine Formula.
+ *
+ * @param p1 {object} first point as object with latitude and longitude keys
+ * @param p2 {object} second point as object with latitude and longitude keys
+ * @returns {number} distance, in meters, between p1 and p2
+ */
 const getDistance = (p1, p2) => {
     const R = 6378137; // Earth’s mean radius in meter
     const degToRad = Math.PI / 180; // Degree to radian conversion.
@@ -460,11 +477,17 @@ const getDistance = (p1, p2) => {
         Math.cos(p1.latitude * degToRad) * Math.cos(p2.latitude * degToRad) *
         Math.sin(dLong / 2) * Math.sin(dLong / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const d = R * c; // d = distance in meters
 
-    return d;
+    return R * c; // distance in meters
 };
 
+/**
+ * Returns numeric rank for preferences.
+ *
+ * @param category {string} category to determine rank for
+ * @param preferences {object} all user preferences
+ * @returns {number}
+ */
 const getRankForCategory = (category, preferences) => {
     if (preferences.firstPreference === category) {
         return 1;
@@ -479,8 +502,11 @@ const getRankForCategory = (category, preferences) => {
     }
 };
 
-// Get n closest hotspots ranked by distance and preference
-// request = {latitude: Int, longitude: Int, vendorId: Str, count: Int}
+/**
+ * Get n closest hotspots ranked by distance and preference
+ *
+ * @param request {object} { latitude: Int, longitude: Int, vendorId: Str, count: Int }
+ */
 Parse.Cloud.define('retrieveLocationsForTracking', (request, response) => {
     const currentLocation = {
         'latitude': request.params.latitude,
@@ -616,8 +642,10 @@ Parse.Cloud.define('retrieveLocationsForTracking', (request, response) => {
     });
 });
 
-// return closest n locations for tracking without preference weighting
-// do not include location if user has already answered a question about it
+/**
+ * Return closest n locations for tracking without preference weighting.
+ * Do not include location if user has already answered a question about it.
+ */
 Parse.Cloud.define('naivelyRetrieveLocationsForTracking', (request, response) => {
     const currentLocation = {
         'latitude': request.params.latitude,
@@ -725,29 +753,11 @@ Parse.Cloud.define('naivelyRetrieveLocationsForTracking', (request, response) =>
     });
 });
 
-// test scaffolded message creator
-Parse.Cloud.define('createScaffoldedMessageForHotspot', (request, response) => {
-    const hotspotId = request.params.hotspotId;
-
-    const hotspotQuery = new Parse.Query('hotspot');
-    hotspotQuery.equalTo('objectId', hotspotId);
-    hotspotQuery.first({
-        success: (hotspot) => {
-            const message = notificationComposer.fetchScaffoldedInformationForTag(
-                hotspot.get('tag'),
-                hotspot.get('info'),
-                hotspot.get('locationCommonName'));
-            response.success(message);
-        },
-        error: (error) => {
-            console.log(error);
-        }
-    });
-});
-
-// return closest n locations for tracking without preference weighting
-// do not include location if user has already answered a question about it
-// do not include location if user has respondedly to eXpand negatively
+/**
+ * Return closest n locations for tracking without preference weighting
+ * Do not include location if user has already answered a question about it
+ * Do not include location if user has respondedly to eXpand negatively
+ */
 Parse.Cloud.define('retrieveExpandExploitLocations', (request, response) => {
     const currentLocation = {
         'latitude': request.params.latitude,
@@ -942,11 +952,38 @@ Parse.Cloud.define('retrieveExpandExploitLocations', (request, response) => {
     });
 });
 
+/**
+ * Creates a scaffolded message for a specific location.
+ * Used primarily as a testing function.
+ */
+Parse.Cloud.define('createScaffoldedMessageForHotspot', (request, response) => {
+  const hotspotId = request.params.hotspotId;
+
+  const hotspotQuery = new Parse.Query('hotspot');
+  hotspotQuery.equalTo('objectId', hotspotId);
+  hotspotQuery.first({
+    success: (hotspot) => {
+      const message = notificationComposer.fetchScaffoldedInformationForTag(
+        hotspot.get('tag'),
+        hotspot.get('info'),
+        hotspot.get('locationCommonName'));
+      response.success(message);
+    },
+    error: (error) => {
+      console.log(error);
+    }
+  });
+});
+
 /*
  * UI Routes
+ * Fetches data for various UI views.
  */
-// Get ranking for each user by contribution
-// Weight primary contribute as 2x more than response to ping
+
+/**
+ * Get ranking for each user by contribution.
+ * Weight primary contribute as 2x more than response to ping
+ */
 Parse.Cloud.define('rankingsByContribution', (request, response) => {
     const userQuery = new Parse.Query('user');
     userQuery.find({
@@ -1029,6 +1066,9 @@ Parse.Cloud.define('rankingsByContribution', (request, response) => {
     });
 });
 
+/**
+ * Fetches data when user taps on pin in the MapView
+ */
 Parse.Cloud.define('fetchMapDataView', (request, response) => {
     const output = [];
     const responseQuery = new Parse.Query('pingResponse');
@@ -1101,6 +1141,9 @@ Parse.Cloud.define('fetchMapDataView', (request, response) => {
     });
 });
 
+/**
+ * Fetches data to populate the UserProfileView
+ */
 Parse.Cloud.define('fetchUserProfileData', (request, response) => {
     const output = {
         'username': '',
@@ -1230,9 +1273,9 @@ Parse.Cloud.define('fetchUserProfileData', (request, response) => {
     });
 });
 
-/* multicolumn sorting function
- * from:
- * http://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
+/**
+ * Multicolumn sorting function
+ * From: http://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields.
  */
 let sortBy;
 (function() {
