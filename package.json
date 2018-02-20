@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "apn": "^2.2.0",
+    "core-js": "^2.5.3",
     "express": "^4.16.2",
     "kerberos": "0.0.23",
     "lodash": "^4.17.5",
@@ -18,9 +19,14 @@
     "parse-server": "^2.7.2"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "mocha"
   },
   "engines": {
     "node": ">=4.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.0.1"
   }
 }
