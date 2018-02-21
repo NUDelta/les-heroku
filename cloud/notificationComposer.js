@@ -63,7 +63,7 @@ const coffeeshops = {
             components: 'windows'
           }
         ]
-      },
+      }
     ]
   },
   queries: {
@@ -81,6 +81,107 @@ const coffeeshops = {
     sharedseating: ['yes', 'no'],
     sharedseatingoutlets: ['yes', 'no'],
     sharedseatingwindows: ['yes', 'no']
+  },
+};
+
+const gyms = {
+  locationType: 'gym',
+  refreshTime: 2 * 60 * 60, // 2 hr * 60 mins/hr * 60 seconds/min
+  scaffold: {
+    treadmills: '',
+    ellipticals: '',
+    freeweights: '',
+    freeweightsbenches: '',
+    freeweightssquatracks: '',
+    stretch: '',
+    stretchmats: '',
+    stretchrollers: ''
+  },
+  scaffoldStructure: {
+    key: '',
+    prefixText: 'There are',
+    suffixText: 'available at {{locationname}}.',
+    joinText: '/',
+    components: [
+      {
+        key: 'treadmills',
+        prefixText: '',
+        suffixText: '',
+        joinText: '',
+        components: 'treadmills'
+      },
+      {
+        key: 'ellipticals',
+        prefixText: '',
+        suffixText: '',
+        joinText: '',
+        components: 'ellipticals'
+      },
+      {
+        key: 'freeweights',
+        prefixText: 'free weights',
+        suffixText: '',
+        joinText: ' and ',
+        components: [
+          {
+            key: 'freeweightsbenches',
+            prefixText: 'with',
+            suffixText: '',
+            joinText: '',
+            components: 'benches'
+          },
+          {
+            key: 'freeweightssquatracks',
+            prefixText: 'with',
+            suffixText: '',
+            joinText: '',
+            components: 'squat racks'
+          }
+        ]
+      },
+      {
+        key: 'stretch',
+        prefixText: 'stretching space',
+        suffixText: '',
+        joinText: ' and ',
+        components: [
+          {
+            key: 'stretchmats',
+            prefixText: 'with',
+            suffixText: '',
+            joinText: '',
+            components: 'mats'
+          },
+          {
+            key: 'stretchrollers',
+            prefixText: 'with',
+            suffixText: '',
+            joinText: '',
+            components: 'rollers'
+          }
+        ]
+      },
+    ]
+  },
+  queries: {
+    treadmills: 'Do you see treadmills available at {{locationname}}?',
+    ellipticals: 'Do you see ellipticals available at {{locationname}}?',
+    freeweights: 'Do you see free weights (dumbbells or barbells) available at {{locationname}}?',
+    freeweightsbenches: 'Do you see benches to use with free weights at {{locationname}}?',
+    freeweightssquatracks: 'Do you see squat racks to use with free weights at {{locationname}}?',
+    stretch: 'Do you see space to stretch at {{locationname}}?',
+    stretchmats: 'Do you see any mats to use for stretching at {{locationname}}?',
+    stretchrollers: 'Do you see any rollers to use for stretching at {{locationname}}?'
+  },
+  queryAnswers: {
+    treadmills: ['yes', 'no'],
+    ellipticals: ['yes', 'no'],
+    freeweights: ['yes', 'no'],
+    freeweightsbenches: ['yes', 'no'],
+    freeweightssquatracks: ['yes', 'no'],
+    stretch: ['yes', 'no'],
+    stretchmats: ['yes', 'no'],
+    stretchrollers: ['yes', 'no']
   },
 };
 
@@ -214,5 +315,6 @@ module.exports = {
   composeNotification: composeNotification,
   getNextQueryKey: getNextQueryKey,
   createTextForScaffold: createTextForScaffold,
-  coffeeshops: coffeeshops
+  coffeeshops: coffeeshops,
+  gyms: gyms
 };

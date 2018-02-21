@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const composer = require('../cloud/notificationComposer.js');
 
-describe('coffee shop composition', () => {
+describe('coffee shop notification generation', () => {
   // specify overall structure
   let structure = composer.coffeeshops;
   let locationName = 'Coffee Lab';
@@ -150,5 +150,171 @@ describe('coffee shop composition', () => {
     let expectedOutput = 'There is private seating (tables and couches/chairs) near outlets and near windows, and also shared seating (communal tables) near windows, available at Coffee Lab.';
 
     expect(coffeeshopText).to.deep.equal(expectedOutput);
+  });
+});
+
+describe('gym notification generation', () => {
+  // specify overall structure
+  let structure = composer.gyms;
+  let locationName = 'SPAC';
+
+  it('empty scaffold should return query only', function () {
+    // setup input data
+    let scaffoldData = {
+      treadmills: '',
+      ellipticals: '',
+      freeweights: '',
+      freeweightsbenches: '',
+      freeweightssquatracks: '',
+      stretch: '',
+      stretchmats: '',
+      stretchrollers: ''
+    };
+
+    // generate notification and compare
+    let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = {
+      notificationCategory:  'gym_treadmills',
+      message: 'Do you see treadmills available at SPAC?',
+      contextualResponses: ['yes', 'no']
+    };
+
+    expect(gymNotif).to.deep.equal(expectedOutput);
+  });
+
+  it('treadmills as no should redirect to ellipticals', function () {
+    // setup input data
+    let scaffoldData = {
+      treadmills: 'no',
+      ellipticals: '',
+      freeweights: '',
+      freeweightsbenches: '',
+      freeweightssquatracks: '',
+      stretch: '',
+      stretchmats: '',
+      stretchrollers: ''
+    };
+
+    // generate notification and compare
+    let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = {
+      notificationCategory:  'gym_ellipticals',
+      message: 'Do you see ellipticals available at SPAC?',
+      contextualResponses: ['yes', 'no']
+    };
+
+    expect(gymNotif).to.deep.equal(expectedOutput);
+  });
+
+  it('treadmills, elliptical, free weights as no should redirect to stretch', function () {
+    // setup input data
+    let scaffoldData = {
+      treadmills: 'no',
+      ellipticals: 'no',
+      freeweights: 'no',
+      freeweightsbenches: '',
+      freeweightssquatracks: '',
+      stretch: '',
+      stretchmats: '',
+      stretchrollers: ''
+    };
+
+    // generate notification and compare
+    let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = {
+      notificationCategory:  'gym_stretch',
+      message: 'Do you see space to stretch at SPAC?',
+      contextualResponses: ['yes', 'no']
+    };
+
+    expect(gymNotif).to.deep.equal(expectedOutput);
+  });
+
+  it('free weights as yes should redirect to bench', function () {
+    // setup input data
+    let scaffoldData = {
+      treadmills: 'yes',
+      ellipticals: 'no',
+      freeweights: 'yes',
+      freeweightsbenches: '',
+      freeweightssquatracks: '',
+      stretch: '',
+      stretchmats: '',
+      stretchrollers: ''
+    };
+
+    // generate notification and compare
+    let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = {
+      notificationCategory:  'gym_freeweightsbenches',
+      message: 'There are treadmills/free weights available at SPAC. Do you see benches to use with free weights at SPAC?',
+      contextualResponses: ['yes', 'no']
+    };
+
+    expect(gymNotif).to.deep.equal(expectedOutput);
+  });
+
+  it('stretch mats as no should redirect to rollers', function () {
+    // setup input data
+    let scaffoldData = {
+      treadmills: 'yes',
+      ellipticals: 'no',
+      freeweights: 'yes',
+      freeweightsbenches: 'yes',
+      freeweightssquatracks: 'yes',
+      stretch: 'yes',
+      stretchmats: 'no',
+      stretchrollers: ''
+    };
+
+    // generate notification and compare
+    let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = {
+      notificationCategory:  'gym_stretchrollers',
+      message: 'There are treadmills/free weights with benches and with squat racks/stretching space available at SPAC. Do you see any rollers to use for stretching at SPAC?',
+      contextualResponses: ['yes', 'no']
+    };
+
+    expect(gymNotif).to.deep.equal(expectedOutput);
+  });
+
+  it('full scaffold should return undefined since nothing further can be asked', function () {
+    // setup input data
+    let scaffoldData = {
+      treadmills: 'yes',
+      ellipticals: 'no',
+      freeweights: 'yes',
+      freeweightsbenches: 'yes',
+      freeweightssquatracks: 'yes',
+      stretch: 'yes',
+      stretchmats: 'no',
+      stretchrollers: 'no'
+    };
+
+    // generate notification and compare
+    let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = undefined;
+
+    expect(gymNotif).to.deep.equal(expectedOutput);
+  });
+
+  it('check fully scaffolded message', function () {
+    // setup input data
+    let scaffoldData = {
+      treadmills: 'yes',
+      ellipticals: 'no',
+      freeweights: 'yes',
+      freeweightsbenches: 'yes',
+      freeweightssquatracks: 'yes',
+      stretch: 'yes',
+      stretchmats: 'no',
+      stretchrollers: 'yes'
+    };
+
+    // generate notification and compare
+    let gymNotif = composer.createTextForScaffold(structure.scaffoldStructure, scaffoldData, locationName);
+    let expectedOutput = 'There are treadmills/free weights with benches and with squat racks/stretching space with rollers available at SPAC.';
+
+    expect(gymNotif).to.deep.equal(expectedOutput);
   });
 });
