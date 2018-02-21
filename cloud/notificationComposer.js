@@ -1,1091 +1,218 @@
-// create scaffolds for each question class
+const _ = require('lodash');
+
+/*
+ * Create scaffold data
+ */
 const coffeeshops = {
-  'tag': 'coffeeshops',
-  'refreshTime': 2 * 60 * 60, // 2 hr * 60 mins/hr * 60 seconds/min
-  'info': {
-    'smalltables': '',
-    'smalltableswindows': '',
-    'smalltablesoutlets': '',
-    'largetables': '',
-    'largetableswindows': '',
-    'largetablesoutlets': '',
-    'noiselevel': ''
+  locationType: 'coffeeshop',
+  refreshTime: 2 * 60 * 60, // 2 hr * 60 mins/hr * 60 seconds/min
+  scaffold: {
+    privateseating: '',
+    privateseatingoutlets: '',
+    privateseatingwindows: '',
+    sharedseating: '',
+    sharedseatingoutlets: '',
+    sharedseatingwindows: ''
   },
-  'questionTag': {
-    'smalltables': 'smalltables',
-    'smalltableswindows': 'smalltableswindows',
-    'smalltablesoutlets': 'smalltablesoutlets',
-    'largetables': 'largetables',
-    'largetableswindows': 'largetableswindows',
-    'largetablesoutlets': 'largetablesoutlets',
-    'noiselevel': 'noiselevel'
+  scaffoldStructure: {
+    key: '',
+    prefixText: 'There is',
+    suffixText: ', available at {{locationname}}.',
+    joinText: ', and also ',
+    components: [
+      {
+        key: 'privateseating',
+        prefixText: 'private seating ({{privateseating}})',
+        suffixText: '',
+        joinText: ' and ',
+        components: [
+          {
+            key: 'privateseatingoutlets',
+            prefixText: 'near',
+            suffixText: '',
+            joinText: '',
+            components: 'outlets'
+          },
+          {
+            key: 'privateseatingwindows',
+            prefixText: 'near',
+            suffixText: '',
+            joinText: '',
+            components: 'windows'
+          }
+        ]
+      },
+      {
+        key: 'sharedseating',
+        prefixText: 'shared seating (communal tables)',
+        suffixText: '',
+        joinText: ' and ',
+        components: [
+          {
+            key: 'sharedseatingoutlets',
+            prefixText: 'near',
+            suffixText: '',
+            joinText: '',
+            components: 'outlets'
+          },
+          {
+            key: 'sharedseatingwindows',
+            prefixText: 'near',
+            suffixText: '',
+            joinText: '',
+            components: 'windows'
+          }
+        ]
+      },
+    ]
   },
-  'questions': {
-    'smalltables': 'Do you see tables or couches/chairs available for 1-2 people to work at?',
-    'smalltableswindows': 'Are any of these near the windows?',
-    'smalltablesoutlets': 'Are they near outlets?',
-    'largetables': 'Do you see larger tables fit for more than 2 people to work together at?',
-    'largetableswindows': 'Are any of these near the windows? ',
-    'largetablesoutlets': 'Are they near outlets?',
-    'noiselevel': 'We were wondering if this is a good time to work here. How loud is the place?'
+  queries: {
+    privateseating: 'Do you see private seating (individual tables/chairs) available at {{locationname}}?',
+    privateseatingoutlets: 'Do you see private seating for individuals near outlets at {{locationname}}?',
+    privateseatingwindows: 'Do you see private seating for individuals near the windows at {{locationname}}?',
+    sharedseating: 'Do you see shared seating (communal tables) available at {{locationname}}?',
+    sharedseatingoutlets: 'Do you see shared seating (communal tables) near outlets available at {{locationname}}?',
+    sharedseatingwindows: 'Do you see shared seating (communal tables) near the windows available at {{locationname}}?',
   },
-  'answers': {
-    'smalltables': ['yes, tables', 'yes, couches/chairs', 'yes, both', 'no'],
-    'smalltableswindows': ['yes', 'no'],
-    'smalltablesoutlets': ['yes', 'no'],
-    'largetables': ['yes: groups of 2-4 people', 'yes: groups of 4-6 people', 'no'],
-    'largetableswindows': ['yes', 'no'],
-    'largetablesoutlets': ['yes', 'no'],
-    'noiselevel': ['loud', 'light conversation', 'very quiet']
-  }
+  queryAnswers: {
+    privateseating: ['tables', 'couches/chairs', 'tables and couches/chairs', 'no'],
+    privateseatingoutlets: ['yes', 'no'],
+    privateseatingwindows: ['yes', 'no'],
+    sharedseating: ['yes', 'no'],
+    sharedseatingoutlets: ['yes', 'no'],
+    sharedseatingwindows: ['yes', 'no']
+  },
 };
 
-const workspaces = {
-  'tag': 'workspaces',
-  'refreshTime': 3 * 60 * 60, // 3 hr * 60 mins/hr * 60 seconds/min
-  'info': {
-    'tablesavailable': '',
-    'tabletype': '',
-    'tabletypeoutlets': '',
-    'grouptables': '',
-    'grouptablesoutlet': '',
-    'monitorscomps': '',
-    'monitorscompsdongles': '',
-    'whiteboards': '',
-    'whiteboardsmarkers': ''
-  },
-  'questionTag': {
-    'tablesavailable': 'tablesavailable',
-    'tabletype': 'tabletype',
-    'tabletypeoutlets': 'tabletypeoutlets',
-    'grouptables': 'grouptables',
-    'grouptablesoutlet': 'grouptablesoutlet',
-    'monitorscomps': 'monitorscomps',
-    'monitorscompsdongles': 'monitorscompsdongles',
-    'whiteboards': 'whiteboards',
-    'whiteboardsmarkers': 'whiteboardsmarkers'
-  },
-  'questions': {
-    'tablesavailable': 'Are there any tables or desks available to sit down and work?',
-    'tabletype': 'What kind of tables are available?',
-    'tabletypeoutlets': 'Are they near outlets?',
-    'grouptables': 'Are the tables available large enough for groups of people to work at them?',
-    'grouptablesoutlet': 'Are they near outlets?',
-    'monitorscomps': 'If this place has computers or monitors available for student use, are there any available right now?',
-    'monitorscompsdongles': 'For the monitors available, are dongles and cables present for use?',
-    'whiteboards': 'If this place has whiteboards to write on, are there any available right now?',
-    'whiteboardsmarkers': 'Can you tell us if there are any dry erase markers nearby that you can borrow?'
-  },
-  'answers': {
-    'tablesavailable': ['yes', 'no'],
-    'tabletype': ['communal tables', 'private tables', 'both', 'no more tables'],
-    'tabletypeoutlets': ['yes', 'no'],
-    'grouptables': ['yes: groups of 2-4 people', 'yes: groups of 4-6 people', 'no'],
-    'grouptablesoutlet': ['yes', 'no'],
-    'monitorscomps': ['yes, monitors', 'yes, computers', 'yes, both', 'none available', 'none here'],
-    'monitorscompsdongles': ['yes', 'no'],
-    'whiteboards': ['yes', 'no'],
-    'whiteboardsmarkers': ['yes', 'no']
-  }
-};
+/**
+ * Creates an object with the notification category, message (data and query) and responses.
+ *
+ * @param locationMetadata {object} data structure for location
+ * @param scaffoldData {object} current data stored in scaffold
+ * @param locationName {string} name of location
+ * @returns {undefined|{notificationCategory: string, message: string, contextualResponses: array}}
+ */
+const composeNotification = function (locationMetadata, scaffoldData, locationName) {
+  // get current data text
+  let dataText = createTextForScaffold(locationMetadata.scaffoldStructure, scaffoldData, locationName);
 
-const cafes = {
-  'tag': 'cafes',
-  'refreshTime': 30 * 60, // 30 mins/hr * 60 seconds/min
-  'info': {
-    'linelength': '',
-    'tables': '',
-    'specials': '',
-    'specialsdaily': '',
-    'specialsvegetarian': ''
-  },
-  'questionTag': {
-    'linelength': 'linelength',
-    'tables': 'tables',
-    'specials': 'specials',
-    'specialsdaily': 'specialsdaily',
-    'specialsvegetarian': 'specialsvegetarian'
-  },
-  'questions': {
-    'linelength': 'How long is the line here currently?',
-    'tables': 'Are there any tables here where customers can eat?',
-    'specials': 'Can you tell us if there are any food specials available?',
-    'specialsdaily': 'Are these daily specials or more seasonal specials?',
-    'specialsvegetarian': ' For the specials available, are there vegetarian options available?'
-  },
-  'answers': {
-    'linelength': ['short: < 5 people', 'medium: 5-10 people', 'long: 10+ people'],
-    'tables': ['small tables, 1-4 people', 'larger tables: 5-8 people', 'small and large tables', 'none'],
-    'specials': ['yes', 'no'],
-    'specialsdaily': ['daily', 'seasonal'],
-    'specialsvegetarian': ['yes', 'no']
+  // get next query key
+  // check if no question is available to ask, return undefined if so
+  let queryKey = getNextQueryKey(locationMetadata.scaffoldStructure, scaffoldData);
+  if (queryKey === '') {
+    return undefined;
   }
-};
 
-const gyms = {
-  'tag': 'gyms',
-  'refreshTime': 1 * 60 * 60, // 1 hr * 60 mins/hr * 60 seconds/min
-  'info': {
-    'cardio': '',
-    'treadmills': '',
-    'ellipticalbike': '',
-    'freeweights': '',
-    'benches': '',
-    'squatracks': '',
-    'dumbbells': '',
-    'dumbbellsbenches': '',
-    'stretch': '',
-    'stretchmats': '',
-    'stretchroller': '',
-    'basketballcourts': ''
-  },
-  'questionTag': {
-    'cardio': 'cardio',
-    'treadmills': 'treadmills',
-    'ellipticalbike': 'ellipticalbike',
-    'freeweights': 'freeweights',
-    'benches': 'benches',
-    'squatracks': 'squatracks',
-    'dumbbells': 'dumbbells',
-    'dumbbellsbenches': 'dumbbellsbenches',
-    'stretch': 'stretch',
-    'stretchmats': 'stretchmats',
-    'stretchroller': 'stretchroller',
-    'basketballcourts': 'basketballcourts'
-  },
-  'questions': {
-    'cardio': 'Is there cardio equipment available currently?',
-    'treadmills': 'Can you tell us if there are treadmills available currently?',
-    'ellipticalbike': 'Can you tell us if there are ellipticals or bikes available currently?',
-    'freeweights': 'Are there any free weights available currently?',
-    'benches': 'Do you see benches with barbells available?',
-    'squatracks': 'Do you see any squat racks available?',
-    'dumbbells': 'Are there any dumbbells available?',
-    'dumbbellsbenches': 'Do you see any benches that can be used with them?',
-    'stretch': 'Is there space to stretch available currently?',
-    'stretchmats': 'Are there mats available?',
-    'stretchroller': 'Are there any rollers available to use?',
-    'basketballcourts': 'Are there courts available to play basketball?'
-  },
-  'answers': {
-    'cardio': ['yes', 'no'],
-    'treadmills': ['yes', 'no'],
-    'ellipticalbike': ['yes', 'no'],
-    'freeweights': ['yes', 'no'],
-    'benches': ['yes', 'no'],
-    'squatracks': ['yes', 'no'],
-    'dumbbells': ['yes', 'no'],
-    'dumbbellsbenches': ['yes', 'no'],
-    'stretch': ['yes', 'no'],
-    'stretchmats': ['yes', 'no'],
-    'stretchroller': ['yes', 'no'],
-    'basketballcourts': ['yes', 'no', 'no courts here']
-  }
-};
+  // given valid queryKey, get queryText, and queryAnswers
+  let queryText = locationMetadata.queries[queryKey];
+  queryText = queryText.replace('{{locationname}}', locationName);
+  let queryAnswers = locationMetadata.queryAnswers[queryKey];
 
-const food = {
-  'tag': 'food',
-  'refreshTime': 2 * 60 * 60, // 2 hr * 60 mins/hr * 60 seconds/min
-  'info': {
-    'type': '',
-    'quantity': '',
-    'freesold': '',
-    'cost': '',
-    'sellingreason': ''
-  },
-  'questionTag': {
-    'type': 'type',
-    'quantity': 'quantity',
-    'freesold': 'freesold',
-    'cost': 'cost',
-    'sellingreason': 'sellingreason'
-  },
-  'questions': {
-    'type': 'What kind of food is here?',
-    'quantity': 'How much is left?',
-    'freesold': 'Is it free or sold?',
-    'cost': 'How much does it cost per unit?',
-    'sellingreason': 'Why is it being sold?'
-  },
-  'answers': {
-    'type': ['pizzas', 'donuts', 'bagels', 'other'],
-    'quantity': ['lots, plenty to go around', 'some, going quickly',
-      'very little, only couple items left', 'none'],
-    'freesold': ['free', 'sold'],
-    'cost': ['< $2', '$2-4', '$5+'],
-    'sellingreason': ['charity', 'student group fundraising', 'other']
-  }
-};
+  // create full notification message
+  let message = (dataText + ' ' + queryText).trim();
 
-// create notification generators
-exports.createNotificationForTag = (tag, currentInfo, locationCommonName) => {
-  switch (tag) {
-    case 'coffeeshops':
-      return createNotificationForCoffeeshops(currentInfo, locationCommonName);
-    case 'workspaces':
-      return createNotificationForWorkspaces(currentInfo, locationCommonName);
-    case 'cafes':
-      return createNotificationForCafes(currentInfo, locationCommonName);
-    case 'gyms':
-      return createNotificationForGyms(currentInfo, locationCommonName);
-    case 'food':
-      return createNotificationForFood(currentInfo, locationCommonName);
-    default:
-      return undefined;
-  }
-};
+  // create notificationCategory
+  let notificationCategory = locationMetadata.locationType + '_' + queryKey;
 
-const createNotificationForCoffeeshops = (currentInfo, locationCommonName) => {
-  let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  const output = {
-    'notificationCategory': '', // classtag_questiontag
-    'message': '', // notification message to present
-    'contextualResponses': [] // responses for contextual handler
+  // create and return output object
+  return {
+    notificationCategory: notificationCategory, // classtype_questionkey
+    message: message, // notification message to present, both with info and query
+    contextualResponses: queryAnswers // responses for contextual handler
   };
-
-  // check for small tables and return when at a node with no information
-  if (currentInfo.smalltables === '') {
-    output.notificationCategory = coffeeshops.tag + '_' + coffeeshops.questionTag.smalltables;
-    output.message = 'Do you see tables or couches/chairs available for 1-2 people to work at ' + locationPhrase + '?';
-    output.contextualResponses = coffeeshops.answers.smalltables;
-    return output;
-  } else if (currentInfo.smalltables !== 'no') {
-    let tableType = '';
-    switch (currentInfo.smalltables) {
-      case 'yes, tables':
-        tableType = 'small tables';
-        break;
-      case 'yes, couches/chairs':
-        tableType = 'couches/chairs';
-        break;
-      case 'yes, both':
-        tableType = 'both small tables and couches/chairs';
-        break;
-      default:
-        break;
-    }
-
-    let currentMessage = 'There are currently ' + tableType + ' available ' + locationPhrase + '.';
-    if (currentInfo.smalltableswindows === '') {
-      output.notificationCategory = coffeeshops.tag + '_' + coffeeshops.questionTag.smalltableswindows;
-      output.message = currentMessage + ' Are any of these near the windows?';
-      output.contextualResponses = coffeeshops.answers.smalltableswindows;
-      return output;
-    } else if (currentInfo.smalltablesoutlets === '') {
-      output.notificationCategory = coffeeshops.tag + '_' + coffeeshops.questionTag.smalltablesoutlets;
-      output.message = currentMessage + ' Are any of these near outlets?';
-      output.contextualResponses = coffeeshops.answers.smalltablesoutlets;
-      return output;
-    }
-  }
-
-  // check for large tables and return when at a node with no information
-  if (currentInfo.largetables === '') {
-    output.notificationCategory = coffeeshops.tag + '_' + coffeeshops.questionTag.largetables;
-    output.message = 'Do you see larger tables fit for more than 2 people to work together ' + locationPhrase + '?';
-    output.contextualResponses = coffeeshops.answers.largetables;
-    return output;
-  } else if (currentInfo.largetables !== 'no') {
-    let tableType = '';
-    switch (currentInfo.largetables) {
-      case 'yes: groups of 2-4 people':
-        tableType = 'groups of 2-4 people';
-        break;
-      case 'yes: groups of 4-6 people':
-        tableType = 'groups of 4-6 people';
-        break;
-      default:
-        break;
-    }
-
-    let currentMessage = 'There are currently tables for ' + tableType + ' available ' + locationPhrase + '.';
-    if (currentInfo.largetableswindows === '') {
-      output.notificationCategory = coffeeshops.tag + '_' + coffeeshops.questionTag.largetableswindows;
-      output.message = currentMessage + ' Are any of these near the windows?';
-      output.contextualResponses = coffeeshops.answers.largetableswindows;
-      return output;
-    } else if (currentInfo.largetablesoutlets === '') {
-      output.notificationCategory = coffeeshops.tag + '_' + coffeeshops.questionTag.largetablesoutlets;
-      output.message = currentMessage + ' Are any of these near outlets?';
-      output.contextualResponses = coffeeshops.answers.largetablesoutlets;
-      return output;
-    }
-  }
-
-  // check for noise level
-  if (currentInfo.noiselevel === '') {
-    output.notificationCategory = coffeeshops.tag + '_' + coffeeshops.questionTag.noiselevel;
-    output.message = 'We were wondering if this is a good time to work ' + locationPhrase + '. How loud is the place?';
-    output.contextualResponses = coffeeshops.answers.noiselevel;
-    return output;
-  }
-
-  // return a default undefined if there's nothing to ask
-  return undefined;
 };
 
-const createNotificationForWorkspaces = (currentInfo, locationCommonName) => {
-  let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  const output = {
-    'notificationCategory': '', // classtag_questiontag
-    'message': '', // notification message to present
-    'contextualResponses': [] // responses for contextual handler
-  };
+// TODO: add support for loopback questions (e.g. free food --> is it still there?)
+/**
+ * Determines the next key to query for, based on scaffold structure.
+ * If scaffold is full, return ''
+ *
+ * @param scaffoldStructure {object} structure of scaffold text
+ * @param scaffoldData {object} current data stored in scaffold
+ * @returns {string}
+ */
+const getNextQueryKey = function (scaffoldStructure, scaffoldData) {
+  // check if key has a value in current info, return if not
+  let currKey = scaffoldStructure.key;
+  if (currKey !== '' && scaffoldData[currKey] === '') {
+    return currKey;
+  }
 
-  // check for table availability
-  if (currentInfo.tablesavailable === '') {
-    output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.tablesavailable;
-    output.message = 'Are there any tables or desks available to sit down and work ' + locationPhrase + '?';
-    output.contextualResponses = workspaces.answers.tablesavailable;
-    return output;
-  } else if (currentInfo.tablesavailable === 'yes') {
-    // smaller tables
-    if (currentInfo.tabletype === '') {
-      output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.tabletype;
-      output.message = 'Looks like there might be some tables to use ' + locationPhrase + '. What kind of tables are available?';
-      output.contextualResponses = workspaces.answers.tabletype;
-      return output;
-    } else if (currentInfo.tabletype !== 'no more tables') {
-      let tableType = (currentInfo.tabletype === 'both') ? 'communal and private tables' : currentInfo.tabletype;
-
-      let currentMessage = 'There are currently ' + tableType + ' tables available ' + locationPhrase + '.';
-      if (currentInfo.tabletypeoutlets === '') {
-        output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.tabletypeoutlets;
-        output.message = currentMessage + ' Are any of these near outlets?';
-        output.contextualResponses = workspaces.answers.tabletypeoutlets;
-        return output;
+  // recurse through components, stopping if a valid key is found
+  // if there is no info for a parent, don't recurse through its children
+  let keyCandidate = '';
+  _.forEach(scaffoldStructure.components, (currentComponent) => {
+    if (scaffoldData[currKey] !== 'no') {
+      let recursiveReturn = getNextQueryKey(currentComponent, scaffoldData);
+      if (recursiveReturn !== '') {
+        keyCandidate = recursiveReturn;
+        return false;
       }
     }
+  });
 
-    // larger tables
-    if (currentInfo.grouptables === '') {
-      output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.grouptables;
-      output.message = 'Looks like there might be some tables to use ' + locationPhrase + '. Are any large enough for groups of people to work at them?';
-      output.contextualResponses = workspaces.answers.grouptables;
-      return output;
-    } else if (currentInfo.grouptables !== 'no') {
-      let tableType = (currentInfo.grouptables === 'yes: groups of 2-4 people') ? '2-4' : '4-6';
-
-      let currentMessage = 'There are currently tables for ' + tableType + ' people available ' + locationPhrase + '.';
-      if (currentInfo.grouptablesoutlet === '') {
-        output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.grouptablesoutlet;
-        output.message = currentMessage + ' Are any of these near outlets?';
-        output.contextualResponses = workspaces.answers.grouptablesoutlet;
-        return output;
-      }
-    }
-  }
-
-  // check for computer or monitor availability
-  if (currentInfo.monitorscomps === '') {
-    output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.monitorscomps;
-    output.message = 'If computers or monitors available for student use ' + locationPhrase + ' are there any available right now?';
-    output.contextualResponses = workspaces.answers.monitorscomps;
-    return output;
-  } else if (currentInfo.monitorscomps === 'yes, monitors' || currentInfo.monitorscomps === 'yes, both') {
-    if (currentInfo.monitorscompsdongles === '') {
-      output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.monitorscompsdongles;
-      output.message = 'Looks like there are monitors available  ' + locationPhrase + '! Do you see dongle and cables available present for use?';
-      output.contextualResponses = workspaces.answers.monitorscompsdongles;
-      return output;
-    }
-  }
-
-  // check for whiteboards availability
-  if (currentInfo.whiteboards === '') {
-    output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.whiteboards;
-    output.message = 'If there are whiteboards ' + locationPhrase + ' to write on, are there any available right now?';
-    output.contextualResponses = workspaces.answers.whiteboards;
-    return output;
-  } else if (currentInfo.whiteboards === 'yes') {
-    if (currentInfo.whiteboardsmarkers === '') {
-      output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.whiteboardsmarkers;
-      output.message = 'Looks like there are whiteboards ' + locationPhrase + ' to work on! Are there any dry erase markers nearby that you can borrow?';
-      output.contextualResponses = workspaces.answers.whiteboardsmarkers;
-      return output;
-    }
-  }
-
-  // return a default undefined if there's nothing to ask
-  return undefined;
+  return keyCandidate;
 };
 
-const createNotificationForCafes = (currentInfo, locationCommonName) => {
-  let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  const output = {
-    'notificationCategory': '', // classtag_questiontag
-    'message': '', // notification message to present
-    'contextualResponses': [] // responses for contextual handler
-  };
-
-  // check for line length
-  if (currentInfo.linelength === '') {
-    output.notificationCategory = cafes.tag + '_' + cafes.questionTag.linelength;
-    output.message = 'How long is the line ' + locationPhrase + ' currently?';
-    output.contextualResponses = cafes.answers.linelength;
-    return output;
+// TODO: add preference support to this.
+/**
+ * Creates text for scaffolded data, given the structure and current data.
+ *
+ * @param scaffoldStructure {object} structure of scaffold text
+ * @param scaffoldData {object} current data stored in scaffold
+ * @param locationName {string} name of location
+ * @returns {string} scaffolded data text
+ */
+const createTextForScaffold = function (scaffoldStructure, scaffoldData, locationName) {
+  // if key is not valid (blank or no), it (and everything under it) should not be added. return ''
+  let currentScaffoldDataForKey = scaffoldData[scaffoldStructure.key];
+  if (!(currentScaffoldDataForKey !== 'no' && currentScaffoldDataForKey !== '')) {
+    return '';
   }
 
-  // check for table availability
-  if (currentInfo.tables === '') {
-    output.notificationCategory = cafes.tag + '_' + cafes.questionTag.tables;
-    output.message = 'Are there any tables ' + locationPhrase + ' where customers can eat?';
-    output.contextualResponses = cafes.answers.tables;
-    return output;
+  // recursive base case: if no component array and scaffold contains data current key,
+  // return text with prefix and suffix added
+  if (typeof scaffoldStructure.components === 'string') {
+      let baseArray = [scaffoldStructure.prefixText,
+        scaffoldStructure.components,
+        scaffoldStructure.suffixText];
+      return baseArray.join(' ').trim();
   }
 
-  // check for specials
-  if (currentInfo.specials === '') {
-    output.notificationCategory = cafes.tag + '_' + cafes.questionTag.specials;
-    output.message = 'Are there any specials available ' + locationPhrase + ' today?';
-    output.contextualResponses = cafes.answers.specials;
-    return output;
-  } else if (currentInfo.specials === 'yes') {
-    if (currentInfo.specialsdaily === '') {
-      output.notificationCategory = cafes.tag + '_' + cafes.questionTag.specialsdaily;
-      output.message = 'There is a special available ' + locationPhrase + ' today! Can you tell us if it is a daily or seasonal special?';
-      output.contextualResponses = cafes.answers.specialsdaily;
-      return output;
-    } else if (currentInfo.specialsvegetarian === '') {
-      output.notificationCategory = cafes.tag + '_' + cafes.questionTag.specialsvegetarian;
-      output.message = 'There is a special available ' + locationPhrase + ' today! Is it vegetarian friendly?';
-      output.contextualResponses = cafes.answers.specialsvegetarian;
-      return output;
+  // recurse for each component if current key is valid
+  let middleComponentArray = [];
+  _.forEach(scaffoldStructure.components, (currentComponent) => {
+    // add to combinedOutputArray if not blank
+    let recursiveReturn = createTextForScaffold(currentComponent, scaffoldData, locationName);
+    if (recursiveReturn !== '') {
+      middleComponentArray.push(recursiveReturn);
     }
+  });
+
+  // check if there is nothing in the middle if key is '' (highest level)
+  let middle = middleComponentArray.join(scaffoldStructure.joinText);
+  if (scaffoldStructure.key === '' && middle === '') {
+    return '';
   }
 
-  // return a default undefined if there's nothing to ask
-  return undefined;
+  // combine with prefix and suffix
+  let outputText = [scaffoldStructure.prefixText, middle, scaffoldStructure.suffixText].join(' ').trim();
+
+  // replace any {{key}} with correct text
+  if (scaffoldStructure.key === '') { // check highest level for location name
+    outputText = outputText.replace('{{locationname}}', locationName);
+  } else { // check for current key
+    let replacementTarget = '{{' + scaffoldStructure.key + '}}';
+    outputText = outputText.replace(replacementTarget, scaffoldData[scaffoldStructure.key]);
+  }
+
+  // return text without any extra spaces before punctuation
+  return outputText.replace(/\s+([.,!":])/g, '$1');
 };
 
-const createNotificationForGyms = (currentInfo, locationCommonName) => {
-  let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  const output = {
-    'notificationCategory': '', // classtag_questiontag
-    'message': '', // notification message to present
-    'contextualResponses': [] // responses for contextual handler
-  };
-
-  // cardio equipment
-  if (currentInfo.cardio === '') {
-    output.notificationCategory = gyms.tag + '_' + gyms.questionTag.cardio;
-    output.message = 'Are there cardio machines currently available ' + locationPhrase + '?';
-    output.contextualResponses = gyms.answers.cardio;
-    return output;
-  } else if (currentInfo.cardio === 'yes') {
-    if (currentInfo.treadmills === '') {
-      output.notificationCategory = gyms.tag + '_' + gyms.questionTag.treadmills;
-      output.message = 'Are there treadmill machines currently available ' + locationPhrase + '?';
-      output.contextualResponses = gyms.answers.treadmills;
-      return output;
-    } else if (currentInfo.ellipticalbike === '') {
-      output.notificationCategory = gyms.tag + '_' + gyms.questionTag.ellipticalbike;
-      output.message = 'Are there elliptical machines or bikes currently available ' + locationPhrase + '?';
-      output.contextualResponses = gyms.answers.ellipticalbike;
-      return output;
-    }
-  }
-
-  // free weights
-  if (currentInfo.freeweights === '') {
-    output.notificationCategory = gyms.tag + '_' + gyms.questionTag.freeweights;
-    output.message = 'Are there free weights currently available ' + locationPhrase + '?';
-    output.contextualResponses = gyms.answers.freeweights;
-    return output;
-  } else if (currentInfo.freeweights === 'yes') {
-    if (currentInfo.benches === '') {
-      output.notificationCategory = gyms.tag + '_' + gyms.questionTag.benches;
-      output.message = 'Do you see benches with barbells currently available ' + locationPhrase + '?';
-      output.contextualResponses = gyms.answers.benches;
-      return output;
-    } else if (currentInfo.squatracks === '') {
-      output.notificationCategory = gyms.tag + '_' + gyms.questionTag.squatracks;
-      output.message = 'Do you see squat racks with barbells currently available ' + locationPhrase + '?';
-      output.contextualResponses = gyms.answers.squatracks;
-      return output;
-    } else if (currentInfo.dumbbells === '') {
-      output.notificationCategory = gyms.tag + '_' + gyms.questionTag.dumbbells;
-      output.message = 'Do you see dumbbells currently available ' + locationPhrase + '?';
-      output.contextualResponses = gyms.answers.dumbbells;
-      return output;
-    } else if (currentInfo.dumbbells === 'yes') {
-      if (currentInfo.dumbbellsbenches === '') {
-        output.notificationCategory = gyms.tag + '_' + gyms.questionTag.dumbbellsbenches;
-        output.message = 'There are dumbbells currently available ' + locationPhrase + '! Are there any benches available to use with them?';
-        output.contextualResponses = gyms.answers.dumbbellsbenches;
-        return output;
-      }
-    }
-  }
-
-  // stretching space
-  if (currentInfo.stretch === '') {
-    output.notificationCategory = gyms.tag + '_' + gyms.questionTag.stretch;
-    output.message = 'Is there space to stretch ' + locationPhrase + ' currently available?';
-    output.contextualResponses = gyms.answers.stretch;
-    return output;
-  } else if (currentInfo.stretch === 'yes') {
-    if (currentInfo.stretchmats === '') {
-      output.notificationCategory = gyms.tag + '_' + gyms.questionTag.stretchmats;
-      output.message = 'There is currently stretching space available ' + locationPhrase + '! Are there also mats available?';
-      output.contextualResponses = gyms.answers.stretchmats;
-      return output;
-    } else if (currentInfo.stretchroller === '') {
-      output.notificationCategory = gyms.tag + '_' + gyms.questionTag.stretchroller;
-      output.message = 'There is currently stretching space available ' + locationPhrase + '! Are there also rollers available?';
-      output.contextualResponses = gyms.answers.stretchroller;
-      return output;
-    }
-  }
-
-  // basketball courts
-  if (currentInfo.basketballcourts === '') {
-    output.notificationCategory = gyms.tag + '_' + gyms.questionTag.basketballcourts;
-    output.message = 'Are there any courts available ' + locationPhrase + ' to play basketball?';
-    output.contextualResponses = gyms.answers.basketballcourts;
-    return output;
-  }
-
-  // return a default undefined if there's nothing to ask
-  return undefined;
-};
-
-const createNotificationForFood = (currentInfo, locationCommonName) => {
-  let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  let currentMessage = '';
-  const output = {
-    'notificationCategory': '', // classtag_questiontag
-    'message': '', // notification message to present
-    'contextualResponses': [] // responses for contextual handler
-  };
-
-  if (currentInfo.type === '') {
-    output.notificationCategory = food.tag + '_' + food.questionTag.type;
-    output.message = 'There is food ' + locationPhrase + '! Do you know what kind it is?';
-    output.contextualResponses = food.answers.type;
-    return output;
-  } else if (currentInfo.type !== '') {
-    if (currentInfo.type !== 'other') {
-      currentMessage = 'There are ' + currentInfo.type + ' ' + locationPhrase + '!';
-    } else {
-      currentMessage = 'There is some kind of food ' + locationPhrase + '!';
-    }
-
-    if (currentInfo.quantity === '') {
-      output.notificationCategory = food.tag + '_' + food.questionTag.quantity;
-      output.message = currentMessage + ' Do you know how much is left?';
-      output.contextualResponses = food.answers.quantity;
-      return output;
-    } else if (currentInfo.quantity !== 'none') {
-      if (currentInfo.freesold === '') {
-        output.notificationCategory = food.tag + '_' + food.questionTag.freesold;
-        output.message = currentMessage + ' Do you know if it is free or being sold?';
-        output.contextualResponses = food.answers.freesold;
-        return output;
-      } else if (currentInfo.freesold === 'sold') {
-        if (currentInfo.cost === '') {
-          output.notificationCategory = food.tag + '_' + food.questionTag.cost;
-          output.message = currentMessage + ' Do you know how much it is being sold for?';
-          output.contextualResponses = food.answers.cost;
-          return output;
-        } else if (currentInfo.sellingreason === '') {
-          output.notificationCategory = food.tag + '_' + food.questionTag.sellingreason;
-          output.message = currentMessage + ' Do you know why the food is being sold?';
-          output.contextualResponses = food.answers.sellingreason;
-          return output;
-        }
-      }
-    }
-  }
-
-  // if all the information is filled, ask how much quantity is left if quantity is not none
-  if (currentInfo.quantity !== 'none') {
-    output.notificationCategory = food.tag + '_' + food.questionTag.quantity;
-    output.message = currentMessage + ' Do you know how much is left?';
-    output.contextualResponses = food.answers.quantity;
-    return output;
-  }
-
-  // return a default undefined if there's nothing to ask
-  return undefined;
-};
-
-// TODO: create scaffolded information generators
-exports.fetchScaffoldedInformationForTag = (tag, currentInfo, locationCommonName) => {
-  switch (tag) {
-    case 'coffeeshops':
-      return createScaffoldedInfoForCoffeeshops(currentInfo, locationCommonName);
-    case 'workspaces':
-      return createScaffoldedInfoForWorkspaces(currentInfo, locationCommonName);
-    case 'cafes':
-      return createScaffoldedInfoForCafes(currentInfo, locationCommonName);
-    case 'gyms':
-      return createScaffoldedInfoForGyms(currentInfo, locationCommonName);
-    case 'food':
-      return createScaffoldedInfoForFood(currentInfo, locationCommonName);
-    default:
-      return undefined;
-  }
-};
-
-const createScaffoldedInfoForCoffeeshops = (currentInfo, locationCommonName) => {
-  let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  const output = {
-    'message': '', // notification message to present
-    'levelOfInformation': ''
-  };
-
-  // check for small tables and return when at a node with no information
-  // L1: there are currently <smalltables> and/or <largetables> available at <location>
-  // L2: L1 + <availableBy>
-  let smallTableType = '',
-    largeTableType = '';
-
-  switch (currentInfo.smalltables) {
-    case 'yes, tables':
-      smallTableType = 'small tables';
-      break;
-    case 'yes, couches/chairs':
-      smallTableType = 'couches/chairs';
-      break;
-    case 'yes, both':
-      smallTableType = 'both small tables and couches/chairs';
-      break;
-    default:
-      break;
-  }
-
-  switch (currentInfo.largetables) {
-    case 'yes: groups of 2-4 people':
-      largeTableType = 'groups of 2-4 people';
-      break;
-    case 'yes: groups of 4-6 people':
-      largeTableType = 'groups of 4-6 people';
-      break;
-    default:
-      break;
-  }
-
-  // create scaffolded message
-  if (smallTableType !== '' && largeTableType === '') { // only small tables
-    // check if tables are nearby outlets or windows
-    let smallTableAvailableBy = '';
-    if (currentInfo.smalltableswindows === 'yes' && currentInfo.smalltablesoutlets !== 'yes') {
-      smallTableAvailableBy = 'windows';
-    } else if (currentInfo.smalltableswindows !== 'yes' && currentInfo.smalltablesoutlets === 'yes') {
-      smallTableAvailableBy = 'outlets';
-    } else if (currentInfo.smalltableswindows === 'yes' && currentInfo.smalltablesoutlets === 'yes') {
-      smallTableAvailableBy = 'windows and outlets';
-    }
-
-    // compose full message
-    if (smallTableAvailableBy !== '') {
-      output.message = ['There are currently', smallTableType, '(near',
-        smallTableAvailableBy + ')', 'available',
-        locationPhrase + '.'].join(' ');
-      output.levelOfInformation = '2';
-    } else {
-      output.message = ['There are currently', smallTableType,
-        'available', locationPhrase + '.'].join(' ');
-      output.levelOfInformation = '1';
-    }
-
-    return output;
-  } else if (smallTableType === '' && largeTableType !== '') { // only large tables
-    // check if tables are nearby outlets or windows
-    let largeTableAvailableBy = '';
-    if (currentInfo.largetableswindows === 'yes' && currentInfo.largetablesoutlets !== 'yes') {
-      largeTableAvailableBy = 'windows';
-    } else if (currentInfo.largetableswindows !== 'yes' && currentInfo.largetablesoutlets === 'yes') {
-      largeTableAvailableBy = 'outlets';
-    } else if (currentInfo.largetableswindows === 'yes' && currentInfo.largetablesoutlets === 'yes') {
-      largeTableAvailableBy = 'windows and outlets';
-    }
-
-    // compose full message
-    if (largeTableAvailableBy !== '') {
-      output.message = ['There are currently large tables for', largeTableType, '(near',
-        largeTableAvailableBy + ')', 'available',
-        locationPhrase + '.'].join(' ');
-      output.levelOfInformation = '2';
-    } else {
-      output.message = ['There are currently large tables for', largeTableType,
-        'available', locationPhrase + '.'].join(' ');
-      output.levelOfInformation = '1';
-    }
-
-    return output;
-  } else if (smallTableType !== '' && largeTableType !== '') { // both tables available
-    // check if tables are nearby outlets or windows
-    let smallTableAvailableBy = '';
-    if (currentInfo.smalltableswindows === 'yes' && currentInfo.smalltablesoutlets !== 'yes') {
-      smallTableAvailableBy = 'windows';
-    } else if (currentInfo.smalltableswindows !== 'yes' && currentInfo.smalltablesoutlets === 'yes') {
-      smallTableAvailableBy = 'outlets';
-    } else if (currentInfo.smalltableswindows === 'yes' && currentInfo.smalltablesoutlets === 'yes') {
-      smallTableAvailableBy = 'windows and outlets';
-    }
-
-    // check if tables are nearby outlets or windows
-    let largeTableAvailableBy = '';
-    if (currentInfo.largetableswindows === 'yes' && currentInfo.largetablesoutlets !== 'yes') {
-      largeTableAvailableBy = 'windows';
-    } else if (currentInfo.largetableswindows !== 'yes' && currentInfo.largetablesoutlets === 'yes') {
-      largeTableAvailableBy = 'outlets';
-    } else if (currentInfo.largetableswindows === 'yes' && currentInfo.largetablesoutlets === 'yes') {
-      largeTableAvailableBy = 'windows and outlets';
-    }
-
-    // compose full message
-    let outputMessage = '';
-    if (smallTableAvailableBy !== '') {
-      outputMessage = ['There are currently', smallTableType, '(near',
-        smallTableAvailableBy + ')'].join(' ');
-    } else {
-      outputMessage = ['There are currently', smallTableType].join(' ');
-    }
-
-    if (largeTableAvailableBy !== '') {
-      output.message = [outputMessage, 'and large tables for', largeTableType, '(near',
-        largeTableAvailableBy + ')', 'available',
-        locationPhrase + '.'].join(' ');
-    } else {
-      output.message = [outputMessage, 'and large tables for', largeTableType,
-        'available', locationPhrase + '.'].join(' ');
-      output.levelOfInformation = '2';
-    }
-
-    if (smallTableAvailableBy !== '' || largeTableAvailableBy !== '') {
-      output.levelOfInformation = '2';
-    } else {
-      output.levelOfInformation = '1';
-    }
-
-    return output;
-  }
-
-  // return a default undefined if there's not info greater than L1
-  return undefined;
-};
-
-const createScaffoldedInfoForWorkspaces = (currentInfo, locationCommonName) => {
-  // let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  // let output = {
-  //   'notificationCategory': '', // classtag_questiontag
-  //   'message': '', // notification message to present
-  //   'contextualResponses': [] // responses for contextual handler
-  // };
-  //
-  // // check for table availability
-  // if (currentInfo.tablesavailable === '') {
-  //   output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.tablesavailable;
-  //   output.message = 'Are there any tables or desks available to sit down and work ' + locationPhrase + '?';
-  //   output.contextualResponses = workspaces.answers.tablesavailable;
-  //   return output;
-  // } else if (currentInfo.tablesavailable === 'yes') {
-  //   // smaller tables
-  //   if (currentInfo.tabletype === '') {
-  //     output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.tabletype;
-  //     output.message = 'Looks like there might be some tables to use ' + locationPhrase + '. What kind of tables are available?';
-  //     output.contextualResponses = workspaces.answers.tabletype;
-  //     return output;
-  //   } else if (currentInfo.tabletype !== 'no more tables') {
-  //     let tableType = (currentInfo.tabletype === 'both') ? 'communal and private tables' : currentInfo.tabletype;
-  //
-  //     let currentMessage = 'There are currently ' + tableType + ' tables available ' + locationPhrase + '.';
-  //     if (currentInfo.tabletypeoutlets === '') {
-  //       output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.tabletypeoutlets;
-  //       output.message = currentMessage + ' Are any of these near outlets?';
-  //       output.contextualResponses = workspaces.answers.tabletypeoutlets;
-  //       return output;
-  //     }
-  //   }
-  //
-  //   // larger tables
-  //   if (currentInfo.grouptables === '') {
-  //     output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.grouptables;
-  //     output.message = 'Looks like there might be some tables to use ' + locationPhrase + '. Are any large enough for groups of people to work at them?';
-  //     output.contextualResponses = workspaces.answers.grouptables;
-  //     return output;
-  //   } else if (currentInfo.grouptables !== 'no') {
-  //     let tableType = (currentInfo.grouptables === 'yes: groups of 2-4 people') ? '2-4' : '4-6';
-  //
-  //     let currentMessage = 'There are currently tables for ' + tableType + ' people available ' + locationPhrase + '.';
-  //     if (currentInfo.grouptablesoutlet === '') {
-  //       output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.grouptablesoutlet;
-  //       output.message = currentMessage + ' Are any of these near outlets?';
-  //       output.contextualResponses = workspaces.answers.grouptablesoutlet;
-  //       return output;
-  //     }
-  //   }
-  // }
-  //
-  // // check for computer or monitor availability
-  // if (currentInfo.monitorscomps === '') {
-  //   output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.monitorscomps;
-  //   output.message = 'If computers or monitors available for student use ' + locationPhrase + ' are there any available right now?';
-  //   output.contextualResponses = workspaces.answers.monitorscomps;
-  //   return output;
-  // } else if (currentInfo.monitorscomps === 'yes, monitors' || currentInfo.monitorscomps === 'yes, both') {
-  //   if (currentInfo.monitorscompsdongles === '') {
-  //     output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.monitorscompsdongles;
-  //     output.message = 'Looks like there are monitors available  ' + locationPhrase + '! Do you see dongle and cables available present for use?';
-  //     output.contextualResponses = workspaces.answers.monitorscompsdongles;
-  //     return output;
-  //   }
-  // }
-  //
-  // // check for whiteboards availability
-  // if (currentInfo.whiteboards === '') {
-  //   output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.whiteboards;
-  //   output.message = 'If there are whiteboards ' + locationPhrase + ' to write on, are there any available right now?';
-  //   output.contextualResponses = workspaces.answers.whiteboards;
-  //   return output;
-  // } else if (currentInfo.whiteboards === 'yes') {
-  //   if (currentInfo.whiteboardsmarkers === '') {
-  //     output.notificationCategory = workspaces.tag + '_' + workspaces.questionTag.whiteboardsmarkers;
-  //     output.message = 'Looks like there are whiteboards ' + locationPhrase + ' to work on! Are there any dry erase markers nearby that you can borrow?';
-  //     output.contextualResponses = workspaces.answers.whiteboardsmarkers;
-  //     return output;
-  //   }
-  // }
-
-  // return a default undefined if there's nothing to ask
-  return undefined;
-};
-
-const createScaffoldedInfoForCafes = (currentInfo, locationCommonName) => {
-  // let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  // let output = {
-  //   'notificationCategory': '', // classtag_questiontag
-  //   'message': '', // notification message to present
-  //   'contextualResponses': [] // responses for contextual handler
-  // };
-  //
-  // // check for line length
-  // if (currentInfo.linelength === '') {
-  //   output.notificationCategory = cafes.tag + '_' + cafes.questionTag.linelength;
-  //   output.message = 'How long is the line ' + locationPhrase + ' currently?';
-  //   output.contextualResponses = cafes.answers.linelength;
-  //   return output;
-  // }
-  //
-  // // check for table availability
-  // if (currentInfo.tables === '') {
-  //   output.notificationCategory = cafes.tag + '_' + cafes.questionTag.tables;
-  //   output.message = 'Are there any tables ' + locationPhrase + ' where customers can eat?';
-  //   output.contextualResponses = cafes.answers.tables;
-  //   return output;
-  // }
-  //
-  // // check for specials
-  // if (currentInfo.specials === '') {
-  //   output.notificationCategory = cafes.tag + '_' + cafes.questionTag.specials;
-  //   output.message = 'Are there any specials available ' + locationPhrase + ' today?';
-  //   output.contextualResponses = cafes.answers.specials;
-  //   return output;
-  // } else if (currentInfo.specials === 'yes') {
-  //   if (currentInfo.specialsdaily === '') {
-  //     output.notificationCategory = cafes.tag + '_' + cafes.questionTag.specialsdaily;
-  //     output.message = 'There is a special available ' + locationPhrase + ' today! Can you tell us if it is a daily or seasonal special?';
-  //     output.contextualResponses = cafes.answers.specialsdaily;
-  //     return output;
-  //   } else if (currentInfo.specialsvegetarian === '') {
-  //     output.notificationCategory = cafes.tag + '_' + cafes.questionTag.specialsvegetarian;
-  //     output.message = 'There is a special available ' + locationPhrase + ' today! Is it vegetarian friendly?';
-  //     output.contextualResponses = cafes.answers.specialsvegetarian;
-  //     return output;
-  //   }
-  // }
-
-  // return a default undefined if there's nothing to ask
-  return undefined;
-};
-
-const createScaffoldedInfoForGyms = (currentInfo, locationCommonName) => {
-  // let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  // let output = {
-  //   'notificationCategory': '', // classtag_questiontag
-  //   'message': '', // notification message to present
-  //   'contextualResponses': [] // responses for contextual handler
-  // };
-  //
-  // // cardio equipment
-  // if (currentInfo.cardio === '') {
-  //   output.notificationCategory = gyms.tag + '_' + gyms.questionTag.cardio;
-  //   output.message = 'Are there cardio machines currently available ' + locationPhrase + '?';
-  //   output.contextualResponses = gyms.answers.cardio;
-  //   return output;
-  // } else if (currentInfo.cardio === 'yes') {
-  //   if (currentInfo.treadmills === '') {
-  //     output.notificationCategory = gyms.tag + '_' + gyms.questionTag.treadmills;
-  //     output.message = 'Are there treadmill machines currently available ' + locationPhrase + '?';
-  //     output.contextualResponses = gyms.answers.treadmills;
-  //     return output;
-  //   } else if (currentInfo.ellipticalbike === '') {
-  //     output.notificationCategory = gyms.tag + '_' + gyms.questionTag.ellipticalbike;
-  //     output.message = 'Are there elliptical machines or bikes currently available ' + locationPhrase + '?';
-  //     output.contextualResponses = gyms.answers.ellipticalbike;
-  //     return output;
-  //   }
-  // }
-  //
-  // // free weights
-  // if (currentInfo.freeweights === '') {
-  //   output.notificationCategory = gyms.tag + '_' + gyms.questionTag.freeweights;
-  //   output.message = 'Are there free weights currently available ' + locationPhrase + '?';
-  //   output.contextualResponses = gyms.answers.freeweights;
-  //   return output;
-  // } else if (currentInfo.freeweights === 'yes') {
-  //   if (currentInfo.benches === '') {
-  //     output.notificationCategory = gyms.tag + '_' + gyms.questionTag.benches;
-  //     output.message = 'Do you see benches with barbells currently available ' + locationPhrase + '?';
-  //     output.contextualResponses = gyms.answers.benches;
-  //     return output;
-  //   } else if (currentInfo.squatracks === '') {
-  //     output.notificationCategory = gyms.tag + '_' + gyms.questionTag.squatracks;
-  //     output.message = 'Do you see squat racks with barbells currently available ' + locationPhrase + '?';
-  //     output.contextualResponses = gyms.answers.squatracks;
-  //     return output;
-  //   } else if (currentInfo.dumbbells === '') {
-  //     output.notificationCategory = gyms.tag + '_' + gyms.questionTag.dumbbells;
-  //     output.message = 'Do you see dumbbells currently available ' + locationPhrase + '?';
-  //     output.contextualResponses = gyms.answers.dumbbells;
-  //     return output;
-  //   } else if (currentInfo.dumbbells === 'yes') {
-  //     if (currentInfo.dumbbellsbenches === '') {
-  //       output.notificationCategory = gyms.tag + '_' + gyms.questionTag.dumbbellsbenches;
-  //       output.message = 'There are dumbbells currently available ' + locationPhrase + '! Are there any benches available to use with them?';
-  //       output.contextualResponses = gyms.answers.dumbbellsbenches;
-  //       return output;
-  //     }
-  //   }
-  // }
-  //
-  // // stretching space
-  // if (currentInfo.stretch === '') {
-  //   output.notificationCategory = gyms.tag + '_' + gyms.questionTag.stretch;
-  //   output.message = 'Is there space to stretch ' + locationPhrase + ' currently available?';
-  //   output.contextualResponses = gyms.answers.stretch;
-  //   return output;
-  // } else if (currentInfo.stretch === 'yes') {
-  //   if (currentInfo.stretchmats === '') {
-  //     output.notificationCategory = gyms.tag + '_' + gyms.questionTag.stretchmats;
-  //     output.message = 'There is currently stretching space available ' + locationPhrase + '! Are there also mats available?';
-  //     output.contextualResponses = gyms.answers.stretchmats;
-  //     return output;
-  //   } else if (currentInfo.stretchroller === '') {
-  //     output.notificationCategory = gyms.tag + '_' + gyms.questionTag.stretchroller;
-  //     output.message = 'There is currently stretching space available ' + locationPhrase + '! Are there also rollers available?';
-  //     output.contextualResponses = gyms.answers.stretchroller;
-  //     return output;
-  //   }
-  // }
-  //
-  // // basketball courts
-  // if (currentInfo.basketballcourts === '') {
-  //   output.notificationCategory = gyms.tag + '_' + gyms.questionTag.basketballcourts;
-  //   output.message = 'Are there any courts available ' + locationPhrase + ' to play basketball?';
-  //   output.contextualResponses = gyms.answers.basketballcourts;
-  //   return output;
-  // }
-
-  // return a default undefined if there's nothing to ask
-  return undefined;
-};
-
-const createScaffoldedInfoForFood = (currentInfo, locationCommonName) => {
-  let locationPhrase = (locationCommonName === '') ? 'here' : 'in ' + locationCommonName;
-  const output = {
-    'message': '',
-    'levelOfInformation': ''
-  };
-
-  // L0: there is food here/there
-  if (currentInfo.type === '') {
-    output.message = ['Someone told us that there is free or sold food',
-      locationPhrase + '!'].join(' ');
-    output.levelOfInformation = '0';
-
-    return output;
-  } else if (currentInfo.type !== '') {
-    let currentMessage = '',
-      currentLOI = '0';
-
-    // what kind of food is there?
-    if (currentInfo.type !== 'other') {
-      currentMessage = ['Someone told us that there are', currentInfo.type,
-        locationPhrase + '!'].join(' ');
-      currentLOI = '1';
-    } else {
-      currentMessage = ['Someone told us that there is some kind of food',
-        locationPhrase + '!'].join(' ');
-      currentLOI = '1';
-    }
-
-    // how much is left?
-    // quantity is known
-    if (currentInfo.quantity !== '' && currentInfo.quantity !== 'none') {
-      let quantityType = '';
-
-      switch (currentInfo.quantity) {
-        case 'lots, plenty to go around':
-          quantityType = 'lots left';
-          break;
-        case 'some, going quickly':
-          quantityType = 'some left, but going fast';
-          break;
-        case 'very little, only couple items left':
-          quantityType = 'very little left, only a couple items';
-          break;
-        default:
-          break;
-      }
-
-      currentMessage = [currentMessage, 'Additionally, there seems to be',
-        quantityType + '.'].join('');
-      currentLOI = '2';
-
-      // is the food free or sold?
-      if (currentInfo.freesold === 'free') {
-        currentMessage = 'FREE FOOD!!! ' + currentMessage;
-        currentLOI = '3';
-
-        output.message = currentMessage;
-        output.levelOfInformation = currentLOI;
-        return output;
-      } else if (currentInfo.freesold === 'sold') {
-        currentMessage = 'FOOD FOR SALE! ' + currentMessage;
-        currentLOI = '3';
-
-        if (currentInfo.cost !== '') {
-          currentMessage = currentMessage + 'Price is ' + currentInfo.cost + ' .';
-          currentLOI = '4';
-
-          output.message = currentMessage;
-          output.levelOfInformation = currentLOI;
-          return output;
-        } else { // cost information unknown
-          output.message = currentMessage;
-          output.levelOfInformation = currentLOI;
-          return output;
-        }
-      } else { // free/sold information unknown
-        output.message = currentMessage;
-        output.levelOfInformation = currentLOI;
-        return output;
-      }
-    } else if (currentInfo.quantity === 'none') { // do not notify if there is no food left
-      return undefined;
-    } else { // quantity information unknown
-      output.message = currentMessage;
-      output.levelOfInformation = currentLOI;
-
-      return output;
-    }
-
-  }
-
-  // return a default undefined if there's not any more information to compose
-  return undefined;
+module.exports = {
+  composeNotification: composeNotification,
+  getNextQueryKey: getNextQueryKey,
+  createTextForScaffold: createTextForScaffold,
+  coffeeshops: coffeeshops
 };
