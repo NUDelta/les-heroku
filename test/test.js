@@ -1,9 +1,10 @@
 const expect = require('chai').expect;
-const composer = require('../cloud/notificationComposer.js');
+const composer = require('../cloud/notificationComposer');
+const scaffolds = require('../init/scaffolds');
 
 describe('coffee shop notification generation', () => {
   // specify overall structure
-  let structure = composer.coffeeshops;
+  let structure = scaffolds.coffeeshops;
   let locationName = 'Coffee Lab';
 
   it('empty scaffold should return query only', function () {
@@ -155,7 +156,7 @@ describe('coffee shop notification generation', () => {
 
 describe('gym notification generation', () => {
   // specify overall structure
-  let structure = composer.gyms;
+  let structure = scaffolds.gyms;
   let locationName = 'SPAC';
 
   it('empty scaffold should return query only', function () {
