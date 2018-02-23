@@ -449,3 +449,74 @@ describe('workspace notification generation', () => {
     expect(workspaceText).to.deep.equal(expectedOutput);
   });
 });
+
+describe('freefood notification generation', () => {
+  // specify overall structure
+  let structure = scaffolds.freefood;
+  let locationName = 'Tech Lobby';
+
+  it('empty scaffold should return query only', function () {
+    // setup input data
+    let scaffoldData = {
+      foodtype: '',
+      stillleft: ''
+    };
+
+    // generate notification and compare
+    let freefoodNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = {
+      notificationCategory: 'freefood_foodtype',
+      message: 'Do you know what kind of free food is available at Tech Lobby?',
+      contextualResponses: ['pizza', 'bagels', 'donuts', 'other']
+    };
+
+    expect(freefoodNotif).to.deep.equal(expectedOutput);
+  });
+
+  it('foodtype pizza should redirect to stillleft', function () {
+    // setup input data
+    let scaffoldData = {
+      foodtype: 'pizza',
+      stillleft: ''
+    };
+
+    // generate notification and compare
+    let freefoodNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = {
+      notificationCategory: 'freefood_stillleft',
+      message: 'There is free food (pizza), available at Tech Lobby. Is there still free food left at Tech Lobby?',
+      contextualResponses: ['yes', 'no']
+    };
+
+    expect(freefoodNotif).to.deep.equal(expectedOutput);
+  });
+
+  // TODO: when implementing loopback questions, this should return stillleft
+  it('full scaffold should return undefined since nothing further can be asked', function () {
+    // setup input data
+    let scaffoldData = {
+      foodtype: 'pizza',
+      stillleft: 'yes'
+    };
+
+    // generate notification and compare
+    let freefoodNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = undefined;
+
+    expect(freefoodNotif).to.deep.equal(expectedOutput);
+  });
+
+  it('check fully scaffolded message', function () {
+    // setup input data
+    let scaffoldData = {
+      foodtype: 'pizza',
+      stillleft: 'yes'
+    };
+
+    // generate notification and compare
+    let freeFood = composer.createTextForScaffold(structure.scaffoldStructure, scaffoldData, locationName);
+    let expectedOutput = 'There is free food (pizza), available at Tech Lobby.';
+
+    expect(freeFood).to.deep.equal(expectedOutput);
+  });
+});

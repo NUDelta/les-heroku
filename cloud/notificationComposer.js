@@ -93,7 +93,12 @@ const createTextForScaffold = function (scaffoldStructure, scaffoldData, locatio
       let baseArray = [scaffoldStructure.prefixText,
         scaffoldStructure.components,
         scaffoldStructure.suffixText];
-      return baseArray.join(' ').trim();
+      let baseOutputText = baseArray.join(' ').trim();
+
+      // replace any {{key}}
+      let replacementTarget = '{{' + scaffoldStructure.key + '}}';
+      baseOutputText = baseOutputText.replace(replacementTarget, scaffoldData[scaffoldStructure.key]);
+      return baseOutputText;
   }
 
   // recurse for each component if current key is valid

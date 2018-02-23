@@ -241,7 +241,7 @@ const workspaces = {
             components: 'markers to borrow nearby'
           }
         ]
-      },
+      }
     ]
   },
   queries: {
@@ -262,8 +262,48 @@ const workspaces = {
   },
 };
 
+const freefood = {
+  locationType: 'freefood',
+  refreshTime: 4 * 60 * 60, // 4 hr * 60 mins/hr * 60 seconds/min
+  scaffold: {
+    foodtype: '',
+    stillleft: ''
+  },
+  scaffoldStructure: {
+    key: '',
+    prefixText: 'There is',
+    suffixText: ', available at {{locationname}}.',
+    joinText: '',
+    components: [
+      {
+        key: 'foodtype',
+        prefixText: 'free food ({{foodtype}})',
+        suffixText: '',
+        joinText: '',
+        components: ''
+      },
+      {
+        key: 'stillleft',
+        prefixText: '',
+        suffixText: '',
+        joinText: '',
+        components: ''
+      }
+    ]
+  },
+  queries: {
+    foodtype: 'Do you know what kind of free food is available at {{locationname}}?',
+    stillleft: 'Is there still free food left at {{locationname}}?'
+  },
+  queryAnswers: {
+    foodtype: ['pizza', 'bagels', 'donuts', 'other'],
+    stillleft: ['yes', 'no']
+  },
+};
+
 module.exports = {
   coffeeshops: coffeeshops,
   gyms: gyms,
-  workspaces: workspaces
+  workspaces: workspaces,
+  freefood: freefood
 };
