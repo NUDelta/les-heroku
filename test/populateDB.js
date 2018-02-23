@@ -22,8 +22,8 @@ Parse.serverURL = 'http://localhost:5000/parse/';
  * @param queries
  * @param queryAnswers
  */
-const addLocationTypeMetadataToDB = function (locationType, refreshTime, scaffold,
-                                              scaffoldStructure, queries, queryAnswers) {
+const addLocationTypeMetadataToDB = function(locationType, refreshTime, scaffold,
+                                             scaffoldStructure, queries, queryAnswers) {
   // check if locationType already exists in DB
   let locationTypeMetadataQuery = new Parse.Query('LocationTypeMetadata');
   locationTypeMetadataQuery.equalTo('locationType', locationType);
@@ -68,6 +68,16 @@ addLocationTypeMetadataToDB(composer.gyms.locationType,
 
 /*
  * Add specific taskLocations
+ */
+
+/**
+ * Adds a new task location to the database.
+ *
+ * @param location
+ * @param beaconId
+ * @param locationType
+ * @param locationName
+ * @param locationHours
  */
 const addTaskLocationToDB = function(location, beaconId, locationType, locationName, locationHours) {
   // check if a taskLocation with the same name is already included
