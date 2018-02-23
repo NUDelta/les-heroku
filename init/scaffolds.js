@@ -63,8 +63,8 @@ const coffeeshops = {
   },
   queries: {
     privateseating: 'Do you see private seating (individual tables/chairs) available at {{locationname}}?',
-    privateseatingoutlets: 'Do you see private seating for individuals near outlets at {{locationname}}?',
-    privateseatingwindows: 'Do you see private seating for individuals near the windows at {{locationname}}?',
+    privateseatingoutlets: 'Do you see private seating (individual tables/chairs) near outlets at {{locationname}}?',
+    privateseatingwindows: 'Do you see private seating (individual tables/chairs) near the windows at {{locationname}}?',
     sharedseating: 'Do you see shared seating (communal tables) available at {{locationname}}?',
     sharedseatingoutlets: 'Do you see shared seating (communal tables) near outlets available at {{locationname}}?',
     sharedseatingwindows: 'Do you see shared seating (communal tables) near the windows available at {{locationname}}?',
@@ -180,7 +180,90 @@ const gyms = {
   },
 };
 
+const workspaces = {
+  locationType: 'workspace',
+  refreshTime: 4 * 60 * 60, // 4 hr * 60 mins/hr * 60 seconds/min
+  scaffold: {
+    privateseating: '',
+    privateseatingoutlets: '',
+    sharedseating: '',
+    sharedseatingoutlets: '',
+    whiteboards: '',
+    whiteboardsmarkers: ''
+  },
+  scaffoldStructure: {
+    key: '',
+    prefixText: 'There is',
+    suffixText: ', available at {{locationname}}.',
+    joinText: ', and also ',
+    components: [
+      {
+        key: 'privateseating',
+        prefixText: 'private seating ({{privateseating}})',
+        suffixText: '',
+        joinText: '',
+        components: [
+          {
+            key: 'privateseatingoutlets',
+            prefixText: 'near',
+            suffixText: '',
+            joinText: '',
+            components: 'outlets'
+          }
+        ]
+      },
+      {
+        key: 'sharedseating',
+        prefixText: 'shared seating (communal tables)',
+        suffixText: '',
+        joinText: '',
+        components: [
+          {
+            key: 'sharedseatingoutlets',
+            prefixText: 'near',
+            suffixText: '',
+            joinText: '',
+            components: 'outlets'
+          }
+        ]
+      },
+      {
+        key: 'whiteboards',
+        prefixText: 'whiteboards',
+        suffixText: '',
+        joinText: '',
+        components: [
+          {
+            key: 'whiteboardsmarkers',
+            prefixText: '',
+            suffixText: '',
+            joinText: '',
+            components: 'markers to borrow nearby'
+          }
+        ]
+      },
+    ]
+  },
+  queries: {
+    privateseating: 'Do you see private seating (individual tables/chairs) available at {{locationname}}?',
+    privateseatingoutlets: 'Do you see private seating (individual tables/chairs) near outlets at {{locationname}}?',
+    sharedseating: 'Do you see shared seating (communal tables) available at {{locationname}}?',
+    sharedseatingoutlets: 'Do you see shared seating (communal tables) near outlets available at {{locationname}}?',
+    whiteboards: 'Do you see any whiteboards currently available to use at {{locationname}}? ',
+    whiteboardsmarkers: 'Do you see any dry erase markers nearby for use with whiteboards at {{locationname}}? ',
+  },
+  queryAnswers: {
+    privateseating: ['tables', 'couches/chairs', 'tables and couches/chairs', 'no'],
+    privateseatingoutlets: ['yes', 'no'],
+    sharedseating: ['yes', 'no'],
+    sharedseatingoutlets: ['yes', 'no'],
+    whiteboards: ['yes', 'no'],
+    whiteboardsmarkers: ['yes', 'no']
+  },
+};
+
 module.exports = {
   coffeeshops: coffeeshops,
-  gyms: gyms
+  gyms: gyms,
+  workspaces: workspaces
 };
