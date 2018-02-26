@@ -1,6 +1,7 @@
 #! /app/.heroku/node/bin/node
 const Parse = require('parse/node');
 const push = require('../cloud/push.js');
+const _ = require('lodash');
 
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
@@ -8,22 +9,20 @@ Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
 
 const sendHeartbeatRequest = () => {
   // get all users currently using application
-  const userQuery = new Parse.Query('user');
+  const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
   userQuery.find({
     success: function (users) {
       const pushTokens = [];
 
-      for (let i in users) {
-        const currentUser = users[i];
-
-        if (currentUser.get('pushToken') !== undefined) {
+      _.forEach(users, (currentUser) => {
+        if (currentUser.get('pushToken') !== '') {
           pushTokens.push(currentUser.get('pushToken'));
         }
-      }
+      });
 
-      console.log(pushTokens);
-      push.sendSilentHeartbeatNotification(pushTokens);
+      console.log('Sending heartbeat request to: ', pushTokens);
+      push.sendSilentHeartbeatNotification(pushTokens, undefined);
 
       status.success('Heartbeat requests sent.');
     },

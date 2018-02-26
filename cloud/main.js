@@ -30,7 +30,7 @@ Parse.Cloud.define('sendPushToAllUsers', (request, response) => {
     success: function (users) {
       const pushTokens = [];
       _.forEach(users, (currentUser) => {
-        if (currentUser.get('pushToken') !== undefined) {
+        if (currentUser.get('pushToken') !== '') {
           pushTokens.push(currentUser.get('pushToken'));
         }
       });
@@ -58,7 +58,7 @@ Parse.Cloud.define('sendPushSilentRefresh', (request, response) => {
     success: (users) => {
       const pushTokens = [];
       _.forEach(users, (currentUser) => {
-        if (currentUser.get('pushToken') !== undefined) {
+        if (currentUser.get('pushToken') !== '') {
           pushTokens.push(currentUser.get('pushToken'));
         }
       });
@@ -99,7 +99,7 @@ const checkForTerminators = (terminators, info) => {
 // check if explicit app termination has happened
 // Parse.Cloud.afterSave('pretracking_debug', (request) => {
 //   if (request.object.get('console_string') === 'App about to terminate') {
-//     var getUserForVendorId = new Parse.Query('user');
+//     var getUserForVendorId = new Parse.Query(Parse.User);
 //     getUserForVendorId.equalTo('vendorId', request.object.get('vendor_id'));
 //     getUserForVendorId.descending('createdAt');
 //     getUserForVendorId.first({
@@ -292,7 +292,7 @@ Parse.Cloud.afterSave('hotspot', (request) => {
   }
 
   // send push update for data
-  const userQuery = new Parse.Query('user');
+  const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
   userQuery.find({
     success: (users) => {
@@ -301,13 +301,13 @@ Parse.Cloud.afterSave('hotspot', (request) => {
       for (let i in users) {
         const currentUser = users[i];
 
-        if (currentUser.get('pushToken') !== undefined) {
+        if (currentUser.get('pushToken') !== '') {
           pushTokens.push(currentUser.get('pushToken'));
         }
       }
 
       console.log(pushTokens);
-      push.sendSilentRefreshNotification(pushTokens, 'hotspot');
+      push.sendSilentRefreshNotification(pushTokens, 'hotspot'); // TODO: change this client side too
     },
     error: (error) => {
       console.log(error);
@@ -320,7 +320,7 @@ Parse.Cloud.afterSave('hotspot', (request) => {
  */
 Parse.Cloud.afterSave('beacons', () => {
   // send push update for data
-  const userQuery = new Parse.Query('user');
+  const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
   userQuery.find({
     success: (users) => {
@@ -329,7 +329,7 @@ Parse.Cloud.afterSave('beacons', () => {
       for (let i in users) {
         const currentUser = users[i];
 
-        if (currentUser.get('pushToken') !== undefined) {
+        if (currentUser.get('pushToken') !== '') {
           pushTokens.push(currentUser.get('pushToken'));
         }
       }
@@ -400,7 +400,7 @@ Parse.Cloud.define('createScaffoldedMessageForHotspot', (request, response) => {
  * Weight primary contribute as 2x more than response to ping
  */
 Parse.Cloud.define('rankingsByContribution', (request, response) => {
-  const userQuery = new Parse.Query('user');
+  const userQuery = new Parse.Query(Parse.User);
   userQuery.find({
     success: (users) => {
       const numberUsers = users.length;
@@ -514,7 +514,7 @@ Parse.Cloud.define('fetchMapDataView', (request, response) => {
         }
 
         // get initials for each response
-        const userQuery = new Parse.Query('user');
+        const userQuery = new Parse.Query(Parse.User);
         userQuery.containedIn('vendorId', users);
         userQuery.find({
           success: (users) => {
@@ -569,7 +569,7 @@ Parse.Cloud.define('fetchUserProfileData', (request, response) => {
     'contributionLocations': []
   };
 
-  const userQuery = new Parse.Query('user');
+  const userQuery = new Parse.Query(Parse.User);
   userQuery.equalTo('vendorId', request.params.vendorId);
   userQuery.descending('createdAt');
   userQuery.find({

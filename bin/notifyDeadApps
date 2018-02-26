@@ -2,21 +2,20 @@
 const Parse = require('parse/node');
 const push = require('../cloud/push.js');
 const _ = require('lodash');
+const moment = require('moment');
 
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
 
 const notifyDeadApps = function notifyDeadApps() {
-  // setup time threshold variables
-  const currentTime = Math.round(Date.now() / 1000);
-  const thresholdAmount = 60 * 60 * 8; // 60s * 60m * 8hr
-  const timeExpiryThreshold = currentTime - thresholdAmount;
+  // setup time threshold
+  const timeExpiryThreshold = moment().subtract(8, 'hours').toDate();
 
   // find all users who have had a heartbeat in the last 8 hours
   const heartbeatQuery = new Parse.Query('pretracking_debug');
   heartbeatQuery.equalTo('console_string', 'Application heartbeat');
-  heartbeatQuery.greaterThanOrEqualTo('timestamp_epoch', timeExpiryThreshold);
-  heartbeatQuery.descending('timestamp_epoch');
+  heartbeatQuery.greaterThanOrEqualTo('createdAt', timeExpiryThreshold);
+  heartbeatQuery.descending('createdAt');
   heartbeatQuery.limit(10000);
   heartbeatQuery.find({
     success: function (heartbeats) {
@@ -27,14 +26,14 @@ const notifyDeadApps = function notifyDeadApps() {
       });
 
       // query for all users who do not have valid heartbeats
-      const userQuery = new Parse.Query('user');
+      const userQuery = new Parse.Query(Parse.User);
       userQuery.notContainedIn('vendorId', Array.from(vendorIdSet));
       userQuery.descending('createdAt');
       userQuery.find({
         success: function (users) {
           const pushTokens = [];
           _.forEach(users, (currentUser) => {
-            if (currentUser.get('pushToken') !== undefined) {
+            if (currentUser.get('pushToken') !== '') {
               pushTokens.push(currentUser.get('pushToken'));
             }
           });

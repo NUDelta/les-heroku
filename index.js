@@ -64,7 +64,7 @@ ParseServer.createLiveQueryServer(httpServer);
 //
 // function requestCurrentUserLocation() {
 //   // get all users currently using application
-//   var userQuery = new Parse.Query('user');
+//   var userQuery = new Parse.Query(Parse.User);
 //   userQuery.descending('createdAt');
 //   userQuery.find({
 //     success: function(users) {
@@ -73,7 +73,7 @@ ParseServer.createLiveQueryServer(httpServer);
 //       for (var i in users) {
 //         var currentUser = users[i];
 //
-//         if (currentUser.get('pushToken') !== undefined) {
+//         if (currentUser.get('pushToken') !== '') {
 //           pushTokens.push(currentUser.get('pushToken'));
 //         }
 //       }
