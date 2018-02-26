@@ -1,7 +1,7 @@
 const dbFunctions = require('./dbFunctions');
 const Parse = require('parse/node');
 /*
- * Add specific taskLocations
+ * Add TaskLocations
  */
 
 // coffee lab
@@ -75,3 +75,31 @@ dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.054281, -87.678212), 'PUT 
     'friday': [['7:00', '13:30'], ['17:30', '20:00']],
     'saturday': [['8:00', '19:00']],
   });
+
+/*
+ * Add EnRoute locations
+ */
+
+dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.051548, -87.675907), 'misc',
+  'The Rock', 'Do you see anyone currently guarding The Rock?', ['yes', 'no']);
+
+dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.055636, -87.676695), 'parkingspace',
+  'Garrett Parking Lot', 'Do you see any open parking spots in the Garrett Parking Lot?', ['yes', 'no']);
+
+dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.058066, -87.677523), 'parkingspace',
+  'Tech Parking Lot', 'Do you see any open parking spots in the Tech Parking Lot?', ['yes', 'no']);
+
+dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.053433, -87.674949), 'bikerack',
+  'Main Library Bike Rack', 'Do you see any open bike racks nearby Main Library?', ['yes', 'no']);
+
+dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.059094, -87.674158), 'bikerack',
+  'SPAC Bike Rack', 'Do you see any open bike racks nearby SPAC?', ['yes', 'no']);
+
+dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.058331, -87.676974), 'bikerack',
+  'Tech Bike Rack', 'Do you see any open bike racks nearby Tech?', ['yes', 'no']);
+
+dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.053649, -87.676635), 'bikerack',
+  'Old Kellogg Bike Rack', 'Do you see any open bike racks nearby old Kellogg?', ['yes', 'no']);
+
+dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.054646, -87.67691), 'bikerack',
+  'Lunt Bike Rack', 'Do you see any open bike racks nearby Lunt?', ['yes', 'no']);

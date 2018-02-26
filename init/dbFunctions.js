@@ -49,7 +49,7 @@ const addLocationTypeMetadataToDB = function(locationType, refreshTime, scaffold
 };
 
 /**
- * Adds a new task location to the database.
+ * Adds a new TaskLocation to the database.
  *
  * @param location
  * @param beaconId
@@ -58,7 +58,7 @@ const addLocationTypeMetadataToDB = function(locationType, refreshTime, scaffold
  * @param locationHours
  */
 const addTaskLocationToDB = function(location, beaconId, locationType, locationName, locationHours) {
-  // check if a taskLocation with the same name is already included
+  // check if a TaskLocation with the same name is already included
   let locationNameQuery = new Parse.Query('TaskLocations');
   locationNameQuery.equalTo('locationName', locationName);
   locationNameQuery.equalTo('archived', false);
@@ -82,7 +82,6 @@ const addTaskLocationToDB = function(location, beaconId, locationType, locationN
     }
 
     // setup data
-    let locationMetadataId = results[0].id;
     let currentData = results[0].get('scaffold');
 
     let currentTime = Math.round(Date.now() / 1000);
@@ -92,12 +91,12 @@ const addTaskLocationToDB = function(location, beaconId, locationType, locationN
     });
 
     let locationTimezone = geoTz.tz(location.latitude, location.longitude);
-    let utcTimezoneOffsetSeconds = moment.tz.zone(locationTimezone).utcOffset(currentTime) * 60;
+    let utcTimezoneOffsetSeconds = moment.tz.zone(locationTimezone).utcOffset(currentTime) * -60;
 
     // create new location object
     let TaskLocation = Parse.Object.extend('TaskLocations');
     let newTaskLocation = new TaskLocation();
-    newTaskLocation.set('metadataId', locationMetadataId);
+    newTaskLocation.set('metadataObject', results[0]);
     newTaskLocation.set('location', location);
     newTaskLocation.set('beaconId', beaconId);
     newTaskLocation.set('locationType', locationType);
@@ -106,7 +105,9 @@ const addTaskLocationToDB = function(location, beaconId, locationType, locationN
     newTaskLocation.set('currentData', currentData);
     newTaskLocation.set('saveTimes', saveTimes);
     newTaskLocation.set('archived', false);
+    newTaskLocation.set('archiver', '');
     newTaskLocation.set('submissionMethod', '');
+    newTaskLocation.set('vendorId', '');
     newTaskLocation.set('gmtOffset', utcTimezoneOffsetSeconds);
     return newTaskLocation.save();
 
@@ -115,7 +116,45 @@ const addTaskLocationToDB = function(location, beaconId, locationType, locationN
   });
 };
 
+/**
+ * Adds a new EnRouteLocation to the database
+ *
+ * @param location
+ * @param locationType
+ * @param locationName
+ * @param question
+ * @param answers
+ */
+const addEnRouteLocationsToDB = function(location, locationType, locationName, question, answers) {
+  // check if EnRoute location with same question already exists
+  let enRouteLocationQuery = new Parse.Query('EnRouteLocations');
+  enRouteLocationQuery.equalTo('locationName', locationName);
+  enRouteLocationQuery.find().then(results => {
+    if (results.length === 0) {
+      // setup data
+      let currentTime = Math.round(Date.now() / 1000);
+      let locationTimezone = geoTz.tz(location.latitude, location.longitude);
+      let utcTimezoneOffsetSeconds = moment.tz.zone(locationTimezone).utcOffset(currentTime) * -60;
+
+      let EnRouteLocation = Parse.Object.extend('EnRouteLocations');
+      let newEnRouteLocation = new EnRouteLocation();
+      newEnRouteLocation.set('location', location);
+      newEnRouteLocation.set('locationType', locationType);
+      newEnRouteLocation.set('locationName', locationName);
+      newEnRouteLocation.set('question', question);
+      newEnRouteLocation.set('answers', answers);
+      newEnRouteLocation.set('gmtOffset', utcTimezoneOffsetSeconds);
+      return newEnRouteLocation.save();
+    } else {
+      console.log('EnRouteLocation already for ' + locationName + ' already exists.')
+    }
+  }).catch(error => {
+    console.log(error);
+  });
+};
+
 module.exports = {
   addLocationTypeMetadataToDB: addLocationTypeMetadataToDB,
-  addTaskLocationToDB: addTaskLocationToDB
+  addTaskLocationToDB: addTaskLocationToDB,
+  addEnRouteLocationsToDB: addEnRouteLocationsToDB
 };
