@@ -526,10 +526,35 @@ describe('freefood notification generation', () => {
   });
 });
 
+// TODO: write proper test cases
 describe('retrieving locations for tracking', () => {
-  it('blah', function () {
-    location.fetchLocationsToTrack(true, false, false, 46, 47, 300, 'C48E4605-3BE6-4DD7-A4AD-608C61104304').then(result => {
-      console.log(result);
+  it('opp at location', function () {
+    // includeDistance, includeEnRoute, includeWithoutPref, lat, lng, atDistanceNotifDistance, vendorId, response
+    return location.fetchLocationsToTrack(false, false, false, 46, 47, 300,
+      'C48E4605-3BE6-4DD7-A4AD-608C61104304', undefined).then(result => {
+      console.log('\nOpp at Location: \n', result);
+      expect('blah').to.deep.equal('hello');
+    });
+    // // console.log(location.fetchLocationsToTrack(true, true, false, 46, 47, 300, 'C48E4605-3BE6-4DD7-A4AD-608C61104304'));
+    // console.log(locations);
+  });
+
+  it('4X', function () {
+    // includeDistance, includeEnRoute, includeWithoutPref, lat, lng, atDistanceNotifDistance, vendorId, response
+    return location.fetchLocationsToTrack(true, true, false, 46, 47, 300,
+      'C48E4605-3BE6-4DD7-A4AD-608C61104304', undefined).then(result => {
+      console.log('\n4X: \n', result);
+      expect('blah').to.deep.equal('hello');
+    });
+    // // console.log(location.fetchLocationsToTrack(true, true, false, 46, 47, 300, 'C48E4605-3BE6-4DD7-A4AD-608C61104304'));
+    // console.log(locations);
+  });
+
+  it('opp at distance', function () {
+    // includeDistance, includeEnRoute, includeWithoutPref, lat, lng, atDistanceNotifDistance, vendorId, response
+    return location.fetchLocationsToTrack(true, false, true, 46, 47, 300,
+      'C48E4605-3BE6-4DD7-A4AD-608C61104304', undefined).then(result => {
+      console.log('\nOpp at Distance: \n', result);
       expect('blah').to.deep.equal('hello');
     });
     // // console.log(location.fetchLocationsToTrack(true, true, false, 46, 47, 300, 'C48E4605-3BE6-4DD7-A4AD-608C61104304'));

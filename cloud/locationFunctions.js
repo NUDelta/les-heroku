@@ -22,8 +22,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
   // create a Parse.GeoPoint for each location queries
   const locationGeopoint = new Parse.GeoPoint(lat, lng);
 
-  // start by getting active (archived = true) TaskLocations where user is not the creator and
-  // they have not contributed data to the TaskLocation
+  // get user responses to queries AtLocation
   const atLocationResponseQuery = new Parse.Query('AtLocationResponses');
   atLocationResponseQuery.equalTo('vendorId', vendorId);
   atLocationResponseQuery.descending('createdAt');
@@ -37,7 +36,8 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
       locationIgnoreSet.add(currLocationResponse.get('taskLocationId'));
     });
 
-    // fetch all TaskLocation
+    // fetch all active TaskLocation (archived = false) where user is not creator and has not
+    // already responded to info at
     const taskLocationQuery = new Parse.Query('TaskLocations');
     taskLocationQuery.notEqualTo('archived', true); // location should still be active
     taskLocationQuery.notEqualTo('vendorId', vendorId); // user has not created the location
@@ -46,11 +46,18 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
     taskLocationQuery.near('location', locationGeopoint);
     taskLocationQuery.limit(10);
 
-    // fetch TaskLocations where user has received an AtDistance notification
-    const atDistanceResponseQuery = new Parse.Query('AtDistanceResponses');
-    atDistanceResponseQuery.equalTo('vendorId', vendorId);
-    atDistanceResponseQuery.descending('createdAt');
-    atDistanceResponseQuery.limit(1000);
+    // AtDistance notification where user has responded negatively
+    const atDistanceResponses = [
+      'No. This info is useful but I have to be somewhere.',
+      'No. This info isn\'t useful to me.',
+      'No. I don\'t want to go out of my way there.',
+      'No. Other reason.'
+    ];
+    const negativeAtDistanceResponseQuery = new Parse.Query('AtDistanceResponses');
+    negativeAtDistanceResponseQuery.equalTo('vendorId', vendorId);
+    negativeAtDistanceResponseQuery.containedIn('emaResponse', atDistanceResponses);
+    negativeAtDistanceResponseQuery.descending('createdAt');
+    negativeAtDistanceResponseQuery.limit(1000);
 
     // fetch User preferences
     const preferenceQuery = new Parse.Query(Parse.User);
@@ -64,19 +71,19 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
 
     return Promise.all([
       taskLocationQuery.find(),
-      atDistanceResponseQuery.find(),
+      negativeAtDistanceResponseQuery.find(),
       preferenceQuery.first(),
       enRouteQuery.find()
     ]);
   }).then(values => {
     const taskLocations = values[0];
-    const atDistanceResponses = values[1];
+    const negativeAtDistanceResponses = values[1];
     const preferences = values[2].get('preferences');
     const enRouteLocations = values[3];
 
-    // track all locations where user has already received an AtDistance notification
+    // ignore location if user was notified AtDistance and responded negatively
     const atDistanceIgnoreSet = new Set();
-    _.forEach(atDistanceResponses, (currAtDistanceResponse) => {
+    _.forEach(negativeAtDistanceResponses, (currAtDistanceResponse) => {
       atDistanceIgnoreSet.add(currAtDistanceResponse.get('taskLocationId'));
     });
 
@@ -113,12 +120,13 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
         // only include distance notifications if includeDistance is set
         if (includeDistance) {
           currLocation['atDistanceMessage'] = notification.atDistanceMessage;
-          currLocation['atDistanceResponses'] = notification.atDistanceResponses;
-          currLocation['shouldNotifyAtDistance'] = !atDistanceIgnoreSet.has(currTaskLocation.id);
+          currLocation['negativeAtDistanceResponses'] = notification.atDistanceResponses;
           currLocation['atDistanceNotificationDistance'] = atDistanceNotifDistance;
+          currLocation['shouldNotifyAtDistance'] = !atDistanceIgnoreSet.has(currTaskLocation.id) &&
+            notification.atDistanceMessage !== '';
         } else {
           currLocation['atDistanceMessage'] = '';
-          currLocation['atDistanceResponses'] = [];
+          currLocation['negativeAtDistanceResponses'] = [];
           currLocation['shouldNotifyAtDistance'] = false;
           currLocation['atDistanceNotificationDistance'] = -1;
         }
@@ -141,7 +149,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
           'atLocationMessage': currEnRouteLocation.get('question'),
           'atLocationResponses': ['yes', 'no', 'I don\'t know'],
           'atDistanceMessage': '',
-          'atDistanceResponses': '',
+          'negativeAtDistanceResponses': '',
           'preferredInfo': '',
           'shouldNotifyAtDistance': false,
           'atDistanceNotificationDistance': -1,
@@ -152,7 +160,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
     }
 
     // console.log('taskLocations: ', taskLocations);
-    // console.log('atDistanceResponses: ', atDistanceResponses);
+    // console.log('negativeAtDistanceResponses: ', negativeAtDistanceResponses);
     // console.log('preferences: ', preferences);
     // console.log('enRouteLocations: ', enRouteLocations);
 
