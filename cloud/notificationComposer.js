@@ -5,14 +5,14 @@ const atDistanceInfoResponses = [
   'Yes! This info is useful, I\'m going now.',
   'Yes. This info is useful but I\'m already going there.',
   'No. This info is useful but I have to be somewhere.',
-  'No. This info isn’t useful to me.',
+  'No. This info isn\'t useful to me.',
   'No. Other reason.'
 ];
 
 const atDistanceNoInfoResponses = [
   'Sure! I would be happy to go out of my way!',
   'Sure, but I was going to walk past it anyway.',
-  'No. I don’t want to go out of my way there.',
+  'No. I don\'t want to go out of my way there.',
   'No. Other reason.'
 ];
 
