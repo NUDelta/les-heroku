@@ -349,13 +349,16 @@ Parse.Cloud.afterSave('beacons', () => {
  */
 
 /**
- * Retrieves all locations to track for a given user.
+ * Retrieves all locations to track for a given user, given conditions specified.
+ * 4X: includeDistance = true, includeEnRoute = true, includeWithoutPref = false
+ * Opp at Location: includeDistance = false, includeEnRoute = false, includeWithoutPref = false
+ * Opp at Distance: includeDistance = true, includeEnRoute = false, includeWithoutPref = true
  *
  * @param request {object} { latitude: Int, longitude: Int, vendorId: Str}
  */
 Parse.Cloud.define('retrieveLocations', (request, response) => {
-  const includeDistance = false; // use only eXplore (locations when user immediately passes)
-  const includeEnRoute = false; // include En Route Locations
+  const includeDistance = true; // use only eXplore (locations when user immediately passes)
+  const includeEnRoute = true; // include En Route Locations
   const includeWithoutPref = false; // include locations where preferred info is unavailable
 
   const lat = request.params.latitude;
