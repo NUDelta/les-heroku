@@ -1,6 +1,11 @@
 const expect = require('chai').expect;
 const composer = require('../cloud/notificationComposer');
 const scaffolds = require('../init/scaffolds');
+const location = require('../cloud/locationFunctions');
+
+const Parse = require('parse/node');
+Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
+Parse.serverURL = 'http://localhost:5000/parse/';
 
 describe('coffee shop notification generation', () => {
   // specify overall structure
@@ -518,5 +523,16 @@ describe('freefood notification generation', () => {
     let expectedOutput = 'There is free food (pizza), available at Tech Lobby.';
 
     expect(freeFood).to.deep.equal(expectedOutput);
+  });
+});
+
+describe('retrieving locations for tracking', () => {
+  it('blah', function () {
+    location.fetchLocationsToTrack(true, false, false, 46, 47, 300, 'C48E4605-3BE6-4DD7-A4AD-608C61104304').then(result => {
+      console.log(result);
+      expect('blah').to.deep.equal('hello');
+    });
+    // // console.log(location.fetchLocationsToTrack(true, true, false, 46, 47, 300, 'C48E4605-3BE6-4DD7-A4AD-608C61104304'));
+    // console.log(locations);
   });
 });

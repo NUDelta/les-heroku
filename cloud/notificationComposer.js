@@ -1,6 +1,84 @@
 const _ = require('lodash');
 const moment = require('moment');
 
+const atDistanceInfoResponses = [
+  'Yes! This info is useful, I\'m going now.',
+  'Yes. This info is useful but I\'m already going there.',
+  'No. This info is useful but I have to be somewhere.',
+  'No. This info isn’t useful to me.',
+  'No. Other reason.'
+];
+
+const atDistanceNoInfoResponses = [
+  'Sure! I would be happy to go out of my way!',
+  'Sure, but I was going to walk past it anyway.',
+  'No. I don’t want to go out of my way there.',
+  'No. Other reason.'
+];
+
+const createNotifcationWithPreferences = function (preferences, includeWithoutPref, locationMetadata, scaffoldData, locationName) {
+  // only use scaffold data where data matches preferences
+  const preferredScaffoldData = JSON.parse(JSON.stringify(scaffoldData));
+  _.forEach(preferences, (answerList, questionKey) => {
+    if (!answerList.includes(scaffoldData[questionKey])) {
+      preferredScaffoldData[questionKey] = '';
+    }
+  });
+
+  // create atDistance message using preferred data
+  const atDistanceMessage = createTextForScaffold(locationMetadata.scaffoldStructure,
+    preferredScaffoldData, locationName);
+
+  // create atLocation message if no preferences are specified (e.g. atDistanceMessage is blank
+  let atLocationMessage = atDistanceMessage;
+  if (atLocationMessage === '') {
+    atLocationMessage = createTextForScaffold(locationMetadata.scaffoldStructure,
+      scaffoldData, locationName);
+  }
+
+  // get next query key: check if no question is available to ask, return undefined if so
+  const queryKey = getNextQueryKey(locationMetadata.scaffoldStructure, scaffoldData);
+  if (queryKey === '') {
+    return undefined;
+  }
+
+  // if valid query key, get text and answers (also add idk response to answers)
+  let queryText = locationMetadata.queries[queryKey];
+  queryText = queryText.replace('{{locationname}}', locationName);
+  let queryAnswers = locationMetadata.queryAnswers[queryKey];
+  queryAnswers.push('I don\'t know');
+
+  // create notificationCategory
+  let notificationCategory = locationMetadata.locationType + '_' + queryKey;
+
+  // create fullAtDistanceMessage and atDistanceResponses
+  // if includeWithoutPref is specified (for opp at dist), just ask for info
+  let fullAtDistanceMessage = '';
+  let atDistanceResponses = [];
+
+  if (includeWithoutPref && atDistanceMessage === '') {
+    fullAtDistanceMessage = 'We need some information about ' + locationName +
+      ' nearby. Would you be willing to head over and answer a question for us?';
+    atDistanceResponses = atDistanceNoInfoResponses;
+  } else if (atDistanceMessage !== '') {
+    fullAtDistanceMessage = (atDistanceMessage + ' Would you like to go there?');
+    atDistanceResponses = atDistanceInfoResponses;
+  }
+
+  // create fullAtLocationMessage
+  let fullAtLocationMessage = (atLocationMessage + ' ' + queryText).trim();
+
+  // create and return output
+  return {
+    notificationCategory: notificationCategory,
+    preferredInfoMessage: atDistanceMessage,
+    atDistanceMessage: fullAtDistanceMessage,
+    atLocationMessage: fullAtLocationMessage,
+    atLocationResponses: queryAnswers,
+    atDistanceResponses: atDistanceResponses
+  }
+};
+
 /**
  * Creates an object with the notification category, message (data and query) and responses.
  *
@@ -71,7 +149,6 @@ const getNextQueryKey = function (scaffoldStructure, scaffoldData) {
   return keyCandidate;
 };
 
-// TODO: add preference support to this.
 /**
  * Creates text for scaffolded data, given the structure and current data.
  *
@@ -133,7 +210,8 @@ const createTextForScaffold = function (scaffoldStructure, scaffoldData, locatio
 };
 
 module.exports = {
-  composeNotification: composeNotification,
   getNextQueryKey: getNextQueryKey,
-  createTextForScaffold: createTextForScaffold
+  createTextForScaffold: createTextForScaffold,
+  composeNotification: composeNotification,
+  createNotifcationWithPreferences: createNotifcationWithPreferences
 };

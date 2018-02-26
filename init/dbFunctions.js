@@ -82,10 +82,9 @@ const addTaskLocationToDB = function(location, beaconId, locationType, locationN
     }
 
     // setup data
-    let currentData = results[0].get('scaffold');
-
+    let currentData = JSON.parse(JSON.stringify(results[0].get('scaffold')));
     let currentTime = Math.round(Date.now() / 1000);
-    let saveTimes = results[0].get('scaffold');
+    let saveTimes = JSON.parse(JSON.stringify(results[0].get('scaffold')));
     _.forEach(saveTimes, (queryValue, queryKey) => {
       saveTimes[queryKey] = currentTime;
     });
