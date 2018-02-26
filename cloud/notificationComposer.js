@@ -16,7 +16,20 @@ const atDistanceNoInfoResponses = [
   'No. Other reason.'
 ];
 
-const createNotifcationWithPreferences = function (preferences, includeWithoutPref, locationMetadata, scaffoldData, locationName) {
+/**
+ * Creates an notification object, given user preferences for the location.
+ * Object contains: notificationCategory, preferredInfoMessage,
+ * atDistanceMessage, atDistanceResponses, atLocationMessage, and atLocationResponses
+ *
+ * @param preferences
+ * @param includeWithoutPref
+ * @param locationMetadata
+ * @param scaffoldData
+ * @param locationName
+ * @returns {object}
+ */
+const createNotifcationWithPreferences = function (preferences, includeWithoutPref,
+                                                   locationMetadata, scaffoldData, locationName) {
   // only use scaffold data where data matches preferences
   const preferredScaffoldData = JSON.parse(JSON.stringify(scaffoldData));
   _.forEach(preferences, (answerList, questionKey) => {
@@ -73,9 +86,9 @@ const createNotifcationWithPreferences = function (preferences, includeWithoutPr
     notificationCategory: notificationCategory,
     preferredInfoMessage: atDistanceMessage,
     atDistanceMessage: fullAtDistanceMessage,
+    atDistanceResponses: atDistanceResponses,
     atLocationMessage: fullAtLocationMessage,
-    atLocationResponses: queryAnswers,
-    atDistanceResponses: atDistanceResponses
+    atLocationResponses: queryAnswers
   }
 };
 
@@ -174,7 +187,8 @@ const createTextForScaffold = function (scaffoldStructure, scaffoldData, locatio
 
       // replace any {{key}}
       let replacementTarget = '{{' + scaffoldStructure.key + '}}';
-      baseOutputText = baseOutputText.replace(replacementTarget, scaffoldData[scaffoldStructure.key]);
+      baseOutputText = baseOutputText.replace(replacementTarget,
+        scaffoldData[scaffoldStructure.key]);
       return baseOutputText;
   }
 
@@ -195,7 +209,8 @@ const createTextForScaffold = function (scaffoldStructure, scaffoldData, locatio
   }
 
   // combine with prefix and suffix
-  let outputText = [scaffoldStructure.prefixText, middle, scaffoldStructure.suffixText].join(' ').trim();
+  let outputText = [scaffoldStructure.prefixText, middle, scaffoldStructure.suffixText];
+  outputText = outputText.join(' ').trim();
 
   // replace any {{key}} with correct text
   if (scaffoldStructure.key === '') { // check highest level for location name

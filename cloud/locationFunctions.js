@@ -17,7 +17,8 @@ const composer = require('./notificationComposer.js');
  * @param response {object} response object from caller
  * @returns {*|Promise<T>}
  */
-const fetchLocationsToTrack = function (includeDistance, includeEnRoute, includeWithoutPref, lat, lng, atDistanceNotifDistance, vendorId, response) {
+const fetchLocationsToTrack = function (includeDistance, includeEnRoute, includeWithoutPref,
+                                        lat, lng, atDistanceNotifDistance, vendorId, response) {
   // create a Parse.GeoPoint for each location queries
   const locationGeopoint = new Parse.GeoPoint(lat, lng);
 
