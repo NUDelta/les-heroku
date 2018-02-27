@@ -12,45 +12,36 @@ const notifyDeadApps = function notifyDeadApps() {
   const timeExpiryThreshold = moment().subtract(8, 'hours').toDate();
 
   // find all users who have had a heartbeat in the last 8 hours
-  const heartbeatQuery = new Parse.Query('pretracking_debug');
-  heartbeatQuery.equalTo('console_string', 'Application heartbeat');
+  const heartbeatQuery = new Parse.Query('ApplicationHeartbeat');
+  heartbeatQuery.equalTo('logString', 'Application heartbeat');
   heartbeatQuery.greaterThanOrEqualTo('createdAt', timeExpiryThreshold);
   heartbeatQuery.descending('createdAt');
   heartbeatQuery.limit(10000);
-  heartbeatQuery.find({
-    success: function (heartbeats) {
-      // get all users with valid heartbeats
-      const vendorIdSet = new Set();
-      _.forEach(heartbeats, (currentHeartbeat) => {
-        vendorIdSet.add(currentHeartbeat.get('vendor_id'));
-      });
+  heartbeatQuery.find().then(heartbeats => {
+    // get all users with valid heartbeats
+    const vendorIdSet = new Set();
+    _.forEach(heartbeats, (currentHeartbeat) => {
+      vendorIdSet.add(currentHeartbeat.get('vendor_id'));
+    });
 
-      // query for all users who do not have valid heartbeats
-      const userQuery = new Parse.Query(Parse.User);
-      userQuery.notContainedIn('vendorId', Array.from(vendorIdSet));
-      userQuery.descending('createdAt');
-      userQuery.find({
-        success: function (users) {
-          const pushTokens = [];
-          _.forEach(users, (currentUser) => {
-            if (currentUser.get('pushToken') !== '') {
-              pushTokens.push(currentUser.get('pushToken'));
-            }
-          });
+    // query for all users who do not have valid heartbeats
+    const userQuery = new Parse.Query(Parse.User);
+    userQuery.notContainedIn('vendorId', Array.from(vendorIdSet));
+    userQuery.descending('createdAt');
+    return userQuery.find();
+  }).then(users => {
+    const pushTokens = [];
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
+      }
+    });
 
-          const message = 'Hi! ' +
-            'It seems that LES closed on your phone. ' +
-            'Swipe right or tap to start it up again!';
-          push.sendPushWithMessage(pushTokens, message, status);
-        },
-        error: function (error) {
-          status.error(error);
-        }
-      });
-    },
-    error: function (error) {
-      status.error(error);
-    }
+    const message = 'Hi! It seems that LES closed on your phone. ' +
+      'Swipe right or tap to start it up again!';
+    push.sendPushWithMessage(pushTokens, message, status);
+  }).catch(error => {
+    status.error(error);
   });
 };
 

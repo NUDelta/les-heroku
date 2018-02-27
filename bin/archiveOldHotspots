@@ -6,16 +6,16 @@ Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
 
 const archiveOldHotspots = function () {
-  // setup time thresholding
+  // setup time threshold
   const timeExpiryThreshold = moment().subtract(4, 'hours').toDate();
 
   // fetch objects that are ready to be archived
   const taskLocationQuery = new Parse.Query('TaskLocations');
   taskLocationQuery.notEqualTo('archived', true);
   taskLocationQuery.lessThan('createdAt', timeExpiryThreshold);
-  taskLocationQuery.each(function (hotspot) {
-    hotspot.set('archiver', 'system');
-    hotspot.save();
+  taskLocationQuery.each(taskLocationToArchive => {
+    taskLocationToArchive.set('archiver', 'system');
+    taskLocationToArchive.save();
   }).then(function () {
     status.success('Routine archiving completed successfully.');
   }, function (error) {

@@ -4,8 +4,6 @@ const Parse = require('parse/node');
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
 
-// Parse.Cloud.useMasterKey();
-
 function rotateConditions() {
   const studyConditionQuery = new Parse.Query('studyConditions');
   studyConditionQuery.each(function (user) {
