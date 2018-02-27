@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const push = require('./push.js');
 const locationFunctions = require('./locationFunctions');
+const Parse = require('parse/node');
 
 /*
  * Push Functions
@@ -118,78 +119,51 @@ const checkForTerminators = (terminators, info) => {
 /**
  * Aggregates data and archives locations if they are no longer valid
  */
-Parse.Cloud.afterSave('pingResponse', (request) => {
-  // thresholds for adding info and archiving hotspot
-  const infoAddThreshold = 1;
-  const archiveHotspotThreshold = 2;
-
+Parse.Cloud.afterSave('AtLocationNotificationResponses', (request, response) => {
   // get values from just saved object
-  const responseId = request.object.id;
-  const hotspotId = request.object.get('hotspotId');
+  const taskLocationId = request.object.get('taskLocationId');
   const question = request.object.get('question');
   const questionResponse = request.object.get('response');
-  const timestamp = request.object.get('timestamp');
 
   // special cases --> don't save answer
   // "I don't know" for surprising things
-  // "I don't come here regularly" for queues
-  const responseExceptions = ['I don\'t know', 'I don\'t come here regularly',
+  // default apple responses
+  const responseExceptions = ['I don\'t know',
     'com.apple.UNNotificationDefaultActionIdentifier',
     'com.apple.UNNotificationDismissActionIdentifier'
   ];
-  if (responseExceptions.indexOf(questionResponse) !== -1) {
-    return;
+
+  if (responseExceptions.includes(questionResponse)) {
+    return response.success('Response not added to TaskLocation since it is an exception.');
   }
 
-  const getHotspotData = new Parse.Query('hotspot');
-  getHotspotData.equalTo('objectId', hotspotId);
-  getHotspotData.first({
-    success: (hotspotObject) => {
-      const saveTimes = hotspotObject.get('saveTimeForQuestion');
-      const lastUpdateTimestamp = saveTimes[question];
+  const taskLocationQuery = new Parse.Query('TaskLocations');
+  taskLocationQuery.equalTo('objectId', taskLocationId);
+  taskLocationQuery.first().then(taskLocationObject => {
+    if (taskLocationObject !== undefined) {
+      const newUpdateTimestamp = Math.round(Date.now() / 1000);
 
-      const responseForHotspot = new Parse.Query('pingResponse');
-      responseForHotspot.equalTo('hotspotId', hotspotId);
-      responseForHotspot.equalTo('question', question);
-      responseForHotspot.greaterThanOrEqualTo('timestamp', lastUpdateTimestamp);
-      responseForHotspot.find({
-        success: (hotspotResponses) => {
-          let similarResponseCount = 1;
+      const newSaveTimes = taskLocationObject.get('saveTimes');
+      newSaveTimes[question] = newUpdateTimestamp;
 
-          for (let i = 0; i < hotspotResponses.length; i++) {
-            const currentResponse = hotspotResponses[i].get('response');
+      const newData = taskLocationObject.get('currentData');
+      newData[question] = questionResponse;
 
-            if (currentResponse === questionResponse) {
-              similarResponseCount++;
-            }
-          }
-
-          if (similarResponseCount >= infoAddThreshold) {
-            const newUpdateTimestamp = Math.round(Date.now() / 1000);
-            const newInfo = hotspotObject.get('info');
-            newInfo[question] = questionResponse;
-            saveTimes[question] = newUpdateTimestamp;
-
-            hotspotObject.set('saveTimeForQuestion', saveTimes);
-            hotspotObject.set('info', newInfo);
-            hotspotObject.save();
-          }
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      });
-    },
-    error: (error) => {
-      console.log(error);
+      taskLocationObject.set('saveTimes', newSaveTimes);
+      taskLocationObject.set('currentData', newData);
+      taskLocationObject.save();
     }
+
+    response.success();
+  }).catch(error => {
+    response.error(error);
   });
 });
 
 /**
  * Set Archiver value before saving
  */
-Parse.Cloud.beforeSave('hotspot', (request, response) => {
+Parse.Cloud.beforeSave('TaskLocations', (request, response) => {
   if (!request.object.get('archiver')) {
     request.object.set('archiver', '');
   }
@@ -202,144 +176,91 @@ Parse.Cloud.beforeSave('hotspot', (request, response) => {
 /**
  * Archives old hotspots on either user response or system archive and sends data update to app
  */
-Parse.Cloud.afterSave('hotspot', (request) => {
-  const hotspot = request.object;
-  const tag = hotspot.get('tag');
-  const hotspotInfo = hotspot.get('info');
-  const locationCommonName = hotspot.get('locationCommonName');
+Parse.Cloud.afterSave('TaskLocations', (request, response) => {
+  const taskLocation = request.object;
+  const locationType = taskLocation.get('locationType');
+  const taskLocationInfo = taskLocation.get('currentData');
+  const locationName = taskLocation.get('locationName');
 
   // check if archived = true, if so stop
-  if (hotspot.get('archived')) {
+  if (taskLocation.get('archived')) {
     return;
   }
 
-  // check if any tracking terminators have been saved to info object
-  // var foodTerminators = {
-  //   'isfood': 'no',
-  //   'foodtype': 'no food here',
-  //   'howmuchfood': 'none'
-  // };
-  // var queueTerminators = {
-  //   'isline': 'no'
-  // };
-  // var spaceTerminators = {
-  //   'isspace': 'no'
-  // };
-  // var surprisingTerminators = {
-  //   'whatshappening': 'no',
-  //   'famefrom': 'no longer here',
-  //   'vehicles': 'no longer here',
-  //   'peopledoing': 'no longer here'
-  // };
-  //
-  // var terminatorsExist = false;
-  // switch (tag) {
-  //   case 'food':
-  //     terminatorsExist = checkForTerminators(foodTerminators, hotspotInfo);
-  //     break;
-  //   case 'queue':
-  //     terminatorsExist = checkForTerminators(queueTerminators, hotspotInfo);
-  //     break;
-  //   case 'space':
-  //     terminatorsExist = checkForTerminators(spaceTerminators, hotspotInfo);
-  //     break;
-  //   case 'surprising':
-  //     terminatorsExist = checkForTerminators(surprisingTerminators,
-  //       hotspotInfo);
-  //     break;
-  //   default:
-  //     break;
-  // }
-
-  // if (terminatorsExist || hotspot.get('archiver') === 'system') {
-  if (hotspot.get('archiver') === 'system') {
-    // archive old hotspot (user is archiver unless background job archives)
-    hotspot.set('archived', true);
-    if (hotspot.get('archiver') === '') {
-      hotspot.set('archiver', 'user');
-    }
-    hotspot.save();
+  if (taskLocation.get('archiver') === 'system') {
+    console.log('this is running');
+    // archive old taskLocation (user is archiver unless background job archives)
+    taskLocation.set('archived', true);
+    taskLocation.save();
 
     // recreate pre-marked locations
-    if (locationCommonName !== '') {
-      // create new values for hotspot
+    if (locationName !== '') {
+      // create new values for TaskLocation
       const timestamp = Math.round(Date.now() / 1000);
-      const newInfo = JSON.parse(JSON.stringify(hotspotInfo));
-      const newSaveTimes = JSON.parse(JSON.stringify(hotspotInfo));
-      for (let i in hotspotInfo) {
-        newInfo[i] = '';
-        newSaveTimes[i] = timestamp;
-      }
+      const newInfo = JSON.parse(JSON.stringify(taskLocationInfo));
+      const newSaveTimes = JSON.parse(JSON.stringify(taskLocationInfo));
+      _.forEach(taskLocationInfo, (value, key) => {
+        newInfo[key] = '';
+        newSaveTimes[key] = timestamp;
+      });
 
-      // save new hotspot
-      const parseHotspot = Parse.Object.extend('hotspot');
-      const newHotspot = new parseHotspot();
-      newHotspot.set('vendorId', '');
-      newHotspot.set('tag', tag);
-      newHotspot.set('info', newInfo);
-      newHotspot.set('location', hotspot.get('location'));
-      newHotspot.set('beaconId', hotspot.get('beaconId'));
-      newHotspot.set('archived', false);
-      newHotspot.set('archiver', '');
-      newHotspot.set('timestampCreated', timestamp);
-      newHotspot.set('gmtOffset', hotspot.get('gmtOffset'));
-      newHotspot.set('timestampLastUpdate', timestamp);
-      newHotspot.set('submissionMethod', '');
-      newHotspot.set('locationCommonName', locationCommonName);
-      newHotspot.set('saveTimeForQuestion', newSaveTimes);
-      newHotspot.save();
+      // save new TaskLocation
+      const TaskLocation = Parse.Object.extend('TaskLocations');
+      const newTaskLocation = new TaskLocation();
+      newTaskLocation.set('metadataObject', taskLocation.get('metadataObject'));
+      newTaskLocation.set('location', taskLocation.get('location'));
+      newTaskLocation.set('beaconId', taskLocation.get('beaconId'));
+      newTaskLocation.set('locationType', locationType);
+      newTaskLocation.set('locationName', locationName);
+      newTaskLocation.set('locationHours', taskLocation.get('locationHours'));
+      newTaskLocation.set('currentData', newInfo);
+      newTaskLocation.set('saveTimes', newSaveTimes);
+      newTaskLocation.set('archived', false);
+      newTaskLocation.set('archiver', '');
+      newTaskLocation.set('submissionMethod', '');
+      newTaskLocation.set('vendorId', '');
+      newTaskLocation.set('gmtOffset', taskLocation.get('gmtOffset'));
+      newTaskLocation.save();
     }
   }
 
   // send push update for data
   const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
-  userQuery.find({
-    success: (users) => {
-      const pushTokens = [];
-
-      for (let i in users) {
-        const currentUser = users[i];
-
-        if (currentUser.get('pushToken') !== '') {
-          pushTokens.push(currentUser.get('pushToken'));
-        }
+  userQuery.find().then(users => {
+    const pushTokens = [];
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
       }
+    });
 
-      console.log(pushTokens);
-      push.sendSilentRefreshNotification(pushTokens, 'hotspot'); // TODO: change this client side too
-    },
-    error: (error) => {
-      console.log(error);
-    }
+    console.log('refreshing beacon data for users: ', pushTokens);
+    push.sendSilentRefreshNotification(pushTokens, 'trackedlocations', response);
+  }).catch(error => {
+    response.error(error);
   });
 });
 
 /**
  * Send data refresh request if beacons are changed
  */
-Parse.Cloud.afterSave('beacons', () => {
+Parse.Cloud.afterSave('beacons', (request, response) => {
   // send push update for data
   const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
-  userQuery.find({
-    success: (users) => {
-      const pushTokens = [];
-
-      for (let i in users) {
-        const currentUser = users[i];
-
-        if (currentUser.get('pushToken') !== '') {
-          pushTokens.push(currentUser.get('pushToken'));
-        }
+  userQuery.find().then(users => {
+    const pushTokens = [];
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
       }
+    });
 
-      console.log(pushTokens);
-      push.sendSilentRefreshNotification(pushTokens, 'beacon');
-    },
-    error: (error) => {
-      console.log(error);
-    }
+    console.log('refreshing beacon data for users: ', pushTokens);
+    push.sendSilentRefreshNotification(pushTokens, 'beacon', response);
+  }).catch(error => {
+    response.error(error);
   });
 });
 
