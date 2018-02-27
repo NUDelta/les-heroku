@@ -76,6 +76,18 @@ dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.054281, -87.678212), 'PUT 
     'saturday': [['8:00', '19:00']],
   });
 
+// delta lab
+dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.056963, -87.676673), '51wQBam0Nc', 'workspace', 'Delta Lab',
+  {
+    'sunday': [['0:00', '24:00']],
+    'monday': [['0:00', '24:00']],
+    'tuesday': [['0:00', '24:00']],
+    'wednesday': [['0:00', '24:00']],
+    'thursday': [['0:00', '24:00']],
+    'friday': [['0:00', '24:00']],
+    'saturday': [['0:00', '24:00']],
+  });
+
 /*
  * Add EnRoute locations
  */
