@@ -63,8 +63,8 @@ Parse.Cloud.define('sendPushSilentRefresh', (request, response) => {
         }
       });
 
-      console.log('Sending silent refresh for hotspots');
-      push.sendSilentRefreshNotification(pushTokens, 'hotspot', response);
+      console.log('Sending silent refresh for tracked locations');
+      push.sendSilentRefreshNotification(pushTokens, 'trackedlocations', response);
 
       console.log('Sending silent refresh for beacons');
       push.sendSilentRefreshNotification(pushTokens, 'beacon', response);

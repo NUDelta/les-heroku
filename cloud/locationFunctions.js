@@ -120,13 +120,13 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
         // only include distance notifications if includeDistance is set
         if (includeDistance) {
           currLocation['atDistanceMessage'] = notification.atDistanceMessage;
-          currLocation['negativeAtDistanceResponses'] = notification.atDistanceResponses;
+          currLocation['atDistanceResponses'] = notification.atDistanceResponses;
           currLocation['atDistanceNotificationDistance'] = atDistanceNotifDistance;
           currLocation['shouldNotifyAtDistance'] = !atDistanceIgnoreSet.has(currTaskLocation.id) &&
             notification.atDistanceMessage !== '';
         } else {
           currLocation['atDistanceMessage'] = '';
-          currLocation['negativeAtDistanceResponses'] = [];
+          currLocation['atDistanceResponses'] = [];
           currLocation['shouldNotifyAtDistance'] = false;
           currLocation['atDistanceNotificationDistance'] = -1;
         }
@@ -140,8 +140,8 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
       _.forEach(enRouteLocations, (currEnRouteLocation) => {
         const currExploitLoc = {
           'objectId': currEnRouteLocation.id,
-          'vendorId': currEnRouteLocation.get('vendorId'),
-          'tag': currEnRouteLocation.get('locationType'),
+          'vendorId': '',
+          'locationType': currEnRouteLocation.get('locationType'),
           'location': currEnRouteLocation.get('location'),
           'locationName': '',
           'beaconId': '',
@@ -149,7 +149,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
           'atLocationMessage': currEnRouteLocation.get('question'),
           'atLocationResponses': ['yes', 'no', 'I don\'t know'],
           'atDistanceMessage': '',
-          'negativeAtDistanceResponses': '',
+          'atDistanceResponses': [],
           'preferredInfo': '',
           'shouldNotifyAtDistance': false,
           'atDistanceNotificationDistance': -1,
@@ -160,7 +160,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
     }
 
     // console.log('taskLocations: ', taskLocations);
-    // console.log('negativeAtDistanceResponses: ', negativeAtDistanceResponses);
+    // console.log('atDistanceResponses: ', atDistanceResponses);
     // console.log('preferences: ', preferences);
     // console.log('enRouteLocations: ', enRouteLocations);
 
