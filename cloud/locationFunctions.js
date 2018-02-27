@@ -23,7 +23,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
   const locationGeopoint = new Parse.GeoPoint(lat, lng);
 
   // get user responses to queries AtLocation
-  const atLocationResponseQuery = new Parse.Query('AtLocationResponses');
+  const atLocationResponseQuery = new Parse.Query('AtLocationNotificationResponses');
   atLocationResponseQuery.equalTo('vendorId', vendorId);
   atLocationResponseQuery.descending('createdAt');
   atLocationResponseQuery.limit(1000);
@@ -35,6 +35,8 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
     _.forEach(atLocationResponses, (currLocationResponse) => {
       locationIgnoreSet.add(currLocationResponse.get('taskLocationId'));
     });
+
+    console.log(locationIgnoreSet);
 
     // fetch all active TaskLocation (archived = false) where user is not creator and has not
     // already responded to info at
@@ -53,7 +55,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
       'No. I don\'t want to go out of my way there.',
       'No. Other reason.'
     ];
-    const negativeAtDistanceResponseQuery = new Parse.Query('AtDistanceResponses');
+    const negativeAtDistanceResponseQuery = new Parse.Query('AtDistanceNotificationResponses');
     negativeAtDistanceResponseQuery.equalTo('vendorId', vendorId);
     negativeAtDistanceResponseQuery.containedIn('emaResponse', atDistanceResponsesExclude);
     negativeAtDistanceResponseQuery.descending('createdAt');
