@@ -47,7 +47,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
     taskLocationQuery.limit(10);
 
     // AtDistance notification where user has responded negatively
-    const atDistanceResponses = [
+    const atDistanceResponsesExclude = [
       'No. This info is useful but I have to be somewhere.',
       'No. This info isn\'t useful to me.',
       'No. I don\'t want to go out of my way there.',
@@ -55,7 +55,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
     ];
     const negativeAtDistanceResponseQuery = new Parse.Query('AtDistanceResponses');
     negativeAtDistanceResponseQuery.equalTo('vendorId', vendorId);
-    negativeAtDistanceResponseQuery.containedIn('emaResponse', atDistanceResponses);
+    negativeAtDistanceResponseQuery.containedIn('emaResponse', atDistanceResponsesExclude);
     negativeAtDistanceResponseQuery.descending('createdAt');
     negativeAtDistanceResponseQuery.limit(1000);
 
@@ -117,8 +117,9 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
           'preferredInfo': notification.preferredInfoMessage,
         };
 
-        // only include distance notifications if includeDistance is set
-        if (includeDistance) {
+        // only include atDistance if includeDistance is set and not in atDistanceIgnoreSet
+        let inAtDistanceIgnoreSet = atDistanceIgnoreSet.has(currTaskLocation.id);
+        if (includeDistance && !inAtDistanceIgnoreSet) {
           currLocation['atDistanceMessage'] = notification.atDistanceMessage;
           currLocation['atDistanceResponses'] = notification.atDistanceResponses;
           currLocation['atDistanceNotificationDistance'] = atDistanceNotifDistance;
@@ -160,7 +161,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
     }
 
     // console.log('taskLocations: ', taskLocations);
-    // console.log('atDistanceResponses: ', atDistanceResponses);
+    // console.log('negativeAtDistanceResponses: ', negativeAtDistanceResponses);
     // console.log('preferences: ', preferences);
     // console.log('enRouteLocations: ', enRouteLocations);
 
