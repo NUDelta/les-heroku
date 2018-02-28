@@ -62,9 +62,9 @@ exports.sendPushWithMessage = (deviceTokens, message, response) => {
     if (response !== undefined) {
       response.success(result);
     }
-  }).catch((err) => {
+  }).catch(error => {
     if (response !== undefined) {
-      response.error(err);
+      response.error(error);
     }
   });
 
@@ -93,9 +93,9 @@ exports.sendSilentRefreshNotification = (deviceTokens, dataSet, response) => {
     if (response !== undefined) {
       response.success(result);
     }
-  }).catch((err) => {
+  }).catch(error => {
     if (response !== undefined) {
-      response.error(err);
+      response.error(error);
     }
   });
 
@@ -120,9 +120,13 @@ exports.sendSilentHeartbeatNotification = (deviceTokens, response) => {
 
   // send notification for each token
   apnConnection.send(note, deviceTokens).then((result) => {
-    response.success(result);
-  }).catch((err) => {
-    response.error(err);
+    if (response !== undefined) {
+      response.success(result);
+    }
+  }).catch(error => {
+    if (response !== undefined) {
+      response.error(error);
+    }
   });
 
   apnConnection.shutdown();
@@ -149,9 +153,9 @@ exports.requestUserLocation = (deviceTokens, response) => {
     if (response !== undefined) {
       response.success(result);
     }
-  }).catch((err) => {
+  }).catch(error => {
     if (response !== undefined) {
-      response.error(err);
+      response.error(error);
     }
   });
 
