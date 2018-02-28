@@ -278,9 +278,25 @@ Parse.Cloud.afterSave('beacons', (request, response) => {
  * @param request {object} { latitude: Int, longitude: Int, vendorId: Str}
  */
 Parse.Cloud.define('retrieveLocations', (request, response) => {
-  const includeDistance = true; // use only eXplore (locations when user immediately passes)
-  const includeEnRoute = true; // include En Route Locations
-  const includeWithoutPref = false; // include locations where preferred info is unavailable
+  // what to include in retrievedLocations
+  let includeDistance; // use only eXplore (locations when user immediately passes)
+  let includeEnRoute; // include En Route Locations
+  let includeWithoutPref; // include locations where preferred info is unavailable
+
+  // // 4X
+  // includeDistance = true;
+  // includeEnRoute = true;
+  // includeWithoutPref = false;
+  //
+  // // opp at location
+  // includeDistance = false;
+  // includeEnRoute = false;
+  // includeWithoutPref = false;
+
+  // opp at distance
+  includeDistance = true;
+  includeEnRoute = false;
+  includeWithoutPref = true;
 
   const lat = request.params.latitude;
   const lng = request.params.longitude;
