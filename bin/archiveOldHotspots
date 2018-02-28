@@ -17,9 +17,9 @@ const archiveOldHotspots = function () {
     taskLocationToArchive.set('archiver', 'system');
     taskLocationToArchive.save();
   }).then(function () {
-    status.success('Routine archiving completed successfully.');
+    console.log('Routine archiving completed successfully.');
   }, function (error) {
-    status.error('Routine archiving failed with error ' + error);
+    console.error('Routine archiving failed with error ' + error);
   });
 };
 

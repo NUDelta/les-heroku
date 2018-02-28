@@ -10,24 +10,21 @@ const sendHeartbeatRequest = () => {
   // get all users currently using application
   const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
-  userQuery.find({
-    success: function (users) {
-      const pushTokens = [];
+  userQuery.find().then(users => {
+    const pushTokens = [];
 
-      _.forEach(users, (currentUser) => {
-        if (currentUser.get('pushToken') !== '') {
-          pushTokens.push(currentUser.get('pushToken'));
-        }
-      });
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
+      }
+    });
 
-      console.log('Sending heartbeat request to: ', pushTokens);
-      push.sendSilentHeartbeatNotification(pushTokens, undefined);
+    console.log('Sending heartbeat request to: ', pushTokens);
+    push.sendSilentHeartbeatNotification(pushTokens, undefined);
 
-      status.success('Heartbeat requests sent.');
-    },
-    error: function (error) {
-      status.error('Requesting heartbeats failed with error: ' + error);
-    }
+    console.log('Heartbeat requests sent.');
+  }).catch(error => {
+    console.error('Requesting heartbeats failed with error: ' + error);
   });
 };
 

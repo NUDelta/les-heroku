@@ -39,9 +39,9 @@ const notifyDeadApps = function notifyDeadApps() {
 
     const message = 'Hi! It seems that LES closed on your phone. ' +
       'Swipe right or tap to start it up again!';
-    push.sendPushWithMessage(pushTokens, message, status);
+    push.sendPushWithMessage(pushTokens, message, undefined);
   }).catch(error => {
-    status.error(error);
+    console.error(error);
   });
 };
 
