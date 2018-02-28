@@ -80,8 +80,13 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
   }).then(values => {
     const taskLocations = values[0];
     const negativeAtDistanceResponses = values[1];
-    const preferences = values[2].get('preferences');
     const enRouteLocations = values[3];
+
+    // set preference variable if not undefined. if undefined, no preferences will be used
+    let preferences = {};
+    if (values[2] !== undefined) {
+      preferences = values[2].get('preferences');
+    }
 
     // ignore location if user was notified AtDistance and responded negatively
     const atDistanceIgnoreSet = new Set();
