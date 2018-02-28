@@ -21,7 +21,7 @@ const notifyDeadApps = function notifyDeadApps() {
     // get all users with valid heartbeats
     const vendorIdSet = new Set();
     _.forEach(heartbeats, (currentHeartbeat) => {
-      vendorIdSet.add(currentHeartbeat.get('vendor_id'));
+      vendorIdSet.add(currentHeartbeat.get('vendorId'));
     });
 
     // query for all users who do not have valid heartbeats
@@ -31,17 +31,37 @@ const notifyDeadApps = function notifyDeadApps() {
     return userQuery.find();
   }).then(users => {
     const pushTokens = [];
+    const vendorIds = [];
+
     _.forEach(users, (currentUser) => {
       if (currentUser.get('pushToken') !== '') {
         pushTokens.push(currentUser.get('pushToken'));
+        vendorIds.push(currentUser.get('vendorId'));
       }
     });
 
     const message = 'Hi! It seems that LES closed on your phone. ' +
       'Swipe right or tap to start it up again!';
     push.sendPushWithMessage(pushTokens, message, undefined);
+
+    // successfully notified dead apps
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'notifyDeadApps');
+    newServerLog.set('success', true);
+    newServerLog.set('logString',
+      'Notified dead applications for IDs: [' + vendorIds.join(', ') + ']');
+    return newServerLog.save();
   }).catch(error => {
     console.error(error);
+
+    // unsuccessfully notified dead apps
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'notifyDeadApps');
+    newServerLog.set('success', false);
+    newServerLog.set('logString', 'Error in notifying dead applications: ' + error);
+    return newServerLog.save();
   });
 };
 

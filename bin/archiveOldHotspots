@@ -16,10 +16,26 @@ const archiveOldHotspots = function () {
   taskLocationQuery.each(taskLocationToArchive => {
     taskLocationToArchive.set('archiver', 'system');
     taskLocationToArchive.save();
-  }).then(function () {
+  }).then(() => {
     console.log('Routine archiving completed successfully.');
-  }, function (error) {
-    console.error('Routine archiving failed with error ' + error);
+
+    // log successful archiving
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'archiveOldHotspots');
+    newServerLog.set('success', true);
+    newServerLog.set('logString', 'Routine archiving completed successfully.');
+    return newServerLog.save();
+  }).catch(error => {
+    console.error('Routine archiving failed with error: ' + error);
+
+    // log unsuccessful archiving
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'archiveOldHotspots');
+    newServerLog.set('success', false);
+    newServerLog.set('logString', 'Routine archiving failed with error: ' + error);
+    return newServerLog.save();
   });
 };
 
