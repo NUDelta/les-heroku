@@ -50,9 +50,15 @@ const createNotifcationWithPreferences = function (preferences, includeWithoutPr
   }
 
   // get next query key: check if no question is available to ask, return undefined if so
-  const queryKey = getNextQueryKey(locationMetadata.scaffoldStructure, scaffoldData);
+  let queryKey = getNextQueryKey(locationMetadata.scaffoldStructure, scaffoldData);
   if (queryKey === '') {
-    return undefined;
+    // check if a loopback question is specified and positive value in scaffoldData
+    if (locationMetadata.loopbackQuestion !== '' &&
+      scaffoldData[locationMetadata.loopbackQuestion] !== 'no') {
+      queryKey = locationMetadata.loopbackQuestion;
+    } else {
+      return undefined;
+    }
   }
 
   // if valid query key, get text and answers (also add idk response to answers)
@@ -70,8 +76,15 @@ const createNotifcationWithPreferences = function (preferences, includeWithoutPr
   let atDistanceResponses = [];
 
   if (includeWithoutPref && atDistanceMessage === '') {
-    fullAtDistanceMessage = 'We need some information about ' + locationName +
-      ' nearby. Would you be willing to head over and answer a question for us?';
+    // special case for freefood
+    if (locationMetadata.locationType == 'freefood') {
+      fullAtDistanceMessage = 'We need some information about free food at ' + locationName +
+        ' nearby. Would you be willing to head over and answer a question for us?';
+    } else {
+      fullAtDistanceMessage = 'We need some information about ' + locationName +
+        ' nearby. Would you be willing to head over and answer a question for us?';
+    }
+
     atDistanceResponses = atDistanceNoInfoResponses;
   } else if (atDistanceMessage !== '') {
     fullAtDistanceMessage = (atDistanceMessage + ' Would you like to go there?');
@@ -108,7 +121,13 @@ const composeNotification = function (locationMetadata, scaffoldData, locationNa
   // check if no question is available to ask, return undefined if so
   let queryKey = getNextQueryKey(locationMetadata.scaffoldStructure, scaffoldData);
   if (queryKey === '') {
-    return undefined;
+    // check if a loopback question is specified and positive value in scaffoldData
+    if (locationMetadata.loopbackQuestion !== '' &&
+        scaffoldData[locationMetadata.loopbackQuestion] !== 'no') {
+      queryKey = locationMetadata.loopbackQuestion;
+    } else {
+      return undefined;
+    }
   }
 
   // given valid queryKey, get queryText, and queryAnswers

@@ -14,11 +14,13 @@ Parse.serverURL = 'http://localhost:5000/parse/';
  * @param refreshTime
  * @param scaffold
  * @param scaffoldStructure
+ * @param loopbackQuestion
  * @param queries
  * @param queryAnswers
  */
 const addLocationTypeMetadataToDB = function (locationType, refreshTime, scaffold,
-                                              scaffoldStructure, queries, queryAnswers) {
+                                              scaffoldStructure, loopbackQuestion,
+                                              queries, queryAnswers) {
   // check if locationType already exists in DB
   let locationTypeMetadataQuery = new Parse.Query('LocationTypeMetadata');
   locationTypeMetadataQuery.equalTo('locationType', locationType);
@@ -31,6 +33,7 @@ const addLocationTypeMetadataToDB = function (locationType, refreshTime, scaffol
       newLocationTypeMetadata.set('refreshTime', refreshTime);
       newLocationTypeMetadata.set('scaffold', scaffold);
       newLocationTypeMetadata.set('scaffoldStructure', scaffoldStructure);
+      newLocationTypeMetadata.set('loopbackQuestion', loopbackQuestion);
       newLocationTypeMetadata.set('queries', queries);
       newLocationTypeMetadata.set('queryAnswers', queryAnswers);
       return newLocationTypeMetadata.save();

@@ -61,6 +61,7 @@ const coffeeshops = {
       }
     ]
   },
+  loopbackQuestion: '',
   queries: {
     privateseating: 'Do you see private seating (individual tables/chairs) available at {{locationname}}?',
     privateseatingoutlets: 'Do you see private seating (individual tables/chairs) near outlets at {{locationname}}?',
@@ -158,6 +159,7 @@ const gyms = {
       },
     ]
   },
+  loopbackQuestion: '',
   queries: {
     treadmills: 'Do you see treadmills available at {{locationname}}?',
     ellipticals: 'Do you see ellipticals available at {{locationname}}?',
@@ -244,6 +246,7 @@ const workspaces = {
       }
     ]
   },
+  loopbackQuestion: '',
   queries: {
     privateseating: 'Do you see private seating (individual tables/chairs) available at {{locationname}}?',
     privateseatingoutlets: 'Do you see private seating (individual tables/chairs) near outlets at {{locationname}}?',
@@ -291,6 +294,7 @@ const freefood = {
       }
     ]
   },
+  loopbackQuestion: 'stillleft',
   queries: {
     foodtype: 'Do you know what kind of free food is available at {{locationname}}?',
     stillleft: 'Is there still free food left at {{locationname}}?'

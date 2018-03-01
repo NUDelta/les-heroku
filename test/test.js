@@ -496,12 +496,11 @@ describe('freefood notification generation', () => {
     expect(freefoodNotif).to.deep.equal(expectedOutput);
   });
 
-  // TODO: when implementing loopback questions, this should return stillleft
-  it('full scaffold should return undefined since nothing further can be asked', function () {
+  it('full scaffold with no for stillleft should return undefined since nothing further can be asked and no loopback should occur', function () {
     // setup input data
     let scaffoldData = {
       foodtype: 'pizza',
-      stillleft: 'yes'
+      stillleft: 'no'
     };
 
     // generate notification and compare
@@ -515,7 +514,7 @@ describe('freefood notification generation', () => {
     // setup input data
     let scaffoldData = {
       foodtype: 'pizza',
-      stillleft: 'yes'
+      stillleft: 'no'
     };
 
     // generate notification and compare
@@ -523,6 +522,24 @@ describe('freefood notification generation', () => {
     let expectedOutput = 'There is free food (pizza), available at Tech Lobby.';
 
     expect(freeFood).to.deep.equal(expectedOutput);
+  });
+
+  it('check for loopback question', function () {
+    // setup input data
+    let scaffoldData = {
+      foodtype: 'pizza',
+      stillleft: 'yes'
+    };
+
+    // generate notification and compare
+    let freefoodNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = {
+      notificationCategory: 'freefood_stillleft',
+      message: 'There is free food (pizza), available at Tech Lobby. Is there still free food left at Tech Lobby?',
+      contextualResponses: ['yes', 'no']
+    };
+
+    expect(freefoodNotif).to.deep.equal(expectedOutput);
   });
 });
 

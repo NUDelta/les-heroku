@@ -10,6 +10,7 @@ dbFunctions.addLocationTypeMetadataToDB(
   scaffolds.coffeeshops.refreshTime,
   scaffolds.coffeeshops.scaffold,
   scaffolds.coffeeshops.scaffoldStructure,
+  scaffolds.coffeeshops.loopbackQuestion,
   scaffolds.coffeeshops.queries,
   scaffolds.coffeeshops.queryAnswers);
 
@@ -18,6 +19,7 @@ dbFunctions.addLocationTypeMetadataToDB(
   scaffolds.gyms.refreshTime,
   scaffolds.gyms.scaffold,
   scaffolds.gyms.scaffoldStructure,
+  scaffolds.gyms.loopbackQuestion,
   scaffolds.gyms.queries,
   scaffolds.gyms.queryAnswers);
 
@@ -26,6 +28,7 @@ dbFunctions.addLocationTypeMetadataToDB(
   scaffolds.workspaces.refreshTime,
   scaffolds.workspaces.scaffold,
   scaffolds.workspaces.scaffoldStructure,
+  scaffolds.workspaces.loopbackQuestion,
   scaffolds.workspaces.queries,
   scaffolds.workspaces.queryAnswers);
 
@@ -34,5 +37,6 @@ dbFunctions.addLocationTypeMetadataToDB(
   scaffolds.freefood.refreshTime,
   scaffolds.freefood.scaffold,
   scaffolds.freefood.scaffoldStructure,
+  scaffolds.freefood.loopbackQuestion,
   scaffolds.freefood.queries,
   scaffolds.freefood.queryAnswers);
