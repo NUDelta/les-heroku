@@ -149,7 +149,6 @@ const composeNotification = function (locationMetadata, scaffoldData, locationNa
   };
 };
 
-// TODO: add support for loopback questions (e.g. free food --> is it still there?)
 /**
  * Determines the next key to query for, based on scaffold structure.
  * If scaffold is full, return ''

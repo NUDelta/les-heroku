@@ -167,11 +167,6 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
       });
     }
 
-    // console.log('taskLocations: ', taskLocations);
-    // console.log('negativeAtDistanceResponses: ', negativeAtDistanceResponses);
-    // console.log('preferences: ', preferences);
-    // console.log('enRouteLocations: ', enRouteLocations);
-
     // for mocha testing
     if (response === undefined) {
       return taskLocationsToTrack;
