@@ -5,7 +5,7 @@ const _ = require('lodash');
 const moment = require('moment');
 
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
-Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
+Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
 
 const notifyDeadApps = function notifyDeadApps() {
   // setup time threshold

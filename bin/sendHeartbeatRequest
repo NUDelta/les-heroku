@@ -4,7 +4,7 @@ const push = require('../cloud/push.js');
 const _ = require('lodash');
 
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
-Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
+Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
 
 const sendHeartbeatRequest = () => {
   // get all users currently using application

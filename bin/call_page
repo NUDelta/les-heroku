@@ -2,7 +2,7 @@
 const https = require('https');
 
 callPage = () => {
-  https.get('https://les-expand.herokuapp.com/');
+  https.get(process.env.SERVER_URL || 'http://localhost:5000/parse');
 };
 
 callPage();

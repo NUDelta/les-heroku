@@ -60,7 +60,7 @@ ParseServer.createLiveQueryServer(httpServer);
 // var schedule = require('node-schedule');
 //
 // Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
-// Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
+// Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
 //
 // function requestCurrentUserLocation() {
 //   // get all users currently using application
