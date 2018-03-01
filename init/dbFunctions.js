@@ -48,6 +48,38 @@ const addLocationTypeMetadataToDB = function(locationType, refreshTime, scaffold
   });
 };
 
+const addEstimoteBeaconsToDB = function(location, locationIdentifier, beaconIdentifier,
+                                        uuid, major, minor) {
+  // check if beacon with same uuid, major, minor already exists
+  let beaconQuery = new Parse.Query('beacons');
+  beaconQuery.equalTo('uuid', uuid);
+  beaconQuery.equalTo('major', major);
+  beaconQuery.equalTo('minor', minor);
+  beaconQuery.find().then(result => {
+    if (result.length === 0) {
+      let Beacon = Parse.Object.extend('beacons');
+      let newBeacon = new Beacon();
+      newBeacon.set('location', location);
+      newBeacon.set('locationIdentifier', locationIdentifier);
+      newBeacon.set('beaconIdentifier', beaconIdentifier);
+      newBeacon.set('uuid', uuid);
+      newBeacon.set('major', major);
+      newBeacon.set('minor', minor);
+      return newBeacon.save();
+    }
+
+    return '';
+  }).then(result => {
+    if (result === '') {
+      console.log('beacon for [' + [uuid, major, minor].join(', ') + '] already exists.')
+    } else {
+      console.log(result);
+    }
+  }).catch(error => {
+    console.log(error);
+  });
+};
+
 /**
  * Adds a new TaskLocation to the database.
  *
@@ -154,6 +186,7 @@ const addEnRouteLocationsToDB = function(location, locationType, locationName, q
 
 module.exports = {
   addLocationTypeMetadataToDB: addLocationTypeMetadataToDB,
+  addEstimoteBeaconsToDB: addEstimoteBeaconsToDB,
   addTaskLocationToDB: addTaskLocationToDB,
   addEnRouteLocationsToDB: addEnRouteLocationsToDB
 };

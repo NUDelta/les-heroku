@@ -16,18 +16,6 @@ dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.058332, -87.683737), '', '
     'saturday': [['08:00', '19:00']]
   });
 
-// peet's coffee
-dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.046917, -87.679551), '', 'coffeeshop', 'Peet\'s Coffee',
-  {
-    'sunday': [['07:00', '20:00']],
-    'monday': [['06:00', '20:00']],
-    'tuesday': [['06:00', '20:00']],
-    'wednesday': [['06:00', '20:00']],
-    'thursday': [['06:00', '20:00']],
-    'friday': [['06:00', '20:00']],
-    'saturday': [['06:00', '20:00']]
-  });
-
 // starbucks on sherman
 dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.049684, -87.682083), '', 'coffeeshop', 'Starbucks (on Sherman)',
   {
@@ -41,7 +29,7 @@ dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.049684, -87.682083), '', '
   });
 
 // starbucks in norris
-dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.053391, -87.672911), 'PUT BEACON ID HERE', 'coffeeshop', 'Starbucks (in Norris)',
+dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.053391, -87.672911), 'ekGHD1UW0G', 'coffeeshop', 'Starbucks (in Norris)',
   {
     'sunday': [['10:00', '23:45']],
     'monday': [['08:00', '23:45']],
@@ -53,7 +41,7 @@ dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.053391, -87.672911), 'PUT 
   });
 
 // spac
-dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.059284, -87.673826), 'PUT BEACON ID HERE', 'gym', 'SPAC',
+dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.059284, -87.673826), 'U6dNrYsSyk', 'gym', 'SPAC',
   {
     'sunday': [['8:00', '22:00']],
     'monday': [['6:00', '23:00']],
@@ -65,7 +53,7 @@ dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.059284, -87.673826), 'PUT 
   });
 
 // blomquist
-dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.054281, -87.678212), 'PUT BEACON ID HERE', 'gym', 'Blomquist',
+dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.054281, -87.678212), 'cE9k7N4F4I', 'gym', 'Blomquist',
   {
     'sunday': [['8:00', '23:00']],
     'monday': [['7:00', '14:30'], ['18:30', '24:00']],
@@ -76,16 +64,28 @@ dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.054281, -87.678212), 'PUT 
     'saturday': [['8:00', '19:00']],
   });
 
-// delta lab
-dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.056963, -87.676673), '51wQBam0Nc', 'workspace', 'Delta Lab',
+// mudd common area
+dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.058169, -87.674423), 'Y6oyD2IvMA', 'workspace', 'Mudd Common Area (outside library)',
   {
-    'sunday': [['0:00', '24:00']],
-    'monday': [['0:00', '24:00']],
-    'tuesday': [['0:00', '24:00']],
-    'wednesday': [['0:00', '24:00']],
-    'thursday': [['0:00', '24:00']],
-    'friday': [['0:00', '24:00']],
-    'saturday': [['0:00', '24:00']],
+    'sunday': [['10:00', '24:00']],
+    'monday': [['00:00', '24:00']],
+    'tuesday': [['00:00', '24:00']],
+    'wednesday': [['00:00', '24:00']],
+    'thursday': [['00:00', '24:00']],
+    'friday': [['00:00', '24:00']],
+    'saturday': [['10:00', '24:00']],
+  });
+
+// main 1south
+dbFunctions.addTaskLocationToDB(new Parse.GeoPoint(42.052815, -87.674501), '3xNa2peiRk', 'workspace', 'Main 1South',
+  {
+    'sunday': [['10:00', '24:00'], ['00:00', '03:00']],
+    'monday': [['08:00', '24:00'], ['00:00', '03:00']],
+    'tuesday': [['08:00', '24:00'], ['00:00', '03:00']],
+    'wednesday': [['08:00', '24:00'], ['00:00', '03:00']],
+    'thursday': [['08:00', '24:00'], ['00:00', '03:00']],
+    'friday': [['08:00', '24:00']],
+    'saturday': [['10:00', '24:00']],
   });
 
 /*
@@ -101,17 +101,5 @@ dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.055636, -87.676695), '
 dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.058066, -87.677523), 'parkingspace',
   'Tech Parking Lot', 'Do you see any open parking spots in the Tech Parking Lot?', ['yes', 'no']);
 
-dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.053433, -87.674949), 'bikerack',
-  'Main Library Bike Rack', 'Do you see any open bike racks nearby Main Library?', ['yes', 'no']);
-
-dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.059094, -87.674158), 'bikerack',
-  'SPAC Bike Rack', 'Do you see any open bike racks nearby SPAC?', ['yes', 'no']);
-
-dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.058331, -87.676974), 'bikerack',
-  'Tech Bike Rack', 'Do you see any open bike racks nearby Tech?', ['yes', 'no']);
-
 dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.053649, -87.676635), 'bikerack',
   'Old Kellogg Bike Rack', 'Do you see any open bike racks nearby old Kellogg?', ['yes', 'no']);
-
-dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.054646, -87.67691), 'bikerack',
-  'Lunt Bike Rack', 'Do you see any open bike racks nearby Lunt?', ['yes', 'no']);
