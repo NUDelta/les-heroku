@@ -1,11 +1,11 @@
 {
   "name": "les-heroku",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A backend for LES built on Parse Server and deployed to Heroku",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NUDelta/les-heroku"
+    "url": "https://github.com/NUDelta/low-effort-sensing-backend"
   },
   "license": "MIT",
   "dependencies": {
