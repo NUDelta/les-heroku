@@ -1,26 +1,41 @@
 #! /app/.heroku/node/bin/node
-var Parse = require('parse/node');
+const Parse = require('parse/node');
+const moment = require('moment');
+
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
-// Parse.Cloud.useMasterKey();
 
-function archiveOldHotspots() {
-  // setup time thresholding variables
-  var currentTime = Math.round(Date.now() / 1000);
-  var thresholdAmount = 60 * 60 * 6; // 60s * 60m * 6hr
-  var timeExpiryThreshold = currentTime - thresholdAmount;
+const archiveOldHotspots = function () {
+  // setup time threshold
+  const timeExpiryThreshold = moment().subtract(4, 'hours').toDate();
 
   // fetch objects that are ready to be archived
-  var hotspotQuery = new Parse.Query('hotspot');
-  hotspotQuery.notEqualTo('archived', true);
-  hotspotQuery.lessThan('timestampCreated', timeExpiryThreshold);
-  hotspotQuery.each(function(hotspot) {
-    hotspot.set('archiver', 'system');
-    hotspot.save();
-  }).then(function() {
-    status.success('Routine archiving completed successfully.');
-  }, function(error) {
-    status.error('Routine archiving failed with error ' + error);
+  const taskLocationQuery = new Parse.Query('TaskLocations');
+  taskLocationQuery.notEqualTo('archived', true);
+  taskLocationQuery.lessThan('createdAt', timeExpiryThreshold);
+  taskLocationQuery.each(taskLocationToArchive => {
+    taskLocationToArchive.set('archiver', 'system');
+    taskLocationToArchive.save();
+  }).then(() => {
+    console.log('Routine archiving completed successfully.');
+
+    // log successful archiving
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'archiveOldHotspots');
+    newServerLog.set('success', true);
+    newServerLog.set('logString', 'Routine archiving completed successfully.');
+    return newServerLog.save();
+  }).catch(error => {
+    console.error('Routine archiving failed with error: ' + error);
+
+    // log unsuccessful archiving
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'archiveOldHotspots');
+    newServerLog.set('success', false);
+    newServerLog.set('logString', 'Routine archiving failed with error: ' + error);
+    return newServerLog.save();
   });
 };
 

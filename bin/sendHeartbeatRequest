@@ -1,36 +1,46 @@
 #! /app/.heroku/node/bin/node
 const Parse = require('parse/node');
 const push = require('../cloud/push.js');
+const _ = require('lodash');
 
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'https://les-expand.herokuapp.com/parse/';
-// Parse.Cloud.useMasterKey();
 
 const sendHeartbeatRequest = () => {
-    // get all users currently using application
-    const userQuery = new Parse.Query('user');
-    userQuery.descending('createdAt');
-    userQuery.find({
-        success: function(users) {
-            const pushTokens = [];
+  // get all users currently using application
+  const userQuery = new Parse.Query(Parse.User);
+  userQuery.descending('createdAt');
+  userQuery.find().then(users => {
+    const pushTokens = [];
+    const vendorIds = [];
 
-            for (let i in users) {
-                const currentUser = users[i];
-
-                if (currentUser.get('pushToken') !== undefined) {
-                    pushTokens.push(currentUser.get('pushToken'));
-                }
-            }
-
-            console.log(pushTokens);
-            push.sendSilentHeartbeatNotification(pushTokens);
-
-            status.success('Heartbeat requests sent.');
-        },
-        error: function(error) {
-            status.error('Requesting heartbeats failed with error: ' + error);
-        }
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
+        vendorIds.push(currentUser.get('vendorId'));
+      }
     });
+
+    console.log('Sending heartbeat request to: ', pushTokens);
+    push.sendSilentHeartbeatNotification(pushTokens, undefined);
+
+    // successfully sent heartbeat request
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'sendHeartbeatRequest');
+    newServerLog.set('success', true);
+    newServerLog.set('logString', 'Sent heartbeat request for IDs: [' + vendorIds.join(', ') + ']');
+  }).catch(error => {
+    console.error('Requesting heartbeats failed with error: ' + error);
+
+    // unsuccessfully notified dead apps
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'sendHeartbeatRequest');
+    newServerLog.set('success', false);
+    newServerLog.set('logString', 'Requesting heartbeats failed with error: ' + error);
+    return newServerLog.save();
+  });
 };
 
 sendHeartbeatRequest();
