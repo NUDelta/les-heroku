@@ -296,7 +296,7 @@ const freefood = {
     stillleft: 'Is there still free food left at {{locationname}}?'
   },
   queryAnswers: {
-    foodtype: ['pizza', 'bagels', 'donuts', 'other'],
+    foodtype: ['pizza', 'bagels', 'donuts'],
     stillleft: ['yes', 'no']
   },
 };

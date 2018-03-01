@@ -472,7 +472,7 @@ describe('freefood notification generation', () => {
     let expectedOutput = {
       notificationCategory: 'freefood_foodtype',
       message: 'Do you know what kind of free food is available at Tech Lobby?',
-      contextualResponses: ['pizza', 'bagels', 'donuts', 'other']
+      contextualResponses: ['pizza', 'bagels', 'donuts']
     };
 
     expect(freefoodNotif).to.deep.equal(expectedOutput);
