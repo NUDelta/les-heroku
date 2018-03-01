@@ -50,7 +50,7 @@ describe('coffee shop notification generation', () => {
     let expectedOutput = {
       notificationCategory: 'coffeeshop_sharedseating',
       message: 'Do you see shared seating (communal tables) available at Coffee Lab?',
-      contextualResponses: [ 'yes', 'no' ]
+      contextualResponses: ['yes', 'no']
     };
 
     expect(coffeeshopNotif).to.deep.equal(expectedOutput);
@@ -72,7 +72,7 @@ describe('coffee shop notification generation', () => {
     let expectedOutput = {
       notificationCategory: 'coffeeshop_privateseatingoutlets',
       message: 'There is private seating (tables and couches/chairs), available at Coffee Lab. Do you see private seating (individual tables/chairs) near outlets at Coffee Lab?',
-      contextualResponses: [ 'yes', 'no' ]
+      contextualResponses: ['yes', 'no']
     };
 
     expect(coffeeshopNotif).to.deep.equal(expectedOutput);
@@ -94,7 +94,7 @@ describe('coffee shop notification generation', () => {
     let expectedOutput = {
       notificationCategory: 'coffeeshop_privateseatingwindows',
       message: 'There is private seating (tables and couches/chairs), available at Coffee Lab. Do you see private seating (individual tables/chairs) near the windows at Coffee Lab?',
-      contextualResponses: [ 'yes', 'no' ]
+      contextualResponses: ['yes', 'no']
     };
 
     expect(coffeeshopNotif).to.deep.equal(expectedOutput);
@@ -116,7 +116,7 @@ describe('coffee shop notification generation', () => {
     let expectedOutput = {
       notificationCategory: 'coffeeshop_sharedseatingwindows',
       message: 'There is private seating (tables and couches/chairs), and also shared seating (communal tables), available at Coffee Lab. Do you see shared seating (communal tables) near the windows available at Coffee Lab?',
-      contextualResponses: [ 'yes', 'no' ]
+      contextualResponses: ['yes', 'no']
     };
 
     expect(coffeeshopNotif).to.deep.equal(expectedOutput);
@@ -180,7 +180,7 @@ describe('gym notification generation', () => {
     // generate notification and compare
     let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
-      notificationCategory:  'gym_treadmills',
+      notificationCategory: 'gym_treadmills',
       message: 'Do you see treadmills available at SPAC?',
       contextualResponses: ['yes', 'no']
     };
@@ -204,7 +204,7 @@ describe('gym notification generation', () => {
     // generate notification and compare
     let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
-      notificationCategory:  'gym_ellipticals',
+      notificationCategory: 'gym_ellipticals',
       message: 'Do you see ellipticals available at SPAC?',
       contextualResponses: ['yes', 'no']
     };
@@ -228,7 +228,7 @@ describe('gym notification generation', () => {
     // generate notification and compare
     let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
-      notificationCategory:  'gym_stretch',
+      notificationCategory: 'gym_stretch',
       message: 'Do you see space to stretch at SPAC?',
       contextualResponses: ['yes', 'no']
     };
@@ -252,7 +252,7 @@ describe('gym notification generation', () => {
     // generate notification and compare
     let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
-      notificationCategory:  'gym_freeweightsbenches',
+      notificationCategory: 'gym_freeweightsbenches',
       message: 'There are treadmills/free weights available at SPAC. Do you see benches to use with free weights at SPAC?',
       contextualResponses: ['yes', 'no']
     };
@@ -276,7 +276,7 @@ describe('gym notification generation', () => {
     // generate notification and compare
     let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
-      notificationCategory:  'gym_stretchrollers',
+      notificationCategory: 'gym_stretchrollers',
       message: 'There are treadmills/free weights with benches and with squat racks/stretching space available at SPAC. Do you see any rollers to use for stretching at SPAC?',
       contextualResponses: ['yes', 'no']
     };
@@ -368,7 +368,7 @@ describe('workspace notification generation', () => {
     let expectedOutput = {
       notificationCategory: 'workspace_sharedseating',
       message: 'Do you see shared seating (communal tables) available at Main Library 1South?',
-      contextualResponses: [ 'yes', 'no' ]
+      contextualResponses: ['yes', 'no']
     };
 
     expect(workspaceNotif).to.deep.equal(expectedOutput);
@@ -390,7 +390,7 @@ describe('workspace notification generation', () => {
     let expectedOutput = {
       notificationCategory: 'workspace_privateseatingoutlets',
       message: 'There is private seating (tables and couches/chairs), available at Main Library 1South. Do you see private seating (individual tables/chairs) near outlets at Main Library 1South?',
-      contextualResponses: [ 'yes', 'no' ]
+      contextualResponses: ['yes', 'no']
     };
 
     expect(workspaceNotif).to.deep.equal(expectedOutput);
@@ -412,7 +412,7 @@ describe('workspace notification generation', () => {
     let expectedOutput = {
       notificationCategory: 'workspace_whiteboards',
       message: 'There is private seating (tables and couches/chairs), and also shared seating (communal tables), available at Main Library 1South. Do you see any whiteboards currently available to use at Main Library 1South?',
-      contextualResponses: [ 'yes', 'no' ]
+      contextualResponses: ['yes', 'no']
     };
 
     expect(workspaceNotif).to.deep.equal(expectedOutput);

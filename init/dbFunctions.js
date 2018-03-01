@@ -17,8 +17,8 @@ Parse.serverURL = 'http://localhost:5000/parse/';
  * @param queries
  * @param queryAnswers
  */
-const addLocationTypeMetadataToDB = function(locationType, refreshTime, scaffold,
-                                             scaffoldStructure, queries, queryAnswers) {
+const addLocationTypeMetadataToDB = function (locationType, refreshTime, scaffold,
+                                              scaffoldStructure, queries, queryAnswers) {
   // check if locationType already exists in DB
   let locationTypeMetadataQuery = new Parse.Query('LocationTypeMetadata');
   locationTypeMetadataQuery.equalTo('locationType', locationType);
@@ -48,8 +48,8 @@ const addLocationTypeMetadataToDB = function(locationType, refreshTime, scaffold
   });
 };
 
-const addEstimoteBeaconsToDB = function(location, locationIdentifier, beaconIdentifier,
-                                        uuid, major, minor) {
+const addEstimoteBeaconsToDB = function (location, locationIdentifier, beaconIdentifier,
+                                         uuid, major, minor) {
   // check if beacon with same uuid, major, minor already exists
   let beaconQuery = new Parse.Query('beacons');
   beaconQuery.equalTo('uuid', uuid);
@@ -89,7 +89,7 @@ const addEstimoteBeaconsToDB = function(location, locationIdentifier, beaconIden
  * @param locationName
  * @param locationHours
  */
-const addTaskLocationToDB = function(location, beaconId, locationType, locationName, locationHours) {
+const addTaskLocationToDB = function (location, beaconId, locationType, locationName, locationHours) {
   // check if a TaskLocation with the same name is already included
   let locationNameQuery = new Parse.Query('TaskLocations');
   locationNameQuery.equalTo('locationName', locationName);
@@ -156,7 +156,7 @@ const addTaskLocationToDB = function(location, beaconId, locationType, locationN
  * @param question
  * @param answers
  */
-const addEnRouteLocationsToDB = function(location, locationType, locationName, question, answers) {
+const addEnRouteLocationsToDB = function (location, locationType, locationName, question, answers) {
   // check if EnRoute location with same question already exists
   let enRouteLocationQuery = new Parse.Query('EnRouteLocations');
   enRouteLocationQuery.equalTo('locationName', locationName);

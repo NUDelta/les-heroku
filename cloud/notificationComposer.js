@@ -180,16 +180,16 @@ const createTextForScaffold = function (scaffoldStructure, scaffoldData, locatio
   // recursive base case: if no component array and scaffold contains data current key,
   // return text with prefix and suffix added
   if (typeof scaffoldStructure.components === 'string') {
-      let baseArray = [scaffoldStructure.prefixText,
-        scaffoldStructure.components,
-        scaffoldStructure.suffixText];
-      let baseOutputText = baseArray.join(' ').trim();
+    let baseArray = [scaffoldStructure.prefixText,
+      scaffoldStructure.components,
+      scaffoldStructure.suffixText];
+    let baseOutputText = baseArray.join(' ').trim();
 
-      // replace any {{key}}
-      let replacementTarget = '{{' + scaffoldStructure.key + '}}';
-      baseOutputText = baseOutputText.replace(replacementTarget,
-        scaffoldData[scaffoldStructure.key]);
-      return baseOutputText;
+    // replace any {{key}}
+    let replacementTarget = '{{' + scaffoldStructure.key + '}}';
+    baseOutputText = baseOutputText.replace(replacementTarget,
+      scaffoldData[scaffoldStructure.key]);
+    return baseOutputText;
   }
 
   // recurse for each component if current key is valid

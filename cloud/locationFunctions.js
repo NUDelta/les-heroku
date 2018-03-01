@@ -96,7 +96,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
 
     // add locations
     const taskLocationsToTrack = [];
-    
+
     // add each TaskLocation with notification text and other needed data
     _.forEach(taskLocations, (currTaskLocation) => {
       // TODO: check if location is open before notifying
