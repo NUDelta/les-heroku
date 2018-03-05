@@ -283,20 +283,20 @@ Parse.Cloud.define('retrieveLocations', (request, response) => {
   let includeEnRoute; // include En Route Locations
   let includeWithoutPref; // include locations where preferred info is unavailable
 
-  // // 4X
-  // includeDistance = true;
-  // includeEnRoute = true;
-  // includeWithoutPref = false;
+  // 4X
+  includeDistance = true;
+  includeEnRoute = true;
+  includeWithoutPref = false;
 
   // // opp at location
   // includeDistance = false;
   // includeEnRoute = false;
   // includeWithoutPref = false;
 
-  // opp at distance
-  includeDistance = true;
-  includeEnRoute = false;
-  includeWithoutPref = true;
+  // // opp at distance
+  // includeDistance = true;
+  // includeEnRoute = false;
+  // includeWithoutPref = true;
 
   const lat = request.params.latitude;
   const lng = request.params.longitude;
