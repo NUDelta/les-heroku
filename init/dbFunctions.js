@@ -91,8 +91,10 @@ const addEstimoteBeaconsToDB = function (location, locationIdentifier, beaconIde
  * @param locationType
  * @param locationName
  * @param locationHours
+ * @param submissionMethod
  */
-const addTaskLocationToDB = function (location, beaconId, locationType, locationName, locationHours) {
+const addTaskLocationToDB = function (location, beaconId, locationType, locationName, locationHours,
+                                      submissionMethod) {
   // check if a TaskLocation with the same name is already included
   let locationNameQuery = new Parse.Query('TaskLocations');
   locationNameQuery.equalTo('locationName', locationName);
@@ -140,7 +142,7 @@ const addTaskLocationToDB = function (location, beaconId, locationType, location
     newTaskLocation.set('saveTimes', saveTimes);
     newTaskLocation.set('archived', false);
     newTaskLocation.set('archiver', '');
-    newTaskLocation.set('submissionMethod', '');
+    newTaskLocation.set('submissionMethod', submissionMethod || '');
     newTaskLocation.set('vendorId', '');
     newTaskLocation.set('gmtOffset', utcTimezoneOffsetSeconds);
     return newTaskLocation.save();
