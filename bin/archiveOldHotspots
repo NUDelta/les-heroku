@@ -6,8 +6,8 @@ Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
 
 const archiveOldHotspots = function () {
-  // setup time threshold
-  const timeExpiryThreshold = moment().subtract(4, 'hours').toDate();
+  // setup time threshold: 6 hours
+  const timeExpiryThreshold = moment().subtract(6, 'hours').toDate();
 
   // fetch objects that are ready to be archived
   const taskLocationQuery = new Parse.Query('TaskLocations');
