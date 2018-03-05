@@ -4,7 +4,7 @@ const moment = require('moment');
 const Parse = require('parse/node');
 
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
-Parse.serverURL = 'http://localhost:5000/parse/';
+Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
 
 /**
  * Adds location metadata to DB if not already there.
