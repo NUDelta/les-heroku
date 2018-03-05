@@ -2,6 +2,7 @@ const _ = require('lodash');
 const push = require('./push.js');
 const locationFunctions = require('./locationFunctions');
 const Parse = require('parse/node');
+const dbFunctions = require('../init/dbFunctions');
 
 /*
  * Push Functions
@@ -187,7 +188,8 @@ Parse.Cloud.afterSave('TaskLocations', (request, response) => {
     return;
   }
 
-  if (taskLocation.get('archiver') === 'system') {
+  // recreate location iff system archived it and its a non-user submitted location
+  if (taskLocation.get('archiver') === 'system' && taskLocation.get('submissionMethod') === '') {
     console.log('this is running');
     // archive old taskLocation (user is archiver unless background job archives)
     taskLocation.set('archived', true);
@@ -305,6 +307,20 @@ Parse.Cloud.define('retrieveLocations', (request, response) => {
 
   locationFunctions.fetchLocationsToTrack(includeDistance, includeEnRoute, includeWithoutPref,
     lat, lng, atDistanceNotifDistance, vendorId, response);
+});
+
+Parse.Cloud.define('createNewTaskLocation', (request, response) => {
+  const geopoint = new Parse.GeoPoint(request.params.latitude, request.params.longitude);
+  const result = dbFunctions.addTaskLocationToDB(geopoint, request.params.beaconId, request.params.locationType,
+    request.params.locationName,
+    request.params.locationHours,
+    request.params.submissionMethod);
+
+  if (result === '') {
+    response.error(result);
+  } else {
+    response.success(result);
+  }
 });
 
 /*
