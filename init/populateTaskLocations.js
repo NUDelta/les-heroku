@@ -1,5 +1,9 @@
 const dbFunctions = require('./dbFunctions');
 const Parse = require('parse/node');
+
+Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
+Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
+
 /*
  * Add TaskLocations
  */

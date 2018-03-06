@@ -3,11 +3,9 @@ const geoTz = require('geo-tz');
 const moment = require('moment');
 const Parse = require('parse/node');
 
-Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
-Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
-
 /**
  * Adds location metadata to DB if not already there.
+ *
  * All parameters map back to variables found in the composer.
  *
  * @param locationType
