@@ -14,10 +14,7 @@ const dbFunctions = require('../init/dbFunctions');
  */
 Parse.Cloud.define('sendPushToOne', (request, response) => {
   const token = request.params.token;
-  let message = request.params.message;
-  if (message === undefined) {
-    message = ''
-  }
+  let message = request.params.message || '';
 
   push.sendPushWithMessage([token], message, response);
 });
@@ -25,7 +22,7 @@ Parse.Cloud.define('sendPushToOne', (request, response) => {
 /**
  * Sends a push message to all users in DB
  */
-Parse.Cloud.define('sendPushToAllUsers', (request, response) => {
+Parse.Cloud.define('sendPushToAllUsersWithMessage', (request, response) => {
   // send push update for data
   const userQuery = new Parse.Query(Parse.User);
   userQuery.find({
@@ -37,15 +34,18 @@ Parse.Cloud.define('sendPushToAllUsers', (request, response) => {
         }
       });
 
-      const message = 'Hi! Welcome to LES! ' +
-        'If you have any questions, please don\'t hesistate to ask!';
+      // send message included with request, otherwise default message
+      let message = request.params.message || '';
+      if (message === '') {
+        message = 'Hi! Welcome to LES! ' +
+          'If you have any questions, please don\'t hesitate to ask!';
+      }
       push.sendPushWithMessage(pushTokens, message, response);
     },
     error: (error) => {
       response.error(error);
     }
   });
-
 });
 
 /**
