@@ -40,8 +40,9 @@ const notifyDeadApps = function notifyDeadApps() {
       }
     });
 
-    const message = 'Hi! It seems that LES closed on your phone. ' +
-      'Swipe right or tap to start it up again!';
+    const message = 'Hi! Looks like LES closed on your phone ' +
+      '(remember! don\'t swipe up to terminate LES, and limit low-battery mode usage). ' +
+      'Swipe right/tap on me start it up again!';
     push.sendPushWithMessage(pushTokens, message, undefined);
 
     // successfully notified dead apps
