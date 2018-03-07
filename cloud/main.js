@@ -118,7 +118,7 @@ Parse.Cloud.define('requestLocationUpdate', (request, response) => {
         }
       });
 
-      console.log('Sending silent refresh for beacons');
+      console.log('Sending silent refresh to get user\'s current location');
       push.sendSilentRefreshNotification(pushTokens, 'location', response);
     },
     error: (error) => {
