@@ -3,6 +3,7 @@ const push = require('./push.js');
 const locationFunctions = require('./locationFunctions');
 const Parse = require('parse/node');
 const dbFunctions = require('../init/dbFunctions');
+const composer = require('./notificationComposer');
 
 /*
  * Push Functions
@@ -182,54 +183,80 @@ Parse.Cloud.afterSave('TaskLocations', (request, response) => {
   const locationType = taskLocation.get('locationType');
   const taskLocationInfo = taskLocation.get('currentData');
   const locationName = taskLocation.get('locationName');
+  const locationMetadataId = taskLocation.get('metadataObject').id;
 
   // check if archived = true, if so stop
   if (taskLocation.get('archived')) {
     return;
   }
 
-  // recreate location iff system archived it and its a non-user submitted location
-  if (taskLocation.get('archiver') === 'system' && taskLocation.get('submissionMethod') === '') {
-    console.log('this is running');
-    // archive old taskLocation (user is archiver unless background job archives)
-    taskLocation.set('archived', true);
-    taskLocation.save();
+  // check if TaskLocation should be archived by seeing if there if there's another query available
+  let locationTypeMetadataQuery = new Parse.Query('LocationTypeMetadata');
+  locationTypeMetadataQuery.equalTo('objectId', locationMetadataId);
+  locationTypeMetadataQuery.first().then(currentLocationMetadata => {
+    if (currentLocationMetadata !== undefined) {
+      const scaffoldStructure = currentLocationMetadata.get('scaffoldStructure');
+      const loopbackQuestion = currentLocationMetadata.get('loopbackQuestion');
 
-    // recreate pre-marked locations
-    if (locationName !== '') {
-      // create new values for TaskLocation
-      const timestamp = Math.round(Date.now() / 1000);
-      const newInfo = JSON.parse(JSON.stringify(taskLocationInfo));
-      const newSaveTimes = JSON.parse(JSON.stringify(taskLocationInfo));
-      _.forEach(taskLocationInfo, (value, key) => {
-        newInfo[key] = '';
-        newSaveTimes[key] = timestamp;
-      });
 
-      // save new TaskLocation
-      const TaskLocation = Parse.Object.extend('TaskLocations');
-      const newTaskLocation = new TaskLocation();
-      newTaskLocation.set('metadataObject', taskLocation.get('metadataObject'));
-      newTaskLocation.set('location', taskLocation.get('location'));
-      newTaskLocation.set('beaconId', taskLocation.get('beaconId'));
-      newTaskLocation.set('locationType', locationType);
-      newTaskLocation.set('locationName', locationName);
-      newTaskLocation.set('locationHours', taskLocation.get('locationHours'));
-      newTaskLocation.set('currentData', newInfo);
-      newTaskLocation.set('saveTimes', newSaveTimes);
-      newTaskLocation.set('archived', false);
-      newTaskLocation.set('archiver', '');
-      newTaskLocation.set('submissionMethod', '');
-      newTaskLocation.set('vendorId', '');
-      newTaskLocation.set('gmtOffset', taskLocation.get('gmtOffset'));
-      newTaskLocation.save();
+      let queryKey = composer.getNextQueryKey(scaffoldStructure, taskLocationInfo);
+      if (queryKey === '') {
+        // check if a loopback question is specified and positive value in scaffoldData
+        if (loopbackQuestion !== '' &&
+          taskLocationInfo[loopbackQuestion] !== 'no') {
+          queryKey = loopbackQuestion;
+        }
+      }
+
+      // if no further questions and not already archived, archive by user
+      if (queryKey === '' && taskLocation.get('archiver') === '') {
+        taskLocation.set('archiver', 'user response');
+      }
+
+      // archive old taskLocation if archiver isnt blank
+      if (taskLocation.get('archiver') !== '') {
+        taskLocation.set('archived', true);
+        taskLocation.save();
+      }
+
+      // recreate location if now archived and was system created (e.g. submission method was blank)
+      if (taskLocation.get('archived') && taskLocation.get('submissionMethod') === '') {
+        if (locationName !== '') {
+          // create new values for TaskLocation
+          const timestamp = Math.round(Date.now() / 1000);
+          const newInfo = JSON.parse(JSON.stringify(taskLocationInfo));
+          const newSaveTimes = JSON.parse(JSON.stringify(taskLocationInfo));
+          _.forEach(taskLocationInfo, (value, key) => {
+            newInfo[key] = '';
+            newSaveTimes[key] = timestamp;
+          });
+
+          // save new TaskLocation
+          const TaskLocation = Parse.Object.extend('TaskLocations');
+          const newTaskLocation = new TaskLocation();
+          newTaskLocation.set('metadataObject', taskLocation.get('metadataObject'));
+          newTaskLocation.set('location', taskLocation.get('location'));
+          newTaskLocation.set('beaconId', taskLocation.get('beaconId'));
+          newTaskLocation.set('locationType', locationType);
+          newTaskLocation.set('locationName', locationName);
+          newTaskLocation.set('locationHours', taskLocation.get('locationHours'));
+          newTaskLocation.set('currentData', newInfo);
+          newTaskLocation.set('saveTimes', newSaveTimes);
+          newTaskLocation.set('archived', false);
+          newTaskLocation.set('archiver', '');
+          newTaskLocation.set('submissionMethod', '');
+          newTaskLocation.set('vendorId', '');
+          newTaskLocation.set('gmtOffset', taskLocation.get('gmtOffset'));
+          newTaskLocation.save();
+        }
+      }
     }
-  }
 
-  // send push update for data
-  const userQuery = new Parse.Query(Parse.User);
-  userQuery.descending('createdAt');
-  userQuery.find().then(users => {
+    // always update users since something new is in the currentData scaffold
+    const userQuery = new Parse.Query(Parse.User);
+    userQuery.descending('createdAt');
+    return userQuery.find();
+  }).then(users => {
     const pushTokens = [];
     _.forEach(users, (currentUser) => {
       if (currentUser.get('pushToken') !== '') {
