@@ -6,7 +6,7 @@ const _ = require('lodash');
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
 
-const sendHeartbeatRequest = () => {
+const sendLocationRequest = () => {
   // get all users currently using application
   const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
@@ -21,27 +21,27 @@ const sendHeartbeatRequest = () => {
       }
     });
 
-    console.log('Sending heartbeat request to: ', pushTokens);
-    push.sendSilentHeartbeatNotification(pushTokens, undefined);
+    console.log('Sending location request to: ', pushTokens);
+    push.sendSilentRefreshNotification(pushTokens, 'location', undefined);
 
     // successfully sent heartbeat request
     let ServerLog = Parse.Object.extend('ServerLog');
     let newServerLog = new ServerLog();
-    newServerLog.set('caller', 'sendHeartbeatRequest');
+    newServerLog.set('caller', 'sendLocationRequest');
     newServerLog.set('success', true);
-    newServerLog.set('logString', 'Sent heartbeat request for IDs: [' + vendorIds.join(', ') + ']');
+    newServerLog.set('logString', 'Sent location request for IDs: [' + vendorIds.join(', ') + ']');
     return newServerLog.save();
   }).catch(error => {
-    console.error('Requesting heartbeats failed with error: ' + error);
+    console.error('Requesting locations failed with error: ' + error);
 
     // unsuccessfully notified dead apps
     let ServerLog = Parse.Object.extend('ServerLog');
     let newServerLog = new ServerLog();
-    newServerLog.set('caller', 'sendHeartbeatRequest');
+    newServerLog.set('caller', 'sendLocationRequest');
     newServerLog.set('success', false);
-    newServerLog.set('logString', 'Requesting heartbeats failed with error: ' + error);
+    newServerLog.set('logString', 'Requesting locations failed with error: ' + error);
     return newServerLog.save();
   });
 };
 
-sendHeartbeatRequest();
+sendLocationRequest();
