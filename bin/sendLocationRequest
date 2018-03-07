@@ -30,6 +30,7 @@ const sendLocationRequest = () => {
     newServerLog.set('caller', 'sendLocationRequest');
     newServerLog.set('success', true);
     newServerLog.set('logString', 'Sent location request for IDs: [' + vendorIds.join(', ') + ']');
+    return newServerLog.save();
   }).catch(error => {
     console.error('Requesting locations failed with error: ' + error);
 

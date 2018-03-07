@@ -30,6 +30,7 @@ const sendHeartbeatRequest = () => {
     newServerLog.set('caller', 'sendHeartbeatRequest');
     newServerLog.set('success', true);
     newServerLog.set('logString', 'Sent heartbeat request for IDs: [' + vendorIds.join(', ') + ']');
+    return newServerLog.save();
   }).catch(error => {
     console.error('Requesting heartbeats failed with error: ' + error);
 
