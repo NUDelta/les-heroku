@@ -53,7 +53,7 @@ Parse.Cloud.define('sendPushToAllUsersWithMessage', (request, response) => {
  * Sends a silent push message to all users in DB.
  * Causes client to pull new data from DB
  */
-Parse.Cloud.define('sendPushSilentRefresh', (request, response) => {
+Parse.Cloud.define('refreshTrackedLocations', (request, response) => {
   // send push update for data
   const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
@@ -68,9 +68,58 @@ Parse.Cloud.define('sendPushSilentRefresh', (request, response) => {
 
       console.log('Sending silent refresh for tracked locations');
       push.sendSilentRefreshNotification(pushTokens, 'trackedlocations', response);
+    },
+    error: (error) => {
+      response.error(error);
+    }
+  });
+});
+
+/**
+ * Sends a silent push message to all users in DB.
+ * Causes client to fetch and start tracking new beacons.
+ */
+Parse.Cloud.define('refreshTrackedBeacons', (request, response) => {
+  // send push update for data
+  const userQuery = new Parse.Query(Parse.User);
+  userQuery.descending('createdAt');
+  userQuery.find({
+    success: (users) => {
+      const pushTokens = [];
+      _.forEach(users, (currentUser) => {
+        if (currentUser.get('pushToken') !== '') {
+          pushTokens.push(currentUser.get('pushToken'));
+        }
+      });
 
       console.log('Sending silent refresh for beacons');
       push.sendSilentRefreshNotification(pushTokens, 'beacon', response);
+    },
+    error: (error) => {
+      response.error(error);
+    }
+  });
+});
+
+/**
+ * Sends a silent push message to all users in DB.
+ * Causes client to request a location update and save said update to the DB.
+ */
+Parse.Cloud.define('requestLocationUpdate', (request, response) => {
+  // send push update for data
+  const userQuery = new Parse.Query(Parse.User);
+  userQuery.descending('createdAt');
+  userQuery.find({
+    success: (users) => {
+      const pushTokens = [];
+      _.forEach(users, (currentUser) => {
+        if (currentUser.get('pushToken') !== '') {
+          pushTokens.push(currentUser.get('pushToken'));
+        }
+      });
+
+      console.log('Sending silent refresh to get user\'s current location');
+      push.sendSilentRefreshNotification(pushTokens, 'location', response);
     },
     error: (error) => {
       response.error(error);
