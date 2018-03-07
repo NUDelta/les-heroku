@@ -82,23 +82,6 @@ Parse.Cloud.define('sendPushSilentRefresh', (request, response) => {
  * Save triggers
  */
 
-/**
- * Checks if any pieces of info are currently a terminator.
- *
- * @param terminators {object} mapping of keys to terminators
- * @param info {object} mapping of keys to current info value
- * @returns {boolean} if any pieces of info matches a corresponding terminator.
- */
-const checkForTerminators = (terminators, info) => {
-  for (let i in terminators) {
-    if (info[i] === terminators[i]) {
-      return true;
-    }
-  }
-
-  return false;
-};
-
 // check if explicit app termination has happened
 // Parse.Cloud.afterSave('pretracking_debug', (request) => {
 //   if (request.object.get('console_string') === 'App about to terminate') {
@@ -198,7 +181,6 @@ Parse.Cloud.afterSave('TaskLocations', (request, response) => {
       const scaffoldStructure = currentLocationMetadata.get('scaffoldStructure');
       const loopbackQuestion = currentLocationMetadata.get('loopbackQuestion');
 
-
       let queryKey = composer.getNextQueryKey(scaffoldStructure, taskLocationInfo);
       if (queryKey === '') {
         // check if a loopback question is specified and positive value in scaffoldData
@@ -264,7 +246,7 @@ Parse.Cloud.afterSave('TaskLocations', (request, response) => {
       }
     });
 
-    console.log('refreshing beacon data for users: ', pushTokens);
+    console.log('refreshing TaskLocation data for users: ', pushTokens);
     push.sendSilentRefreshNotification(pushTokens, 'trackedlocations', response);
   }).catch(error => {
     response.error(error);
@@ -356,387 +338,76 @@ Parse.Cloud.define('createNewTaskLocation', (request, response) => {
  */
 
 /**
- * Creates a scaffolded message for a specific location.
- * Used primarily as a testing function.
- */
-Parse.Cloud.define('createScaffoldedMessageForHotspot', (request, response) => {
-  const hotspotId = request.params.hotspotId;
-
-  const hotspotQuery = new Parse.Query('hotspot');
-  hotspotQuery.equalTo('objectId', hotspotId);
-  hotspotQuery.first({
-    success: (hotspot) => {
-      const message = notificationComposer.fetchScaffoldedInformationForTag(
-        hotspot.get('tag'),
-        hotspot.get('info'),
-        hotspot.get('locationCommonName'));
-      response.success(message);
-    },
-    error: (error) => {
-      console.log(error);
-    }
-  });
-});
-
-/**
- * Get ranking for each user by contribution.
- * Weight primary contribute as 2x more than response to ping
- */
-Parse.Cloud.define('rankingsByContribution', (request, response) => {
-  const userQuery = new Parse.Query(Parse.User);
-  userQuery.find({
-    success: (users) => {
-      const numberUsers = users.length;
-
-      // convert users into object with location mark count and ping response count
-      const userContribution = {};
-
-      for (let i in users) {
-        const currentUser = users[i];
-
-        let displayName = currentUser.get('firstName').trim();
-        displayName = displayName.concat(currentUser.get('lastName').trim().charAt(0));
-        displayName = displayName.toLowerCase();
-
-        if (displayName === '') {
-          displayName = 'anonymous';
-        }
-
-        userContribution[currentUser.get('vendorId')] = {
-          'displayName': displayName,
-          'locationsMarked': 0,
-          'notificationResponses': 0,
-          'totalScore': 0
-        };
-      }
-
-      // grab notification responses and aggregate for user
-      const notificationResponseQuery = new Parse.Query('pingResponse');
-      notificationResponseQuery.find({
-        success: (notificationResponses) => {
-          const notificationResponsesLen = notificationResponses.length;
-          for (let i in notificationResponses) {
-            let currentVendorId = notificationResponses[i].get('vendorId');
-            userContribution[currentVendorId].notificationResponses += 1;
-            userContribution[currentVendorId].totalScore += 1;
-          }
-
-          // grab hotspots and aggregate for user
-          const locationQuery = new Parse.Query('hotspot');
-          locationQuery.limit(1000);
-          locationQuery.find({
-            success: (locations) => {
-              const locationCount = locations.length;
-              for (let i in locations) {
-                const currentVendorId = locations[i].get('vendorId');
-                if (currentVendorId !== '') {
-                  userContribution[currentVendorId].locationsMarked += 1;
-                  userContribution[currentVendorId].totalScore += 2;
-                }
-              }
-
-              // convert userContribution into array
-              const leaderBoard = [];
-              for (let key in userContribution) {
-                leaderBoard.push(userContribution[key]);
-              }
-
-              // order by total score
-              leaderBoard.sort((a, b) => {
-                return (a.totalScore < b.totalScore) ? 1 : ((b.totalScore < a.totalScore) ? -1 : 0);
-              });
-
-              response.success(leaderBoard);
-            },
-            error: (error) => {
-              console.log(error);
-            }
-          });
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      });
-    },
-    error: (error) => {
-      console.log(error);
-    }
-  });
-});
-
-/**
  * Fetches data when user taps on pin in the MapView
  */
-Parse.Cloud.define('fetchMapDataView', (request, response) => {
-  const output = [];
-  const responseQuery = new Parse.Query('pingResponse');
-  responseQuery.equalTo('hotspotId', request.params.hotspotId);
-  responseQuery.notContainedIn('response', ['com.apple.UNNotificationDismissActionIdentifier',
-    'com.apple.UNNotificationDefaultActionIdentifier',
-    'I don\'t know', 'I don\'t come here regularly'
-  ]);
-  responseQuery.ascending('timestamp');
-  responseQuery.find({
-    success: (responses) => {
-      if (responses.length > 0) {
-        // parse out responses into relevant information
-        const users = [];
-        const responsesToAdd = [];
-
-        for (let i in responses) {
-          const newResponse = {
-            'question': responses[i].get('question'),
-            'answer': responses[i].get('response'),
-            'timestamp': responses[i].get('timestamp') + responses[i].get('gmtOffset'),
-            'vendorId': responses[i].get('vendorId'),
-            'initials': ''
-          };
-
-          users.push(responses[i].get('vendorId'));
-          responsesToAdd.push(newResponse);
-        }
-
-        // get initials for each response
-        const userQuery = new Parse.Query(Parse.User);
-        userQuery.containedIn('vendorId', users);
-        userQuery.find({
-          success: (users) => {
-            if (users.length > 0) {
-              for (let k in responsesToAdd) {
-                for (let j in users) {
-                  if (responsesToAdd[k].vendorId === users[j].get('vendorId')) {
-                    let initials = '';
-                    let username = users[j].get('firstName').trim();
-                    username = username.concat(users[j].get('lastName').trim().charAt(0));
-                    if (username === '') {
-                      initials = 'AN';
-                    } else {
-                      initials = users[j].get('firstName').trim().charAt(0);
-                      initials = initials.concat(users[j].get('lastName').trim().charAt(0));
-                      initials = initials.toUpperCase();
-                    }
-
-                    responsesToAdd[k].initials = initials;
-                    output.push(responsesToAdd[k]);
-                    break;
-                  }
-                }
-              }
-            }
-            response.success(output);
-          },
-          error: (error) => {
-            console.log(error);
-          }
-        });
-      } else {
-        response.success(output);
-      }
-    },
-    error: (error) => {
-      console.log(error);
-    }
-  });
-});
-
-/**
- * Fetches data to populate the UserProfileView
- */
-Parse.Cloud.define('fetchUserProfileData', (request, response) => {
-  const output = {
-    'username': '',
-    'initials': '',
-    'contributionCount': 0,
-    'markedLocationCount': 0,
-    'peopleHelped': 1,
-    'contributionLocations': []
-  };
-
-  const userQuery = new Parse.Query(Parse.User);
-  userQuery.equalTo('vendorId', request.params.vendorId);
-  userQuery.descending('createdAt');
-  userQuery.find({
-    success: (users) => {
-      if (users.length > 0) {
-        // parse out username and initials
-        const currentUser = users[0];
-        let username = currentUser.get('firstName').trim();
-        let initials = '';
-        username = username.concat(currentUser.get('lastName').trim().charAt(0));
-        username = username.toLowerCase();
-        if (username === '') {
-          username = 'anonymous';
-          initials = 'AN';
-        } else {
-          initials = currentUser.get('firstName').trim().charAt(0);
-          initials = initials.concat(currentUser.get('lastName').trim().charAt(0));
-          initials = initials.toUpperCase();
-        }
-        output.username = username;
-        output.initials = initials;
-
-        const responseQuery = new Parse.Query('pingResponse');
-        responseQuery.equalTo('vendorId', request.params.vendorId);
-        responseQuery.descending('timestamp');
-        responseQuery.find({
-          success: (responses) => {
-            // contribution count and contributions where user has responded to notifications
-            const contributionHotspots = [];
-            const contribLocationList = [];
-
-            if (responses.length > 0) {
-              output.contributionCount = responses.length;
-              for (let i in responses) {
-                const newContributionLocation = {
-                  'category': responses[i].get('tag').trim(),
-                  'timestamp': responses[i].get('timestamp'),
-                  'contributionType': 'response',
-                  'hotspotId': responses[i].get('hotspotId')
-                };
-
-                contributionHotspots.push(responses[i].get('hotspotId'));
-                contribLocationList.push(newContributionLocation);
-              }
-            } else {
-              output.contributionCount = 0;
-            }
-
-            // get locations for contributionLocations and any marked locations
-            const genLocationQuery = new Parse.Query('hotspot');
-            const contributionLocationQuery = new Parse.Query('hotspot');
-            genLocationQuery.equalTo('vendorId', request.params.vendorId);
-            contributionLocationQuery.containedIn('objectId', contributionHotspots);
-
-            const mainQuery = new Parse.Query.or(genLocationQuery, contributionLocationQuery);
-            mainQuery.descending('timestampCreated');
-            mainQuery.find({
-              success: (hotspots) => {
-                if (hotspots.length > 0) {
-                  for (let j in hotspots) {
-                    if (hotspots[j].get('vendorId') === request.params.vendorId) {
-                      const newMarkedLocation = {
-                        'category': hotspots[j].get('tag').trim(),
-                        'timestamp': hotspots[j].get('timestampCreated') +
-                        hotspots[j].get('gmtOffset'),
-                        'contributionType': 'marked',
-                        'hotspotId': hotspots[j].id,
-                        'latitude': parseFloat(hotspots[j].get('location').latitude),
-                        'longitude': parseFloat(hotspots[j].get('location').longitude)
-                      };
-
-                      output.contributionLocations.push(newMarkedLocation);
-                      output.markedLocationCount++;
-                    } else {
-                      for (let k in contribLocationList) {
-                        if (contribLocationList[k].hotspotId === hotspots[j].id) {
-                          contribLocationList[k].latitude = hotspots[j].get('location').latitude;
-                          contribLocationList[k].longitude = hotspots[j].get('location').longitude;
-
-                          output.contributionLocations.push(contribLocationList[k]);
-                        }
-                      }
-                    }
-                  }
-                } else {
-                  output.markedLocationCount = 0;
-                }
-
-                // select only first 10 contributions
-                output.contributionLocations = output.contributionLocations.slice(0, 10);
-                response.success(output);
-              },
-              error: (error) => {
-                console.log(error);
-              }
-            });
-          },
-          error: (error) => {
-            console.log(error);
-          }
-        });
-      } else {
-        output.username = 'anonymous';
-        output.initials = 'AN';
-        output.ranking = 0;
-        output.contributionCount = 0;
-        output.markedLocationCount = 0;
-        output.peopleHelped = 0;
-
-        response.success(output);
-      }
-    },
-    error: (error) => {
-      console.log(error);
-    }
-  });
-});
-
-/**
- * Multicolumn sorting function
- * From: http://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields.
- */
-let sortBy;
-(function () {
-  // utility functions
-  const defaultCmp = (a, b) => {
-      if (a === b) {
-        return 0;
-      }
-      return a < b ? -1 : 1;
-    },
-    getCmpFunc = (primer, reverse) => {
-      const dfc = defaultCmp;
-      let // closer in scope
-        cmp = defaultCmp;
-      if (primer) {
-        cmp = (a, b) => {
-          return dfc(primer(a), primer(b));
-        };
-      }
-      if (reverse) {
-        return (a, b) => {
-          return -1 * cmp(a, b);
-        };
-      }
-      return cmp;
-    };
-
-  // actual implementation
-  sortBy = () => {
-    const fields = [],
-      nFields = arguments.length;
-    let field, name, reverse, cmp;
-
-    // preprocess sorting options
-    for (let i = 0; i < nFields; i++) {
-      field = arguments[i];
-      if (typeof field === 'string') {
-        name = field;
-        cmp = defaultCmp;
-      } else {
-        name = field.name;
-        cmp = getCmpFunc(field.primer, field.reverse);
-      }
-      fields.push({
-        name: name,
-        cmp: cmp
-      });
-    }
-
-    // final comparison function
-    return (A, B) => {
-      let a, b, name, result;
-      for (let i = 0; i < nFields; i++) {
-        result = 0;
-        field = fields[i];
-        name = field.name;
-
-        result = field.cmp(A[name], B[name]);
-        if (result !== 0) {
-          break;
-        }
-      }
-      return result;
-    };
-  };
-}());
+// Parse.Cloud.define('fetchMapDataView', (request, response) => {
+//   const output = [];
+//   const responseQuery = new Parse.Query('pingResponse');
+//   responseQuery.equalTo('hotspotId', request.params.hotspotId);
+//   responseQuery.notContainedIn('response', ['com.apple.UNNotificationDismissActionIdentifier',
+//     'com.apple.UNNotificationDefaultActionIdentifier',
+//     'I don\'t know', 'I don\'t come here regularly'
+//   ]);
+//   responseQuery.ascending('timestamp');
+//   responseQuery.find({
+//     success: (responses) => {
+//       if (responses.length > 0) {
+//         // parse out responses into relevant information
+//         const users = [];
+//         const responsesToAdd = [];
+//
+//         for (let i in responses) {
+//           const newResponse = {
+//             'question': responses[i].get('question'),
+//             'answer': responses[i].get('response'),
+//             'timestamp': responses[i].get('timestamp') + responses[i].get('gmtOffset'),
+//             'vendorId': responses[i].get('vendorId'),
+//             'initials': ''
+//           };
+//
+//           users.push(responses[i].get('vendorId'));
+//           responsesToAdd.push(newResponse);
+//         }
+//
+//         // get initials for each response
+//         const userQuery = new Parse.Query(Parse.User);
+//         userQuery.containedIn('vendorId', users);
+//         userQuery.find({
+//           success: (users) => {
+//             if (users.length > 0) {
+//               for (let k in responsesToAdd) {
+//                 for (let j in users) {
+//                   if (responsesToAdd[k].vendorId === users[j].get('vendorId')) {
+//                     let initials = '';
+//                     let username = users[j].get('firstName').trim();
+//                     username = username.concat(users[j].get('lastName').trim().charAt(0));
+//                     if (username === '') {
+//                       initials = 'AN';
+//                     } else {
+//                       initials = users[j].get('firstName').trim().charAt(0);
+//                       initials = initials.concat(users[j].get('lastName').trim().charAt(0));
+//                       initials = initials.toUpperCase();
+//                     }
+//
+//                     responsesToAdd[k].initials = initials;
+//                     output.push(responsesToAdd[k]);
+//                     break;
+//                   }
+//                 }
+//               }
+//             }
+//             response.success(output);
+//           },
+//           error: (error) => {
+//             console.log(error);
+//           }
+//         });
+//       } else {
+//         response.success(output);
+//       }
+//     },
+//     error: (error) => {
+//       console.log(error);
+//     }
+//   });
+// });
