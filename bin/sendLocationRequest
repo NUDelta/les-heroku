@@ -1,0 +1,46 @@
+#! /app/.heroku/node/bin/node
+const Parse = require('parse/node');
+const push = require('../cloud/push.js');
+const _ = require('lodash');
+
+Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
+Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
+
+const sendLocationRequest = () => {
+  // get all users currently using application
+  const userQuery = new Parse.Query(Parse.User);
+  userQuery.descending('createdAt');
+  userQuery.find().then(users => {
+    const pushTokens = [];
+    const vendorIds = [];
+
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
+        vendorIds.push(currentUser.get('vendorId'));
+      }
+    });
+
+    console.log('Sending location request to: ', pushTokens);
+    push.sendSilentRefreshNotification(pushTokens, 'location', undefined);
+
+    // successfully sent heartbeat request
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'sendLocationRequest');
+    newServerLog.set('success', true);
+    newServerLog.set('logString', 'Sent location request for IDs: [' + vendorIds.join(', ') + ']');
+  }).catch(error => {
+    console.error('Requesting locations failed with error: ' + error);
+
+    // unsuccessfully notified dead apps
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'sendLocationRequest');
+    newServerLog.set('success', false);
+    newServerLog.set('logString', 'Requesting locations failed with error: ' + error);
+    return newServerLog.save();
+  });
+};
+
+sendLocationRequest();
