@@ -10,15 +10,15 @@
   "license": "MIT",
   "dependencies": {
     "apn": "^2.2.0",
-    "core-js": "^2.5.3",
-    "express": "^4.16.2",
+    "core-js": "^2.5.5",
+    "express": "^4.16.3",
     "geo-tz": "^3.3.4",
     "kerberos": "0.0.23",
-    "lodash": "^4.17.5",
-    "moment": "^2.20.1",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.1",
     "node-schedule": "^1.3.0",
-    "parse": "^1.11.0",
-    "parse-server": "^2.7.2"
+    "parse": "^1.11.1",
+    "parse-server": "^2.7.4"
   },
   "scripts": {
     "start": "node index.js",
@@ -29,6 +29,6 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "mocha": "^5.0.1"
+    "mocha": "^5.1.1"
   }
 }
