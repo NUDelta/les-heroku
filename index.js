@@ -54,41 +54,54 @@ httpServer.listen(port, function () {
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
 
-// // schedule recurring task to get location updates
-// var Parse = require('parse/node');
-// var push = require(__dirname + '/cloud/push.js');
-// var schedule = require('node-schedule');
-//
-// Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
-// Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
-//
-// function requestCurrentUserLocation() {
-//   // get all users currently using application
-//   var userQuery = new Parse.Query(Parse.User);
-//   userQuery.descending('createdAt');
-//   userQuery.find({
-//     success: function(users) {
-//       var pushTokens = [];
-//
-//       for (var i in users) {
-//         var currentUser = users[i];
-//
-//         if (currentUser.get('pushToken') !== '') {
-//           pushTokens.push(currentUser.get('pushToken'));
-//         }
-//       }
-//
-//       console.log(pushTokens);
-//       push.requestUserLocation(pushTokens);
-//
-//       status.success('Location requests sent.');
-//     },
-//     error: function(error) {
-//       status.error('Requesting location failed with error: ' + error);
-//     }
-//   });
-// };
-//
-// var locationJob = schedule.scheduleJob('*/30 * * * * *', function(){
-//   requestCurrentUserLocation();
-// });
+// schedule recurring task to get location updates from users every minute
+const Parse = require('parse/node');
+const push = require(__dirname + '/cloud/push.js');
+const schedule = require('node-schedule');
+const _ = require('lodash');
+
+Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
+Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
+
+let scheduleRule = new schedule.RecurrenceRule();
+scheduleRule.minute = new schedule.Range(0, 59, 1);
+
+schedule.scheduleJob(scheduleRule, function () {
+  console.log('running')
+  // get all users currently using application
+  const userQuery = new Parse.Query(Parse.User);
+  userQuery.descending('createdAt');
+  userQuery.find().then(users => {
+    const pushTokens = [];
+    const vendorIds = [];
+
+    // only take users who have a valid push token
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
+        vendorIds.push(currentUser.get('vendorId'));
+      }
+    });
+
+    console.log('Sending location request to: ', pushTokens);
+    push.sendSilentRefreshNotification(pushTokens, 'location', undefined);
+
+    // successfully sent heartbeat request
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'sendLocationRequest');
+    newServerLog.set('success', true);
+    newServerLog.set('logString', 'Sent location request for IDs: [' + vendorIds.join(', ') + ']');
+    return newServerLog.save();
+  }).catch(error => {
+    console.error('Requesting locations failed with error: ' + error);
+
+    // unsuccessfully notified dead apps
+    let ServerLog = Parse.Object.extend('ServerLog');
+    let newServerLog = new ServerLog();
+    newServerLog.set('caller', 'sendLocationRequest');
+    newServerLog.set('success', false);
+    newServerLog.set('logString', 'Requesting locations failed with error: ' + error);
+    return newServerLog.save();
+  });
+});
