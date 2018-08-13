@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const Parse = require('parse/node');
 const moment = require('moment');
 
 const composer = require('./notificationComposer.js');

@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const geoTz = require('geo-tz');
 const moment = require('moment');
-const Parse = require('parse/node');
 
 /**
  * Adds location metadata to DB if not already there.
@@ -124,7 +123,7 @@ const addTaskLocationToDB = function (location, beaconId, locationType, location
       saveTimes[queryKey] = currentTime;
     });
 
-    let locationTimezone = geoTz.tz(location.latitude, location.longitude);
+    let locationTimezone = geoTz(location.latitude, location.longitude);
     let utcTimezoneOffsetSeconds = moment.tz.zone(locationTimezone).utcOffset(currentTime) * -60;
 
     // create new location object
@@ -167,7 +166,7 @@ const addEnRouteLocationsToDB = function (location, locationType, locationName, 
     if (results.length === 0) {
       // setup data
       let currentTime = Math.round(Date.now() / 1000);
-      let locationTimezone = geoTz.tz(location.latitude, location.longitude);
+      let locationTimezone = geoTz(location.latitude, location.longitude);
       let utcTimezoneOffsetSeconds = moment.tz.zone(locationTimezone).utcOffset(currentTime) * -60;
 
       let EnRouteLocation = Parse.Object.extend('EnRouteLocations');

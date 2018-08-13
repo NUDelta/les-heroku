@@ -55,13 +55,9 @@ httpServer.listen(port, function () {
 ParseServer.createLiveQueryServer(httpServer);
 
 // schedule recurring task to get location updates from users every minute
-const Parse = require('parse/node');
 const push = require(__dirname + '/cloud/push.js');
 const schedule = require('node-schedule');
 const _ = require('lodash');
-
-Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
-Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
 
 let scheduleRule = new schedule.RecurrenceRule();
 scheduleRule.minute = new schedule.Range(0, 59, 1);

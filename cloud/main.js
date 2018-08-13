@@ -359,8 +359,14 @@ Parse.Cloud.define('retrieveLocations', (request, response) => {
 });
 
 Parse.Cloud.define('createNewTaskLocation', (request, response) => {
-  const geopoint = new Parse.GeoPoint(request.params.latitude, request.params.longitude);
-  const result = dbFunctions.addTaskLocationToDB(geopoint, request.params.beaconId, request.params.locationType,
+  const geopoint = new Parse.GeoPoint({
+    latitude: request.params.latitude,
+    longitude: request.params.longitude
+  });
+
+  const result = dbFunctions.addTaskLocationToDB(geopoint,
+    request.params.beaconId,
+    request.params.locationType,
     request.params.locationName,
     request.params.locationHours,
     request.params.submissionMethod);
