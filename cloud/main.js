@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const push = require('./push.js');
 const locationFunctions = require('./locationFunctions');
-const Parse = require('parse/node');
 const dbFunctions = require('../init/dbFunctions');
 const composer = require('./notificationComposer');
 
@@ -26,26 +25,27 @@ Parse.Cloud.define('sendPushToOne', (request, response) => {
 Parse.Cloud.define('sendPushToAllUsersWithMessage', (request, response) => {
   // send push update for data
   const userQuery = new Parse.Query(Parse.User);
-  userQuery.find({
-    success: function (users) {
-      const pushTokens = [];
-      _.forEach(users, (currentUser) => {
-        if (currentUser.get('pushToken') !== '') {
-          pushTokens.push(currentUser.get('pushToken'));
-        }
-      });
+  userQuery.descending('createdAt');
+  userQuery.find().then(users => {
+    const pushTokens = [];
 
-      // send message included with request, otherwise default message
-      let message = request.params.message || '';
-      if (message === '') {
-        message = 'Hi! Welcome to LES! ' +
-          'If you have any questions, please don\'t hesitate to ask!';
+    // only take users who have a valid push token
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
       }
-      push.sendPushWithMessage(pushTokens, message, response);
-    },
-    error: (error) => {
-      response.error(error);
+    });
+
+    // send message included with request, otherwise default message
+    let message = request.params.message || '';
+    if (message === '') {
+      message = 'Hi! Welcome to LES! ' +
+        'If you have any questions, please don\'t hesitate to ask!';
     }
+
+    push.sendPushWithMessage(pushTokens, message, response);
+  }).catch(error => {
+    response.error(error);
   });
 });
 
@@ -57,21 +57,18 @@ Parse.Cloud.define('refreshTrackedLocations', (request, response) => {
   // send push update for data
   const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
-  userQuery.find({
-    success: (users) => {
-      const pushTokens = [];
-      _.forEach(users, (currentUser) => {
-        if (currentUser.get('pushToken') !== '') {
-          pushTokens.push(currentUser.get('pushToken'));
-        }
-      });
+  userQuery.find().then(users => {
+    const pushTokens = [];
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
+      }
+    });
 
-      console.log('Sending silent refresh for tracked locations');
-      push.sendSilentRefreshNotification(pushTokens, 'trackedlocations', response);
-    },
-    error: (error) => {
-      response.error(error);
-    }
+    console.log('Sending silent refresh for tracked locations');
+    push.sendSilentRefreshNotification(pushTokens, 'trackedlocations', response);
+  }).catch(error => {
+    response.error(error);
   });
 });
 
@@ -83,21 +80,18 @@ Parse.Cloud.define('refreshTrackedBeacons', (request, response) => {
   // send push update for data
   const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
-  userQuery.find({
-    success: (users) => {
-      const pushTokens = [];
-      _.forEach(users, (currentUser) => {
-        if (currentUser.get('pushToken') !== '') {
-          pushTokens.push(currentUser.get('pushToken'));
-        }
-      });
+  userQuery.find().then(users => {
+    const pushTokens = [];
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
+      }
+    });
 
-      console.log('Sending silent refresh for beacons');
-      push.sendSilentRefreshNotification(pushTokens, 'beacon', response);
-    },
-    error: (error) => {
-      response.error(error);
-    }
+    console.log('Sending silent refresh for beacons');
+    push.sendSilentRefreshNotification(pushTokens, 'beacon', response);
+  }).catch(error => {
+    response.error(error);
   });
 });
 
@@ -109,21 +103,18 @@ Parse.Cloud.define('requestLocationUpdate', (request, response) => {
   // send push update for data
   const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
-  userQuery.find({
-    success: (users) => {
-      const pushTokens = [];
-      _.forEach(users, (currentUser) => {
-        if (currentUser.get('pushToken') !== '') {
-          pushTokens.push(currentUser.get('pushToken'));
-        }
-      });
+  userQuery.find().then(users => {
+    const pushTokens = [];
+    _.forEach(users, (currentUser) => {
+      if (currentUser.get('pushToken') !== '') {
+        pushTokens.push(currentUser.get('pushToken'));
+      }
+    });
 
-      console.log('Sending silent refresh to get user\'s current location');
-      push.sendSilentRefreshNotification(pushTokens, 'location', response);
-    },
-    error: (error) => {
-      response.error(error);
-    }
+    console.log('Sending silent refresh to get user\'s current location');
+    push.sendSilentRefreshNotification(pushTokens, 'location', response);
+  }).catch(error => {
+    response.error(error);
   });
 });
 

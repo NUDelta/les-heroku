@@ -67,7 +67,6 @@ let scheduleRule = new schedule.RecurrenceRule();
 scheduleRule.minute = new schedule.Range(0, 59, 1);
 
 schedule.scheduleJob(scheduleRule, function () {
-  console.log('running')
   // get all users currently using application
   const userQuery = new Parse.Query(Parse.User);
   userQuery.descending('createdAt');
@@ -94,7 +93,7 @@ schedule.scheduleJob(scheduleRule, function () {
     newServerLog.set('logString', 'Sent location request for IDs: [' + vendorIds.join(', ') + ']');
     return newServerLog.save();
   }).catch(error => {
-    console.error('Requesting locations failed with error: ' + error);
+    console.error('Requesting locations failed with error: ' + JSON.stringify(error));
 
     // unsuccessfully notified dead apps
     let ServerLog = Parse.Object.extend('ServerLog');
