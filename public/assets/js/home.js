@@ -1,6 +1,6 @@
 $(document).ready(function() {
   // check if user is logged in
-  function checkIfLoggedIn() {
+  function verifyLoggedIn() {
     var $welcomeMessage = $('#welcomemessage');
     var user = Parse.User.current();
     if (user) {
@@ -11,7 +11,7 @@ $(document).ready(function() {
       window.location.href = '/';
     }
   }
-  checkIfLoggedIn();
+  verifyLoggedIn();
 
   // logout user
   $('#logout').click(function(e) {

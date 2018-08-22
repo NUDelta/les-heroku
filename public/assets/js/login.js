@@ -1,4 +1,16 @@
 $(document).ready(function() {
+  // check if user is already logged in. if so, redirect them to home page. if not, display login.
+  function redirectIfLoggedIn() {
+    var user = Parse.User.current();
+    if (user) {
+      window.location.href = '/home';
+    } else {
+      $('body').show();
+    }
+  }
+  redirectIfLoggedIn();
+
+
   // toggles for signup vs login
   $("#sign-in a").on('click', function (e) {
     e.preventDefault();
@@ -45,6 +57,7 @@ $(document).ready(function() {
     }).then(user => {
       user.logIn().then(user => {
         console.log('success', user);
+        window.location.href = '/home';
       }).catch(error => {
         console.log('error', error);
       });
