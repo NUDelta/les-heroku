@@ -34,17 +34,16 @@ app.use('/public', express.static(path.join(__dirname, '/public')));
 const mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
 
-// Parse Server plays nicely with the rest of your web routes
+// routes
 app.get('/', function (req, res) {
-  res.status(200).send('Welcome to LES! I\'m not currently a web page, but will be someday!');
+  res.sendFile(path.join(__dirname, '/public/login.html'));
 });
 
-// There will be a test page available on the /test path of your server url
-// Remove this before launching your app
-app.get('/test', function (req, res) {
-  res.sendFile(path.join(__dirname, '/public/test.html'));
+app.get('/home', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/home.html'));
 });
 
+// launch application
 const port = process.env.PORT || 5000;
 const httpServer = require('http').createServer(app);
 httpServer.listen(port, function () {
