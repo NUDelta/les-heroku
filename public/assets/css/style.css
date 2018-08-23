@@ -94,6 +94,7 @@ div .no-padding {
 
 .light-bottom-border {
     border-bottom: 1px solid rgba(33, 37, 41, 0.1);
+    margin-bottom: 0.5rem;
 }
 
 .preference-form h4 {
