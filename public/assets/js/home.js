@@ -1,17 +1,23 @@
 $(document).ready(function() {
-  // check if user is logged in
-  function verifyLoggedIn() {
-    var $welcomeMessage = $('#welcomemessage');
-    var user = Parse.User.current();
+  /**
+   * Checks if user is logged in and welcomes them if so. Otherwise, redirects them to login.
+   */
+  function welcomeUser() {
+    var user = verifyLoggedIn();
     if (user) {
-      $welcomeMessage.text('Welcome back, ' + user.get('firstName') + '!');
-      $('body').show();
+      // if user's preferences are not filled, then redirect them to preference capture. else, home.
+      if (Object.keys(user.get('preferences')).length < 4) {
+        window.location.href = '/preferences/welcome';
+      } else {
+        var $welcomeMessage = $('#welcomemessage');
+        $welcomeMessage.text('Welcome back, ' + user.get('firstName') + '!');
+        $('body').show();
+      }
     } else {
-      console.log('Forbidden.');
       window.location.href = '/';
     }
   }
-  verifyLoggedIn();
+  welcomeUser();
 
   // logout user
   $('#logout').click(function(e) {

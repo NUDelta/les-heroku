@@ -24,7 +24,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>LES</title>
+    <title>Create Preferences • LES</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-gJWVjz180MvwCrGGkC4xE5FjhWkTxHIR/+GgT8j2B3KKMgh6waEjPgzzh7lL7JZT" crossorigin="anonymous">
@@ -40,20 +40,6 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">My Profile</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Edit Preferences</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown01">
-                        <a class="dropdown-item" href="#">Coffee Shops</a>
-                        <a class="dropdown-item" href="#">Libraries</a>
-                        <a class="dropdown-item" href="#">Gyms</a>
-                        <a class="dropdown-item" href="#">Free Food</a>
-                    </div>
-                </li>
-            </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="#" id="logout">Logout</a>
@@ -61,14 +47,24 @@
             </ul>
         </div>
     </nav>
-
     <main role="main" class="container">
         <div class="row">
-            <div class="col-md-6 offset-md-3 starter-template">
-                <h1>👋👋👋</h1>
-                <h1 id="welcomemessage">Welcome back friend!</h1>
+            <h1>Understanding What You Like</h1>
+        </div>
 
-            </div>
+        <div class="row">
+            <p>
+                As users contribute data to the LES community, we provide the data back to you when we think it's something that you might be interested in (for example, private tables near windows at coffee shops).
+            </p>
+            <p>
+                On the next few pages, we will ask you questions about what you would want to be notified about and how likely you would be to go if a certain amount of information existed. It will take about <b>10-15 minutes</b> to finish this process. Afterwards, your account will be completely setup and we will provide you with an installation link for LES.
+            </p>
+        </div>
+
+        <div class="row">
+            <a href="/preferences/create/coffee-shops">
+                <button type="button" class="btn btn-primary btn-lg">Let's Begin</button>
+            </a>
         </div>
     </main>
 
@@ -82,7 +78,7 @@
 
     <!-- Custom JS -->
     <script src="/public/assets/js/init.js"></script>
-    <script src="/public/assets/js/home.js"></script>
+    <script src="/public/assets/js/preferences/preferencesWelcome.js"></script>
 
     <footer class="footer bg-primary">
         <div class="container">

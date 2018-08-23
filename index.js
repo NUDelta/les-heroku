@@ -1,10 +1,8 @@
-// Example express application adding the parse-server module to expose Parse
-// compatible API routes.
-
 const express = require('express');
 const ParseServer = require('parse-server').ParseServer;
 const path = require('path');
 
+// setup Parse Server API
 let databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
 if (!databaseUri) {
@@ -21,10 +19,8 @@ const api = new ParseServer({
     classNames: ['Posts', 'Comments'] // List of classes to support for query subscriptions
   }
 });
-// Client-keys like the javascript key or the .NET key are not necessary with parse-server
-// If you wish you require them, you can set them as options in the initialization above:
-// javascriptKey, restAPIKey, dotNetKey, clientKey
 
+// create app
 const app = express();
 
 // Serve static assets from the /public folder
@@ -41,6 +37,18 @@ app.get('/', function (req, res) {
 
 app.get('/home', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/home.html'));
+});
+
+app.get('/preferences/welcome', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/preferences-welcome.html'));
+});
+
+app.get('/preferences/create/coffee-shops', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/coffeeshops.html'));
+});
+
+app.all('*', function(req, res) {
+  res.redirect('/');
 });
 
 // launch application
@@ -80,7 +88,7 @@ schedule.scheduleJob(scheduleRule, function () {
     console.log('Sending location request to: ', pushTokens);
     push.sendSilentRefreshNotification(pushTokens, 'location', undefined);
 
-    // successfully sent heartbeat request
+    // successfully sent location request
     let ServerLog = Parse.Object.extend('ServerLog');
     let newServerLog = new ServerLog();
     newServerLog.set('caller', 'sendLocationRequest');
@@ -90,7 +98,7 @@ schedule.scheduleJob(scheduleRule, function () {
   }).catch(error => {
     console.error('Requesting locations failed with error: ' + JSON.stringify(error));
 
-    // unsuccessfully notified dead apps
+    // unsuccessfully sent location request
     let ServerLog = Parse.Object.extend('ServerLog');
     let newServerLog = new ServerLog();
     newServerLog.set('caller', 'sendLocationRequest');

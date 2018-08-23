@@ -1,15 +1,19 @@
 $(document).ready(function() {
-  // check if user is already logged in. if so, redirect them to home page. if not, display login.
+  // check if user is already logged in. if so, redirect them. if not, display login.
   function redirectIfLoggedIn() {
-    var user = Parse.User.current();
+    var user = verifyLoggedIn();
     if (user) {
-      window.location.href = '/home';
+      // if user's preferences are not filled, then redirect them to preference capture. else, home.
+      if (Object.keys(user.get('preferences')).length < 4) {
+        window.location.href = '/preferences/welcome';
+      } else {
+        window.location.href = '/home';
+      }
     } else {
       $('body').show();
     }
   }
   redirectIfLoggedIn();
-
 
   // toggles for signup vs login
   $("#sign-in a").on('click', function (e) {
@@ -57,7 +61,7 @@ $(document).ready(function() {
     }).then(user => {
       user.logIn().then(user => {
         console.log('success', user);
-        window.location.href = '/home';
+        window.location.href = '/preferences/welcome';
       }).catch(error => {
         console.log('error', error);
       });

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/public/assets/images/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/public/assets/images/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/public/assets/images/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/public/assets/images/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/public/assets/images/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/public/assets/images/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/public/assets/images/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/public/assets/images/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/assets/images/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/public/assets/images/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/assets/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/public/assets/images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/assets/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/public/assets/images/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/public/assets/images/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Create Preferences • LES</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-gJWVjz180MvwCrGGkC4xE5FjhWkTxHIR/+GgT8j2B3KKMgh6waEjPgzzh7lL7JZT" crossorigin="anonymous">
+    <link href="/public/assets/css/style.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body style="display: none;">
+    <!-- Nav Bar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+        <a class="navbar-brand abs" href="/home">LES</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <main role="main" class="container">
+        <div class="row preference-header">
+            <h1>Coffee Shops</h1>
+        </div>
+
+        <form class="preference-form">
+            <!-- Coffee Shop Notification Preference Section -->
+            <div class="row">
+                <h3>Notification Preferences</h3>
+                <p>
+                    In the first section, we will ask you if you'd like to be notified if LES knows certain information about a Coffee Shop. The tree on the left side of the page indicates what pieces of information may currently be available in LES.
+
+                    <!--For each row, please check the box if you would: <br>-->
+                    <!--1. definitely would like to be notified about the present information (<b>yes</b>), or <br>-->
+                    <!--2. definitely would not like to be notified about the present information (<b>no</b>)-->
+                    <!--<br><br>-->
+
+                    <!--If you select <b>no</b>, you will never be notified about this information.-->
+                </p>
+            </div>
+
+            <div class="row light-bottom-border">
+                <div class="col col-md-8 no-padding">
+                    <h4>LES knows that...</h4>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <h4>Would you like to be notified about this?</h4>
+                </div>
+            </div>
+
+            <div class="preferences-notification-form">
+                <!-- Private Seating -->
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <p>
+                            a coffee shop has <b>private seating (tables)</b> available.
+                        </p>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-table" id="preference-coffeeshop-private-table-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-table-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-table" id="preference-coffeeshop-private-table-no" value="no" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-table-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a coffee shop has private seating (tables) near <b>outlets</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-table-outlet" id="preference-coffeeshop-private-table-outlet-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-table-outlet-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-table-outlet" id="preference-coffeeshop-private-table-outlet-no" value="no" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-table-outlet-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a coffee shop has private seating (tables) near <b>windows</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-table-window" id="preference-coffeeshop-private-table-window-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-table-window-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-table-window" id="preference-coffeeshop-private-table-window-no" value="no" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-table-window-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <p>
+                            a coffee shop has <b>private seating (couches/chairs)</b> available.
+                        </p>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-couch-chair" id="preference-coffeeshop-private-couch-chair-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-couch-chair-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-couch-chair" id="preference-coffeeshop-private-couch-chair-no" value="no" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-couch-chair-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a coffee shop has private seating (couches/chairs) near <b>outlets</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-couch-chair-outlet" id="preference-coffeeshop-private-couch-chair-outlet-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-couch-chair-outlet-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-couch-chair-outlet" id="preference-coffeeshop-private-couch-chair-outlet-no" value="no" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-couch-chair-outlet-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a coffee shop has private seating (couches/chairs) near <b>windows</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-couch-chair-window" id="preference-coffeeshop-private-couch-chair-window-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-couch-chair-window-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-private-couch-chair-window" id="preference-coffeeshop-private-couch-chair-window-no" value="no" required>
+                            <label class="form-check-label" for="preference-coffeeshop-private-couch-chair-window-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shared Seating -->
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <p>
+                            a coffee shop has <b>shared seating</b> available.
+                        </p>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-shared" id="preference-coffeeshop-shared-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-coffeeshop-shared-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-shared" id="preference-coffeeshop-shared-no" value="no" required>
+                            <label class="form-check-label" for="preference-coffeeshop-shared-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a coffee shop has shared seating near <b>outlets</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-shared-outlet" id="preference-coffeeshop-shared-outlet-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-coffeeshop-shared-outlet-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-shared-outlet" id="preference-coffeeshop-shared-outlet-no" value="no" required>
+                            <label class="form-check-label" for="preference-coffeeshop-shared-outlet-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a coffee shop has shared seating near <b>windows</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-shared-window" id="preference-coffeeshop-shared-window-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-coffeeshop-shared-window-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-coffeeshop-shared-window" id="preference-coffeeshop-shared-window-no" value="no" required>
+                            <label class="form-check-label" for="preference-coffeeshop-shared-window-no">No</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coffee Shop Notification Preference Section -->
+            <div class="row">
+                <h3>Likelihood to Go out of Your Way</h3>
+                <p>
+                    In this section, we will ask you how often you to go out of your way to a Coffee Shop if LES notified you with a certain amount of information. Please response assuming that you <b>don't have anything scheduled to be at</b> (ex. class, meetings, etc).
+
+                    <!--For each row, please check the box if you would: <br>-->
+                    <!--1. always go out of your way, given the presented information (<b>always</b>) <br>-->
+                    <!--2. sometimes go out of your way, given the presented information (<b>sometimes</b>) <br>-->
+                    <!--3. probably not go out of your way, given the presented information (<b>rarely</b>), or <br>-->
+                    <!--4. never go out of your way, given the presented information (<b>never</b>)-->
+                    <!--<br><br>-->
+                </p>
+            </div>
+
+            <div class="row light-bottom-border">
+                <div class="col col-md-8 no-padding">
+                    <h4>LES notifies you that...</h4>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <h4>How often would you go out of your way to the place, given this much information?</h4>
+                </div>
+            </div>
+
+            <div class="preferences-likelihood-form">
+                <!-- Private Seating -->
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <p>
+                            a nearby coffee shop has <b>private seating (tables)</b> available.
+                        </p>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-table" id="likelihood-coffeeshop-private-table-yes" value="yes" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-table-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-table" id="likelihood-coffeeshop-private-table-no" value="no" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-table-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby coffee shop has private seating (tables) near <b>outlets</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-table-outlet" id="likelihood-coffeeshop-private-table-outlet-yes" value="yes" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-table-outlet-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-table-outlet" id="likelihood-coffeeshop-private-table-outlet-no" value="no" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-table-outlet-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby coffee shop has private seating (tables) near <b>windows</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-table-window" id="likelihood-coffeeshop-private-table-window-yes" value="yes" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-table-window-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-table-window" id="likelihood-coffeeshop-private-table-window-no" value="no" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-table-window-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <p>
+                            a nearby coffee shop has <b>private seating (couches/chairs)</b> available.
+                        </p>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-couch-chair" id="likelihood-coffeeshop-private-couch-chair-yes" value="yes" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-couch-chair-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-couch-chair" id="likelihood-coffeeshop-private-couch-chair-no" value="no" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-couch-chair-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby coffee shop has private seating (couches/chairs) near <b>outlets</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-couch-chair-outlet" id="likelihood-coffeeshop-private-couch-chair-outlet-yes" value="yes" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-couch-chair-outlet-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-couch-chair-outlet" id="likelihood-coffeeshop-private-couch-chair-outlet-no" value="no" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-couch-chair-outlet-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby coffee shop has private seating (couches/chairs) near <b>windows</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-couch-chair-window" id="likelihood-coffeeshop-private-couch-chair-window-yes" value="yes" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-couch-chair-window-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-private-couch-chair-window" id="likelihood-coffeeshop-private-couch-chair-window-no" value="no" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-private-couch-chair-window-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shared Seating -->
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <p>
+                            a nearby coffee shop has <b>shared seating</b> available.
+                        </p>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-shared" id="likelihood-coffeeshop-shared-yes" value="yes" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-shared-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-shared" id="likelihood-coffeeshop-shared-no" value="no" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-shared-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby coffee shop has shared seating near <b>outlets</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-shared-outlet" id="likelihood-coffeeshop-shared-outlet-yes" value="yes" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-shared-outlet-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-shared-outlet" id="likelihood-coffeeshop-shared-outlet-no" value="no" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-shared-outlet-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby coffee shop has shared seating near <b>windows</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-shared-window" id="likelihood-coffeeshop-shared-window-yes" value="yes" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-shared-window-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-shared-window" id="likelihood-coffeeshop-shared-window-no" value="no" required>
+                            <label class="form-check-label" for="likelihood-coffeeshop-shared-window-no">No</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="row continue-button">
+            <div class="col col-6 offset-3">
+                <a href="/preferences/create/libraries">
+                    <button type="button" class="btn btn-primary btn-lg">Next Section</button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+
+        <div class="row progress" style="height: 20px;">
+            <div class="progress-bar progress-bar-striped" id="coffeeshop-progress" role="progressbar" style="width: 0%"></div>
+            <div class="progress-bar progress-bar-striped bg-success" id="library-progress" role="progressbar" style="width: 0%"></div>
+            <div class="progress-bar progress-bar-striped bg-info" id="gym-progress" role="progressbar" style="width: 0%"></div>
+            <div class="progress-bar progress-bar-striped bg-warning" id="freefood-progress" role="progressbar" style="width: 0%"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 progess-text">
+                Coffee Shops
+            </div>
+            <div class="col-md-3 progess-text">
+                Libraries
+            </div>
+            <div class="col-md-3 progess-text">
+                Gyms
+            </div>
+            <div class="col-md-3 progess-text">
+                Free Food
+            </div>
+        </div>
+    </main>
+
+    <!-- jQuery and Bootstrap-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <!-- Parse -->
+    <script src="https://npmcdn.com/parse/dist/parse.min.js" crossorigin="anonymous"></script>
+
+    <!-- Custom JS -->
+    <script src="/public/assets/js/init.js"></script>
+    <script src="/public/assets/js/preferences/coffeeshops.js"></script>
+
+    <footer class="footer bg-primary">
+        <div class="container">
+            Made with ♥ by <a href="http://delta.northwestern.edu/" target="_blank">Delta Lab</a>
+            <br>
+            Questions? Comments? Bugs? Email <a href="mailto:kapilgarg2017@u.northwestern.edu">kapilgarg2017@u.northwestern.edu</a>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -12,3 +12,19 @@ $(document).ready(function() {
   console.log(serverUrl);
   Parse.serverURL = serverUrl;
 });
+
+/**
+ * Verifies if a user is logged into website.
+ * @returns {object} user if exists, otherwise undefined.
+ */
+function verifyLoggedIn() {
+  // var $welcomeMessage = $('#welcomemessage');
+  var user = Parse.User.current();
+  if (user) {
+    console.log('User authenticated.');
+    return user;
+  } else {
+    console.log('No user authenticated.');
+    return undefined;
+  }
+}
