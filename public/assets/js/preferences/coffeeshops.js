@@ -49,6 +49,10 @@ $(document).ready(function() {
    *
    */
   $('.form-check-input').click(function(e) {
+    // setup variables for each page
+    var $targetSelector = $('#coffeeshop-progress');
+    var progressStartPoint = 0;
+
     // mark question as answered
     if (answeredQuestions.hasOwnProperty(e.target.name)) {
       // compute and update if question is newly answered
@@ -72,7 +76,8 @@ $(document).ready(function() {
         // update progress bar
         total = total > 0 ? total : 1;
         var newProgressValue = 25 * (answeredQuestionCount / total);
-        $('#coffeeshop-progress').css('width', newProgressValue + '%');
+        $targetSelector.css('width', newProgressValue + '%');
+        $targetSelector.text((progressStartPoint + Math.round(newProgressValue)) + '%');
       }
     }
   });

@@ -113,3 +113,8 @@ div .no-padding {
     margin-bottom: 1rem;
     text-align: center;
 }
+
+.progress {
+    font-size: 0.8rem;
+    height: 1.5rem;
+}
