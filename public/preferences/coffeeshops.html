@@ -52,7 +52,7 @@
             <h1>Coffee Shops</h1>
         </div>
 
-        <form class="preference-form">
+        <form class="preference-form" id="location-preferences">
             <!-- Coffee Shop Notification Preference Section -->
             <div class="row">
                 <h3>Notification Preferences</h3>
@@ -84,7 +84,7 @@
                 <div class="row">
                     <div class="col col-md-8 no-padding">
                         <p>
-                            a nearby coffee shop has <b>private seating (tables)</b> available.
+                            a nearby coffee shop has <b>private seating (individual tables)</b> available.
                         </p>
                     </div>
                     <div class="col col-md-4 no-padding">
@@ -103,7 +103,7 @@
                     <div class="col col-md-8 no-padding">
                         <div class="offset-md-1">
                             <p>
-                                a nearby coffee shop has <b>private seating (tables) near outlets</b> available.
+                                a nearby coffee shop has <b>private seating (individual tables) near outlets</b> available.
                             </p>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                     <div class="col col-md-8 no-padding">
                         <div class="offset-md-1">
                             <p>
-                                a nearby coffee shop has <b>private seating (tables) near windows</b> available.
+                                a nearby coffee shop has <b>private seating (individual tables) near windows</b> available.
                             </p>
                         </div>
                     </div>
@@ -139,69 +139,11 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <p>
-                            a nearby coffee shop has <b>private seating (couches/chairs)</b> available.
-                        </p>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privatecouchchair" id="preference-coffeeshop-privatecouchchair-yes" value="yes" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privatecouchchair-yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privatecouchchair" id="preference-coffeeshop-privatecouchchair-no" value="no" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privatecouchchair-no">No</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby coffee shop has <b>private seating (couches/chairs) near outlets</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privatecouchchair-outlet" id="preference-coffeeshop-privatecouchchair-outlet-yes" value="yes" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privatecouchchair-outlet-yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privatecouchchair-outlet" id="preference-coffeeshop-privatecouchchair-outlet-no" value="no" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privatecouchchair-outlet-no">No</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby coffee shop has <b>private seating (couches/chairs) near windows</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privatecouchchair-window" id="preference-coffeeshop-privatecouchchair-window-yes" value="yes" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privatecouchchair-window-yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privatecouchchair-window" id="preference-coffeeshop-privatecouchchair-window-no" value="no" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privatecouchchair-window-no">No</label>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Shared Seating -->
                 <div class="row">
                     <div class="col col-md-8 no-padding">
                         <p>
-                            a nearby coffee shop has <b>shared seating</b> available.
+                            a nearby coffee shop has <b>shared seating (communal tables)</b> available.
                         </p>
                     </div>
                     <div class="col col-md-4 no-padding">
@@ -220,7 +162,7 @@
                     <div class="col col-md-8 no-padding">
                         <div class="offset-md-1">
                             <p>
-                                a nearby coffee shop has <b>shared seating near outlets</b> available.
+                                a nearby coffee shop has <b>shared seating (communal tables) near outlets</b> available.
                             </p>
                         </div>
                     </div>
@@ -240,7 +182,7 @@
                     <div class="col col-md-8 no-padding">
                         <div class="offset-md-1">
                             <p>
-                                a nearby coffee shop has <b>shared seating near windows</b> available.
+                                a nearby coffee shop has <b>shared seating (communal tables) near windows</b> available.
                             </p>
                         </div>
                     </div>
@@ -288,7 +230,7 @@
                 <div class="row">
                     <div class="col col-md-8 no-padding">
                         <p>
-                            a nearby coffee shop has <b>private seating (tables)</b> available.
+                            a nearby coffee shop has <b>private seating (individual tables)</b> available.
                         </p>
                     </div>
                     <div class="col col-md-4 no-padding">
@@ -315,7 +257,7 @@
                     <div class="col col-md-8 no-padding">
                         <div class="offset-md-1">
                             <p>
-                                a nearby coffee shop has <b>private seating (tables) near outlets</b> available.
+                                a nearby coffee shop has <b>private seating (individual tables) near outlets</b> available.
                             </p>
                         </div>
                     </div>
@@ -343,7 +285,7 @@
                     <div class="col col-md-8 no-padding">
                         <div class="offset-md-1">
                             <p>
-                                a nearby coffee shop has <b>private seating (tables) near windows</b> available.
+                                a nearby coffee shop has <b>private seating (individual tables) near windows</b> available.
                             </p>
                         </div>
                     </div>
@@ -367,93 +309,11 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <p>
-                            a nearby coffee shop has <b>private seating (couches/chairs)</b> available.
-                        </p>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair" id="likelihood-coffeeshop-privatecouchchair-always" value="always" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-always">Always</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair" id="likelihood-coffeeshop-privatecouchchair-sometimes" value="sometimes" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-sometimes">Sometimes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair" id="likelihood-coffeeshop-privatecouchchair-rarely" value="rarely" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-rarely">Rarely</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair" id="likelihood-coffeeshop-privatecouchchair-never" value="never" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-never">Never</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby coffee shop has <b>private seating (couches/chairs) near outlets</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair-outlet" id="likelihood-coffeeshop-privatecouchchair-outlet-always" value="always" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-outlet-always">Always</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair-outlet" id="likelihood-coffeeshop-privatecouchchair-outlet-sometimes" value="sometimes" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-outlet-sometimes">Sometimes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair-outlet" id="likelihood-coffeeshop-privatecouchchair-outlet-rarely" value="rarely" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-outlet-rarely">Rarely</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair-outlet" id="likelihood-coffeeshop-privatecouchchair-outlet-never" value="never" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-outlet-never">Never</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby coffee shop has <b>private seating (couches/chairs) near windows</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair-window" id="likelihood-coffeeshop-privatecouchchair-window-always" value="always" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-window-always">Always</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair-window" id="likelihood-coffeeshop-privatecouchchair-window-sometimes" value="sometimes" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-window-sometimes">Sometimes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair-window" id="likelihood-coffeeshop-privatecouchchair-window-rarely" value="rarely" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-window-rarely">Rarely</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privatecouchchair-window" id="likelihood-coffeeshop-privatecouchchair-window-never" value="never" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privatecouchchair-window-never">Never</label>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Shared Seating -->
                 <div class="row">
                     <div class="col col-md-8 no-padding">
                         <p>
-                            a nearby coffee shop has <b>shared seating</b> available.
+                            a nearby coffee shop has <b>shared seating (communal tables)</b> available.
                         </p>
                     </div>
                     <div class="col col-md-4 no-padding">
@@ -480,7 +340,7 @@
                     <div class="col col-md-8 no-padding">
                         <div class="offset-md-1">
                             <p>
-                                a nearby coffee shop has <b>shared seating near outlets</b> available.
+                                a nearby coffee shop has <b>shared seating (communal tables) near outlets</b> available.
                             </p>
                         </div>
                     </div>
@@ -508,7 +368,7 @@
                     <div class="col col-md-8 no-padding">
                         <div class="offset-md-1">
                             <p>
-                                a nearby coffee shop has <b>shared seating near windows</b> available.
+                                a nearby coffee shop has <b>shared seating (communal tables) near windows</b> available.
                             </p>
                         </div>
                     </div>
@@ -585,5 +445,4 @@
         </div>
     </footer>
 </body>
-
 </html>

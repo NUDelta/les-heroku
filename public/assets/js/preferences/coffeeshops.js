@@ -1,25 +1,4 @@
 $(document).ready(function() {
-  var answeredQuestions = {
-    'preference-coffeeshop-privatetable': false,
-    'preference-coffeeshop-privatetable-outlet': false,
-    'preference-coffeeshop-privatetable-window': false,
-    'preference-coffeeshop-privatecouchchair': false,
-    'preference-coffeeshop-privatecouchchair-outlet': false,
-    'preference-coffeeshop-privatecouchchair-window': false,
-    'preference-coffeeshop-shared': false,
-    'preference-coffeeshop-shared-outlet': false,
-    'preference-coffeeshop-shared-window': false,
-    'likelihood-coffeeshop-privatetable': false,
-    'likelihood-coffeeshop-privatetable-outlet': false,
-    'likelihood-coffeeshop-privatetable-window': false,
-    'likelihood-coffeeshop-privatecouchchair': false,
-    'likelihood-coffeeshop-privatecouchchair-outlet': false,
-    'likelihood-coffeeshop-privatecouchchair-window': false,
-    'likelihood-coffeeshop-shared': false,
-    'likelihood-coffeeshop-shared-outlet': false,
-    'likelihood-coffeeshop-shared-window': false
-  };
-
   /**
    * Checks if user is logged in and show content.
    */
@@ -46,7 +25,25 @@ $(document).ready(function() {
   });
 
   /**
-   *
+   * Coffee Shop Specific Content
+   */
+  var answeredQuestions = {
+    'preference-coffeeshop-privatetable': false,
+    'preference-coffeeshop-privatetable-outlet': false,
+    'preference-coffeeshop-privatetable-window': false,
+    'preference-coffeeshop-shared': false,
+    'preference-coffeeshop-shared-outlet': false,
+    'preference-coffeeshop-shared-window': false,
+    'likelihood-coffeeshop-privatetable': false,
+    'likelihood-coffeeshop-privatetable-outlet': false,
+    'likelihood-coffeeshop-privatetable-window': false,
+    'likelihood-coffeeshop-shared': false,
+    'likelihood-coffeeshop-shared-outlet': false,
+    'likelihood-coffeeshop-shared-window': false
+  };
+
+  /**
+   * Updates questionsAnswered and progress bar as user completes form.
    */
   $('.form-check-input').click(function(e) {
     // setup variables for each page
@@ -81,4 +78,14 @@ $(document).ready(function() {
       }
     }
   });
+
+  /**
+   * Parses submitted form data, saves to server, and redirects to next page.
+   */
+  $('#location-preferences').submit(function(e) {
+    e.preventDefault();
+
+    var formData = $('#location-preferences').serializeArray();
+    console.log(formData);
+  })
 });
