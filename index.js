@@ -47,6 +47,18 @@ app.get('/preferences/create/coffee-shops', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/preferences/coffeeshops.html'));
 });
 
+app.get('/preferences/create/libraries', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/libraries.html'));
+});
+
+app.get('/preferences/create/gym', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/gym.html'));
+});
+
+app.get('/preferences/create/free-food', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/freefood.html'));
+});
+
 app.all('*', function(req, res) {
   res.redirect('/');
 });

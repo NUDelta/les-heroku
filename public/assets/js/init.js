@@ -9,7 +9,6 @@ $(document).ready(function() {
     serverUrl = 'https://les-expand.herokuapp.com/parse';
   }
 
-  console.log(serverUrl);
   Parse.serverURL = serverUrl;
 });
 
@@ -27,4 +26,15 @@ function verifyLoggedIn() {
     console.log('No user authenticated.');
     return undefined;
   }
+}
+
+/**
+ * Logs out user from application.
+ */
+function logoutUser() {
+  Parse.User.logOut().then(user => {
+    window.location.href = '/';
+  }).catch(error => {
+    console.log(error);
+  });
 }

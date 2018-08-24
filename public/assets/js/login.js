@@ -1,10 +1,10 @@
 $(document).ready(function() {
   // check if user is already logged in. if so, redirect them. if not, display login.
   function redirectIfLoggedIn() {
-    var user = verifyLoggedIn();
+    const user = verifyLoggedIn();
     if (user) {
       // if user's preferences are not filled, then redirect them to preference capture. else, home.
-      if (Object.keys(user.get('preferences')).length < 4) {
+      if (user.get('preferenceProgress') !== 'completed') {
         window.location.href = '/preferences/welcome';
       } else {
         window.location.href = '/home';
@@ -37,16 +37,16 @@ $(document).ready(function() {
     e.preventDefault();
 
     // hide error message to begin
-    var $signupError = $("#signup-error");
+    const $signupError = $("#signup-error");
     $signupError.hide();
 
     // get inputs from user
-    var firstName = $('#signupInputFirstName').val(),
-        lastName = $('#signupInputLastName').val(),
-        email = $('#signupInputEmail').val(),
-        pwd = $('#signupInputPassword').val();
+    const firstName = $('#signupInputFirstName').val(),
+          lastName = $('#signupInputLastName').val(),
+          email = $('#signupInputEmail').val(),
+          pwd = $('#signupInputPassword').val();
 
-    var user = new Parse.User();
+    const user = new Parse.User();
     user.save({
       username: email,
       email: email,
@@ -57,7 +57,10 @@ $(document).ready(function() {
       pushToken: '',
       lastLoggedIn: '',
       lastLoggedOut: '',
-      preferences: {}
+      informationPreferences: {},
+      locationPreferences: {},
+      likelihoodToGo: {},
+      preferenceProgress: ''
     }).then(user => {
       user.logIn().then(user => {
         console.log('success', user);
@@ -76,12 +79,12 @@ $(document).ready(function() {
     e.preventDefault();
 
     // hide error message to begin
-    var $signinError = $("#signin-error");
+    const $signinError = $("#signin-error");
     $signinError.hide();
 
     // get inputs from user
-    var email = $('#signinInputEmail').val(),
-        pwd = $('#signinInputPassword').val();
+    const email = $('#signinInputEmail').val(),
+      pwd = $('#signinInputPassword').val();
 
     // attempt login
     Parse.User.logIn(email, pwd).then(user => {

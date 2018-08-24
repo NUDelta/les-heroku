@@ -1,15 +1,10 @@
 $(document).ready(function() {
+  ////////////////////////////////
+  /* Page Setup Related Content */
+  ////////////////////////////////
   /**
-   * Checks if user is logged in and show content.
+   * Verify user is logged in before continuing
    */
-  function showPreferenceContent() {
-    var user = verifyLoggedIn();
-    if (user) {
-      $('body').show();
-    } else {
-      window.location.href = '/';
-    }
-  }
   showPreferenceContent();
 
   /**
@@ -17,65 +12,104 @@ $(document).ready(function() {
    */
   $('#logout').click(function(e) {
     e.preventDefault();
-    Parse.User.logOut().then(user => {
-      window.location.href = '/';
-    }).catch(error => {
-      console.log(error);
-    });
+    logoutUser();
   });
 
+  //////////////////////////////////
+  /* Coffee Shop Specific Content */
+  //////////////////////////////////
+
+  /* progress tracker */
+  const progressStartPoint = 0;
+  let hasMadeChanges = false;
+
+  /* scaffold info */
+  const locationScaffoldName = 'coffeeshop';
+  const nextSectionName = 'workspace';
+
+  let answeredQuestions = {
+    'preference-coffeeshop-privateseating': false,
+    'preference-coffeeshop-privateseating-outlet': false,
+    'preference-coffeeshop-privateseating-window': false,
+    'preference-coffeeshop-sharedseating': false,
+    'preference-coffeeshop-sharedseating-outlet': false,
+    'preference-coffeeshop-sharedseating-window': false,
+    'likelihood-coffeeshop-privateseating': false,
+    'likelihood-coffeeshop-privateseating-outlet': false,
+    'likelihood-coffeeshop-privateseating-window': false,
+    'likelihood-coffeeshop-sharedseating': false,
+    'likelihood-coffeeshop-sharedseating-outlet': false,
+    'likelihood-coffeeshop-sharedseating-window': false
+  };
+
+  const scaffoldKeys = [
+    'privateseating',
+    'privateseatingoutlets',
+    'privateseatingwindows',
+    'sharedseating',
+    'sharedseatingoutlets',
+    'sharedseatingwindows'
+  ];
+
+  const questionScaffoldMapping = {
+    'privateseating': {
+      scaffoldKey: 'privateseating',
+      valueMapping: {
+        'yes': 'yes'
+      }
+    },
+    'privateseating-outlet': {
+      scaffoldKey: 'privateseatingoutlets',
+      valueMapping: {
+        'yes': 'yes'
+      }
+    },
+    'privateseating-window': {
+      scaffoldKey: 'privateseatingwindows',
+      valueMapping: {
+        'yes': 'yes'
+      }
+    },
+    'sharedseating': {
+      scaffoldKey: 'sharedseating',
+      valueMapping: {
+        'yes': 'yes'
+      }
+    },
+    'sharedseating-outlet': {
+      scaffoldKey: 'sharedseatingoutlets',
+      valueMapping: {
+        'yes': 'yes'
+      }
+    },
+    'sharedseating-window': {
+      scaffoldKey: 'sharedseatingwindows',
+      valueMapping: {
+        'yes': 'yes'
+      }
+    }
+  };
+
   /**
-   * Coffee Shop Specific Content
+   * Enables or disables reload/exit alert on browser if changes have been made.
+   * @returns {*}
    */
-  var answeredQuestions = {
-    'preference-coffeeshop-privatetable': false,
-    'preference-coffeeshop-privatetable-outlet': false,
-    'preference-coffeeshop-privatetable-window': false,
-    'preference-coffeeshop-shared': false,
-    'preference-coffeeshop-shared-outlet': false,
-    'preference-coffeeshop-shared-window': false,
-    'likelihood-coffeeshop-privatetable': false,
-    'likelihood-coffeeshop-privatetable-outlet': false,
-    'likelihood-coffeeshop-privatetable-window': false,
-    'likelihood-coffeeshop-shared': false,
-    'likelihood-coffeeshop-shared-outlet': false,
-    'likelihood-coffeeshop-shared-window': false
+  window.onbeforeunload = function() {
+    return hasMadeChanges ? true : null;
   };
 
   /**
    * Updates questionsAnswered and progress bar as user completes form.
    */
   $('.form-check-input').click(function(e) {
-    // setup variables for each page
-    var $targetSelector = $('#coffeeshop-progress');
-    var progressStartPoint = 0;
+    const targetQuestion = e.target.name;
+    const updatedState = updateProgress(targetQuestion, answeredQuestions,
+                                        progressStartPoint, '#completion-progress');
 
-    // mark question as answered
-    if (answeredQuestions.hasOwnProperty(e.target.name)) {
-      // compute and update if question is newly answered
-      if (!answeredQuestions[e.target.name]) {
-        // mark question as answered
-        answeredQuestions[e.target.name] = true;
-
-        // count number of questions answered
-        var total = 0;
-        var answeredQuestionCount = 0;
-
-        for (var k in answeredQuestions) {
-          if(answeredQuestions.hasOwnProperty(k)) {
-            if (answeredQuestions[k]) {
-              answeredQuestionCount++;
-            }
-            total++;
-          }
-        }
-
-        // update progress bar
-        total = total > 0 ? total : 1;
-        var newProgressValue = 25 * (answeredQuestionCount / total);
-        $targetSelector.css('width', newProgressValue + '%');
-        $targetSelector.text((progressStartPoint + Math.round(newProgressValue)) + '%');
-      }
+    // update page state if not null
+    if (updatedState != null) {
+      answeredQuestions = updatedState.updatedAnsweredQuestions;
+      hasMadeChanges = updatedState.hasMadeChanges;
     }
   });
 
@@ -85,7 +119,13 @@ $(document).ready(function() {
   $('#location-preferences').submit(function(e) {
     e.preventDefault();
 
-    var formData = $('#location-preferences').serializeArray();
-    console.log(formData);
+    // fetch submitted form data
+    const formData = $('#location-preferences').serializeArray();
+
+    // allow redirect without prompt
+    window.onbeforeunload = null;
+
+    saveFormDataAndRedirect(formData, scaffoldKeys, questionScaffoldMapping, locationScaffoldName,
+                            nextSectionName, '/preferences/create/libraries');
   })
 });
