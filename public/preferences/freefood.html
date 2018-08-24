@@ -32,417 +32,725 @@
 </head>
 
 <body style="display: none;">
-    <!-- Nav Bar -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
-        <span class="navbar-brand abs">LES | Creating Your Preferences</span>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<!-- Nav Bar -->
+<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+    <span class="navbar-brand abs">LES | Creating Your Preferences</span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" id="logout">Logout</a>
-                </li>
-            </ul>
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<main role="main" class="container">
+    <div class="row preference-header">
+        <h1>Free Food Events</h1>
+    </div>
+
+    <form class="preference-form" id="location-preferences">
+        <!-- Free Food Notification Preference Section -->
+        <div class="row">
+            <h3>Notification Preferences</h3>
         </div>
-    </nav>
-    <main role="main" class="container">
-        <div class="row preference-header">
-            <h1>Libraries</h1>
+        <div class="row">
+            <p>
+                In this section, please tell us if you would like to be notified by LES if it knows certain information about a Free Food event nearby.
+            </p>
         </div>
 
-        <form class="preference-form" id="location-preferences">
-            <!-- Library Notification Preference Section -->
-            <div class="row">
-                <h3>Notification Preferences</h3>
+        <div class="row light-bottom-border">
+            <div class="col col-md-8 no-padding">
+                <h4>LES knows that...</h4>
             </div>
-            <div class="row">
-                <p>
-                    In this section, please tell us if you would like to be notified by LES if it knows certain information about a Library nearby.
-                </p>
+            <div class="col col-md-4 no-padding">
+                <h4>Would you like to be notified about this?</h4>
             </div>
+        </div>
 
-            <div class="row light-bottom-border">
+        <div class="preferences-notification-form">
+            <!-- Free Food Event -->
+            <div class="row">
                 <div class="col col-md-8 no-padding">
-                    <h4>LES knows that...</h4>
+                    <p>
+                        there's a <b>free food event</b> happening nearby.
+                    </p>
                 </div>
                 <div class="col col-md-4 no-padding">
-                    <h4>Would you like to be notified about this?</h4>
-                </div>
-            </div>
-
-            <div class="preferences-notification-form">
-                <!-- Private Seating -->
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <p>
-                            a nearby library has <b>private seating (individual tables)</b> available.
-                        </p>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-foodevent" id="preference-freefood-foodevent-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-foodevent-yes">Yes</label>
                     </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privateseating" id="preference-coffeeshop-privateseating-yes" value="yes" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privateseating-yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privateseating" id="preference-coffeeshop-privateseating-no" value="no" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privateseating-no">No</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby library has <b>private seating (individual tables) near outlets</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privateseating-outlet" id="preference-coffeeshop-privateseating-outlet-yes" value="yes" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privateseating-outlet-yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privateseating-outlet" id="preference-coffeeshop-privateseating-outlet-no" value="no" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privateseating-outlet-no">No</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby library has <b>private seating (individual tables) near windows</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privateseating-window" id="preference-coffeeshop-privateseating-window-yes" value="yes" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privateseating-window-yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-privateseating-window" id="preference-coffeeshop-privateseating-window-no" value="no" required>
-                            <label class="form-check-label" for="preference-coffeeshop-privateseating-window-no">No</label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Shared Seating -->
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <p>
-                            a nearby library has <b>shared seating (communal tables)</b> available.
-                        </p>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-sharedseating" id="preference-coffeeshop-sharedseating-yes" value="yes" required>
-                            <label class="form-check-label" for="preference-coffeeshop-sharedseating-yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-sharedseating" id="preference-coffeeshop-sharedseating-no" value="no" required>
-                            <label class="form-check-label" for="preference-coffeeshop-sharedseating-no">No</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby library has <b>shared seating (communal tables) near outlets</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-sharedseating-outlet" id="preference-coffeeshop-sharedseating-outlet-yes" value="yes" required>
-                            <label class="form-check-label" for="preference-coffeeshop-sharedseating-outlet-yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-sharedseating-outlet" id="preference-coffeeshop-sharedseating-outlet-no" value="no" required>
-                            <label class="form-check-label" for="preference-coffeeshop-sharedseating-outlet-no">No</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby library has <b>shared seating (communal tables) near windows</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-sharedseating-window" id="preference-coffeeshop-sharedseating-window-yes" value="yes" required>
-                            <label class="form-check-label" for="preference-coffeeshop-sharedseating-window-yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="preference-coffeeshop-sharedseating-window" id="preference-coffeeshop-sharedseating-window-no" value="no" required>
-                            <label class="form-check-label" for="preference-coffeeshop-sharedseating-window-no">No</label>
-                        </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-foodevent" id="preference-freefood-foodevent-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-foodevent-no">No</label>
                     </div>
                 </div>
             </div>
 
-            <!-- Library Notification Preference Section -->
+            <!-- Savory Snacks -->
             <div class="row">
-                <h3>Likelihood to Go out of Your Way</h3>
-            </div>
-            <div class="row">
-                <p>
-                    In this section, please indicate how often you would go out of your way to a nearby Library if LES notified you with a certain amount of information. Please respond <b>assuming that you are able to go and don't have anything else scheduled to be at </b> (ex. class, meetings, etc).
-                </p>
-            </div>
-
-            <div class="row light-bottom-border">
                 <div class="col col-md-8 no-padding">
-                    <h4>LES notifies you that...</h4>
+                    <div class="offset-md-1">
+                        <p>
+                            there's a free food event with <b>savory snacks</b> happening nearby.
+                        </p>
+                    </div>
                 </div>
                 <div class="col col-md-4 no-padding">
-                    <h4>How often would you go out of your way to the place, given this much information?</h4>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory" id="preference-freefood-savory-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-savory-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory" id="preference-freefood-savory-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-savory-no">No</label>
+                    </div>
                 </div>
             </div>
 
-            <div class="preferences-likelihood-form">
-                <!-- Private Seating -->
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
+            <!-- Pizza -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-2">
                         <p>
-                            a nearby library has <b>private seating (individual tables)</b> available.
+                            there's a free food event with <b>pizza</b> happening nearby.
                         </p>
                     </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-always" value="always" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-always">Always</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-sometimes" value="sometimes" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-sometimes">Sometimes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-rarely" value="rarely" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-rarely">Rarely</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-never" value="never" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-never">Never</label>
-                        </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-pizza" id="preference-freefood-savory-pizza-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-savory-pizza-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-pizza" id="preference-freefood-savory-pizza-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-savory-pizza-no">No</label>
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby library has <b>private seating (individual tables) near outlets</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-always" value="always" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-always">Always</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-sometimes" value="sometimes" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-sometimes">Sometimes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-rarely" value="rarely" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-rarely">Rarely</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-never" value="never" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-never">Never</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby library has <b>private seating (individual tables) near windows</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-always" value="always" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-always">Always</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-sometimes" value="sometimes" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-sometimes">Sometimes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-rarely" value="rarely" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-rarely">Rarely</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-never" value="never" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-never">Never</label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Shared Seating -->
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
                         <p>
-                            a nearby library has <b>shared seating (communal tables)</b> available.
+                            there's a free food event with <b>cheese pizza</b> happening nearby.
                         </p>
                     </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-always" value="always" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-always">Always</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-sometimes" value="sometimes" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-sometimes">Sometimes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-rarely" value="rarely" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-rarely">Rarely</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-never" value="never" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-never">Never</label>
-                        </div>
-                    </div>
                 </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby library has <b>shared seating (communal tables) near outlets</b> available.
-                            </p>
-                        </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-pizza-cheese" id="preference-freefood-savory-pizza-cheese-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-savory-pizza-cheese-yes">Yes</label>
                     </div>
-                    <div class="col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-always" value="always" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-always">Always</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-sometimes" value="sometimes" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-sometimes">Sometimes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-rarely" value="rarely" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-rarely">Rarely</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-never" value="never" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-never">Never</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col col-md-8 no-padding">
-                        <div class="offset-md-1">
-                            <p>
-                                a nearby library has <b>shared seating (communal tables) near windows</b> available.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col col-md-4 no-padding">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-always" value="always" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-always">Always</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-sometimes" value="sometimes" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-sometimes">Sometimes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-rarely" value="rarely" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-rarely">Rarely</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-never" value="never" required>
-                            <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-never">Never</label>
-                        </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-pizza-cheese" id="preference-freefood-savory-pizza-cheese-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-savory-pizza-cheese-no">No</label>
                     </div>
                 </div>
             </div>
 
-            <!-- Submit Button -->
-            <div class="row continue-button">
-                <div class="col col-6 offset-3">
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Next Section</button>
-                    <span class="error text-danger" id="signup-error" style="display: none;">Some Errors related to something</span>
-                </div>
-            </div>
-        </form>
-
-        <!-- Progress Bar -->
-        <div id="progress-bar-wrapper">
-            <div class="row progress">
-                <div class="progress-bar progress-bar-striped" id="completion-progress" role="progressbar" style="width: 75%;">75%</div>
-            </div>
             <div class="row">
-                <div class="col-md-3 progress-text">
-                    Coffee Shops
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>pepperoni pizza</b> happening nearby.
+                        </p>
+                    </div>
                 </div>
-                <div class="col-md-3 progress-text">
-                    Workspaces
-                </div>
-                <div class="col-md-3 progress-text">
-                    Gyms
-                </div>
-                <div class="col-md-3 progress-text">
-                    Free Food
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-pizza-pepperoni" id="preference-freefood-savory-pizza-pepperoni-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-savory-pizza-pepperoni-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-pizza-pepperoni" id="preference-freefood-savory-pizza-pepperoni-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-savory-pizza-pepperoni-no">No</label>
+                    </div>
                 </div>
             </div>
+
+            <!-- Bags of Nuts/Chips -->
             <div class="row">
-                <div class="col-md-3 progress-text">
-                    <!-- Coffee Shop Checkbox --> ✅
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-2">
+                        <p>
+                            there's a free food event with <b>bags of nuts/chips</b> happening nearby.
+                        </p>
+                    </div>
                 </div>
-                <div class="col-md-3 progress-text">
-                    <!-- Workspace Checkbox --> ✅
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-baggedsnacks" id="preference-freefood-savory-baggedsnacks-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-savory-baggedsnacks-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-baggedsnacks" id="preference-freefood-savory-baggedsnacks-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-savory-baggedsnacks-no">No</label>
+                    </div>
                 </div>
-                <div class="col-md-3 progress-text">
-                    <!-- Gym Checkbox --> ✅
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>bags of almonds</b> happening nearby.
+                        </p>
+                    </div>
                 </div>
-                <div class="col-md-3 progress-text">
-                    <!-- Free Food Checkbox -->
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-baggedsnacks-almonds" id="preference-freefood-savory-baggedsnacks-almonds-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-savory-baggedsnacks-almonds-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-baggedsnacks-almonds" id="preference-freefood-savory-baggedsnacks-almonds-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-savory-baggedsnacks-almonds-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>bags of popcorn</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-baggedsnacks-popcorn" id="preference-freefood-savory-baggedsnacks-popcorn-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-savory-baggedsnacks-popcorn-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-baggedsnacks-popcorn" id="preference-freefood-savory-baggedsnacks-popcorn-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-savory-baggedsnacks-popcorn-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>bags of potato chips</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-baggedsnacks-potatochips" id="preference-freefood-savory-baggedsnacks-potatochips-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-savory-baggedsnacks-potatochips-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-baggedsnacks-potatochips" id="preference-freefood-savory-baggedsnacks-potatochips-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-savory-baggedsnacks-potatochips-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>bags of pretzels</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-baggedsnacks-pretzels" id="preference-freefood-savory-baggedsnacks-pretzels-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-savory-baggedsnacks-pretzels-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-savory-baggedsnacks-pretzels" id="preference-freefood-savory-baggedsnacks-pretzels-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-savory-baggedsnacks-pretzels-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sweet Snacks -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-1">
+                        <p>
+                            there's a free food event with <b>sweet snacks</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet" id="preference-freefood-sweet-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet" id="preference-freefood-sweet-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ice Cream Bars -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-2">
+                        <p>
+                            there's a free food event with <b>ice cream bars</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-icecream" id="preference-freefood-sweet-icecream-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-icecream-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-icecream" id="preference-freefood-sweet-icecream-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-icecream-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>chocolate ice cream bars</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-icecream-chocolate" id="preference-freefood-sweet-icecream-chocolate-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-icecream-chocolate-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-icecream-chocolate" id="preference-freefood-sweet-icecream-chocolate-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-icecream-chocolate-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>vanilla ice cream bars</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-icecream-vanilla" id="preference-freefood-sweet-icecream-vanilla-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-icecream-vanilla-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-icecream-vanilla" id="preference-freefood-sweet-icecream-vanilla-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-icecream-vanilla-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popsicles -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-2">
+                        <p>
+                            there's a free food event with <b>popsicles</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-popsicles" id="preference-freefood-sweet-popsicles-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-popsicles-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-popsicles" id="preference-freefood-sweet-popsicles-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-popsicles-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>cherry popsicles</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-popsicles-cherry" id="preference-freefood-sweet-popsicles-cherry-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-popsicles-cherry-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-popsicles-cherry" id="preference-freefood-sweet-popsicles-cherry-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-popsicles-cherry-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>grape popsicles</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-popsicles-grape" id="preference-freefood-sweet-popsicles-grape-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-popsicles-grape-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-popsicles-grape" id="preference-freefood-sweet-popsicles-grape-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-popsicles-grape-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>orange popsicles</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-popsicles-orange" id="preference-freefood-sweet-popsicles-orange-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-popsicles-orange-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-popsicles-orange" id="preference-freefood-sweet-popsicles-orange-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-popsicles-orange-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Candy -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-2">
+                        <p>
+                            there's a free food event with <b>candy</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-candy" id="preference-freefood-sweet-candy-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-candy-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-candy" id="preference-freefood-sweet-candy-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-candy-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>chocolate bars</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-candy-chocolatebar" id="preference-freefood-sweet-candy-chocolatebar-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-candy-chocolatebar-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-candy-chocolatebar" id="preference-freefood-sweet-candy-chocolatebar-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-candy-chocolatebar-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>fruit snacks</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-candy-fruitsnacks" id="preference-freefood-sweet-candy-fruitsnacks-yes" value="yes" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-candy-fruitsnacks-yes">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="preference-freefood-sweet-candy-fruitsnacks" id="preference-freefood-sweet-candy-fruitsnacks-no" value="no" required>
+                        <label class="form-check-label" for="preference-freefood-sweet-candy-fruitsnacks-no">No</label>
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
 
-    <!-- jQuery and Bootstrap-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-    <!-- Parse -->
-    <script src="https://npmcdn.com/parse/dist/parse.min.js" crossorigin="anonymous"></script>
-
-    <!-- Custom JS -->
-    <script src="/public/assets/js/init.js"></script>
-    <script src="/public/assets/js/preferences/preferenceShared.js"></script>
-    <script src="/public/assets/js/preferences/coffeeshops.js"></script>
-
-    <footer class="footer bg-primary">
-        <div class="container">
-            Made with ♥ by <a href="http://delta.northwestern.edu/" target="_blank">Delta Lab</a>
-            <br>
-            Questions? Comments? Bugs? Email <a href="mailto:kapilgarg2017@u.northwestern.edu">kapilgarg2017@u.northwestern.edu</a>
+        <!-- Free Food Notification Preference Section -->
+        <div class="row">
+            <h3>Likelihood to Go out of Your Way</h3>
         </div>
-    </footer>
+        <div class="row">
+            <p>
+                In this section, please indicate how often you would go out of your way to a nearby Free Food event if LES notified you with a certain amount of information. Please respond <b>assuming that you are able to go and don't have anything else scheduled to be at </b> (ex. class, meetings, etc).
+            </p>
+        </div>
+
+        <div class="row light-bottom-border">
+            <div class="col col-md-8 no-padding">
+                <h4>LES notifies you that...</h4>
+            </div>
+            <div class="col col-md-4 no-padding">
+                <h4>How often would you go out of your way to the place, given this much information?</h4>
+            </div>
+        </div>
+
+        <div class="preferences-likelihood-form">
+            <!-- Private Seating -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <p>
+                        a nearby library has <b>private seating (individual tables)</b> available.
+                    </p>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-1">
+                        <p>
+                            a nearby library has <b>private seating (individual tables) near outlets</b> available.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-1">
+                        <p>
+                            a nearby library has <b>private seating (individual tables) near windows</b> available.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shared Seating -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <p>
+                        a nearby library has <b>shared seating (communal tables)</b> available.
+                    </p>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-1">
+                        <p>
+                            a nearby library has <b>shared seating (communal tables) near outlets</b> available.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-1">
+                        <p>
+                            a nearby library has <b>shared seating (communal tables) near windows</b> available.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-never">Never</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="row continue-button">
+            <div class="col col-6 offset-3">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Next Section</button>
+                <span class="error text-danger" id="signup-error" style="display: none;">Some Errors related to something</span>
+            </div>
+        </div>
+    </form>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar-wrapper">
+        <div class="row progress">
+            <div class="progress-bar progress-bar-striped" id="completion-progress" role="progressbar" style="width: 75%;">75%</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 progress-text">
+                Coffee Shops
+            </div>
+            <div class="col-md-3 progress-text">
+                Workspaces
+            </div>
+            <div class="col-md-3 progress-text">
+                Gyms
+            </div>
+            <div class="col-md-3 progress-text">
+                Free Food
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 progress-text">
+                <!-- Coffee Shop Checkbox --> ✅
+            </div>
+            <div class="col-md-3 progress-text">
+                <!-- Workspace Checkbox --> ✅
+            </div>
+            <div class="col-md-3 progress-text">
+                <!-- Gym Checkbox --> ✅
+            </div>
+            <div class="col-md-3 progress-text">
+                <!-- Free Food Checkbox -->
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- jQuery and Bootstrap-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+<!-- Parse -->
+<script src="https://npmcdn.com/parse/dist/parse.min.js" crossorigin="anonymous"></script>
+
+<!-- Custom JS -->
+<script src="/public/assets/js/init.js"></script>
+<script src="/public/assets/js/preferences/preferenceShared.js"></script>
+<script src="/public/assets/js/preferences/coffeeshops.js"></script>
+
+<footer class="footer bg-primary">
+    <div class="container">
+        Made with ♥ by <a href="http://delta.northwestern.edu/" target="_blank">Delta Lab</a>
+        <br>
+        Questions? Comments? Bugs? Email <a href="mailto:kapilgarg2017@u.northwestern.edu">kapilgarg2017@u.northwestern.edu</a>
+    </div>
+</footer>
 </body>
 </html>
