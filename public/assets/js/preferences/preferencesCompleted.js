@@ -25,16 +25,7 @@ $(document).ready(function() {
    */
   $('#go-home-button').click(function(e) {
     e.preventDefault();
-
-    // update preference progress
-    const user = Parse.User.current();
-    user.set('preferenceProgress', 'coffeeshop');
-    user.save().then(user => {
-      console.log('beginning preference capture for user: ' + JSON.stringify(user));
-      window.location.href = '/preferences/create/coffee-shops';
-    }).catch(error => {
-      console.log(error);
-    });
+    window.location.href = '/home';
   });
 
   const installationLink = 'https://i.diawi.com/ExASsV';

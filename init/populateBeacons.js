@@ -8,9 +8,9 @@ Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
  * Add Beacons
  */
 
-// starbucks in norris
-dbFunctions.addEstimoteBeaconsToDB(new Parse.GeoPoint(42.053391, -87.672911),
-  'norris starbucks', 'alpha_1', 'B9407F30-F5F8-466E-AFF9-25556B57FE6D', 7385, 39930);
+// // starbucks in norris
+// dbFunctions.addEstimoteBeaconsToDB(new Parse.GeoPoint(42.053391, -87.672911),
+//   'norris starbucks', 'alpha_1', 'B9407F30-F5F8-466E-AFF9-25556B57FE6D', 7385, 39930);
 
 // main 1south
 dbFunctions.addEstimoteBeaconsToDB(new Parse.GeoPoint(42.052815, -87.674501),
@@ -22,8 +22,8 @@ dbFunctions.addEstimoteBeaconsToDB(new Parse.GeoPoint(42.058169, -87.674423),
 
 // spac
 dbFunctions.addEstimoteBeaconsToDB(new Parse.GeoPoint(42.059284, -87.673826),
-  'spac', 'echo_1', 'B9407F30-F5F8-466E-AFF9-25556B57FE6D', 44176, 34495);
+  'spac', 'hotel_1', 'B9407F30-F5F8-466E-AFF9-25556B57FE6D', 20487, 17646);
 
-// blomquist
-dbFunctions.addEstimoteBeaconsToDB(new Parse.GeoPoint(42.054274, -87.678216),
-  'blomquist', 'foxtrot_1', 'B9407F30-F5F8-466E-AFF9-25556B57FE6D', 30333, 45043);
+// // blomquist
+// dbFunctions.addEstimoteBeaconsToDB(new Parse.GeoPoint(42.054274, -87.678216),
+//   'blomquist', 'foxtrot_1', 'B9407F30-F5F8-466E-AFF9-25556B57FE6D', 30333, 45043);
