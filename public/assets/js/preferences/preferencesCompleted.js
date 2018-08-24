@@ -44,12 +44,12 @@ $(document).ready(function() {
         $yellkeyText = $('#yellkey-text');
 
     // get yellkey for installation link
-    let url = 'http://www.yellkey.com/api/new?url=' + installationLink + '&time=10';
+    let url = 'https://www.yellkey.com/api/new?url=' + installationLink + '&time=10';
     $.get(url, function (data, status) {
       // check if valid key exists in returned object
       let yellkeyUrl = '';
       if (status === "success" && data.hasOwnProperty('key')) {
-        yellkeyUrl = 'http://www.yellkey.com/' + data.key;
+        yellkeyUrl = 'https://www.yellkey.com/' + data.key;
       }
 
       // set HTML

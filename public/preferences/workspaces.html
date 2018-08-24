@@ -32,475 +32,489 @@
 </head>
 
 <body style="display: none;">
-<!-- Nav Bar -->
-<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
-    <span class="navbar-brand abs">LES | Creating Your Preferences</span>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <!-- Nav Bar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+        <span class="navbar-brand abs">LES | Creating Your Preferences</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#" id="logout">Logout</a>
-            </li>
-        </ul>
-    </div>
-</nav>
-<main role="main" class="container">
-    <div class="row preference-header">
-        <h1>Workspaces</h1>
-    </div>
-
-    <form class="preference-form" id="location-preferences">
-        <!-- Workspace Notification Preference Section -->
-        <div class="row">
-            <h3>Notification Preferences</h3>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="logout">Logout</a>
+                </li>
+            </ul>
         </div>
-        <div class="row">
-            <p>
-                In this section, please tell us if you would like to be notified by LES if it knows certain information about a Workspace nearby.
-            </p>
+    </nav>
+
+    <main role="main" class="container">
+        <div class="row preference-header">
+            <h1>Workspaces</h1>
         </div>
 
-        <div class="row light-bottom-border">
-            <div class="col col-md-8 no-padding">
-                <h4>LES knows that...</h4>
-            </div>
-            <div class="col col-md-4 no-padding">
-                <h4>Would you like to be notified about this?</h4>
-            </div>
-        </div>
-
-        <div class="preferences-notification-form">
-            <!-- Private Seating -->
+        <form class="preference-form" id="location-preferences">
+            <!-- Workspace Notification Preference Section -->
             <div class="row">
+                <h3>Notification Preferences</h3>
+            </div>
+            <div class="row">
+                <p>
+                    In this section, please tell us if you would like to be notified by LES if it knows certain information about a Workspace nearby. <span class="instruction-purpose-text">These responses will be used by LES to determine when to notify you about Workspaces.</span>
+                    <br><br>
+                    If you respond <b>No</b> to a prompt below, you will <b>not be notified by LES when it knows that specific piece of information about a nearby Workspace.</b> However, you will still be notified about prompts that you respond <b>Yes</b> to even if they are below one you said <b>No</b> to.
+
+                    <br><br>
+                    For example, if you respond:
+                    <br>
+
+                    <span class="li">LES knows that a nearby workspace has <b>private seating (individual tables)</b> available. <b>No</b> <br></span>
+                    <span class="li2">LES knows that a nearby workspace has <b>private seating (individual tables) near outlets</b> available. <b>Yes</b> <br></span>
+
+                    then LES would <b><u>not</u> notify you about private seating (individual tables) generally</b> but <b><u>would</u> notify you about private seating (individual tables) near outlets</b>.
+                </p>
+            </div>
+
+            <div class="row light-bottom-border">
                 <div class="col col-md-8 no-padding">
-                    <p>
-                        a nearby workspace has <b>private seating (individual tables)</b> available.
-                    </p>
+                    <h4>LES knows that...</h4>
                 </div>
                 <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-privateseating" id="preference-workspace-privateseating-yes" value="yes" required>
-                        <label class="form-check-label" for="preference-workspace-privateseating-yes">Yes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-privateseating" id="preference-workspace-privateseating-no" value="no" required>
-                        <label class="form-check-label" for="preference-workspace-privateseating-no">No</label>
-                    </div>
+                    <h4>Would you like to be notified about this?</h4>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
+            <div class="preferences-notification-form">
+                <!-- Private Seating -->
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
                         <p>
-                            a nearby workspace has <b>private seating (individual tables) near outlets</b> available.
+                            a nearby workspace has <b>private seating (individual tables)</b> available.
                         </p>
                     </div>
-                </div>
-                <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-privateseating-outlet" id="preference-workspace-privateseating-outlet-yes" value="yes" required>
-                        <label class="form-check-label" for="preference-workspace-privateseating-outlet-yes">Yes</label>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-privateseating" id="preference-workspace-privateseating-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-workspace-privateseating-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-privateseating" id="preference-workspace-privateseating-no" value="no" required>
+                            <label class="form-check-label" for="preference-workspace-privateseating-no">No</label>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-privateseating-outlet" id="preference-workspace-privateseating-outlet-no" value="no" required>
-                        <label class="form-check-label" for="preference-workspace-privateseating-outlet-no">No</label>
-                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby workspace has <b>private seating (individual tables) near outlets</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-privateseating-outlet" id="preference-workspace-privateseating-outlet-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-workspace-privateseating-outlet-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-privateseating-outlet" id="preference-workspace-privateseating-outlet-no" value="no" required>
+                            <label class="form-check-label" for="preference-workspace-privateseating-outlet-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby workspace has <b>private seating (individual tables) near windows</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-privateseating-window" id="preference-workspace-privateseating-window-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-workspace-privateseating-window-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-privateseating-window" id="preference-workspace-privateseating-window-no" value="no" required>
+                            <label class="form-check-label" for="preference-workspace-privateseating-window-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shared Seating -->
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
                         <p>
-                            a nearby workspace has <b>private seating (individual tables) near windows</b> available.
+                            a nearby workspace has <b>shared seating (communal tables)</b> available.
                         </p>
                     </div>
-                </div>
-                <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-privateseating-window" id="preference-workspace-privateseating-window-yes" value="yes" required>
-                        <label class="form-check-label" for="preference-workspace-privateseating-window-yes">Yes</label>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-sharedseating" id="preference-workspace-sharedseating-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-workspace-sharedseating-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-sharedseating" id="preference-workspace-sharedseating-no" value="no" required>
+                            <label class="form-check-label" for="preference-workspace-sharedseating-no">No</label>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-privateseating-window" id="preference-workspace-privateseating-window-no" value="no" required>
-                        <label class="form-check-label" for="preference-workspace-privateseating-window-no">No</label>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby workspace has <b>shared seating (communal tables) near outlets</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-sharedseating-outlet" id="preference-workspace-sharedseating-outlet-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-workspace-sharedseating-outlet-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-sharedseating-outlet" id="preference-workspace-sharedseating-outlet-no" value="no" required>
+                            <label class="form-check-label" for="preference-workspace-sharedseating-outlet-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby workspace has <b>shared seating (communal tables) near windows</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-sharedseating-window" id="preference-workspace-sharedseating-window-yes" value="yes" required>
+                            <label class="form-check-label" for="preference-workspace-sharedseating-window-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="preference-workspace-sharedseating-window" id="preference-workspace-sharedseating-window-no" value="no" required>
+                            <label class="form-check-label" for="preference-workspace-sharedseating-window-no">No</label>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Shared Seating -->
+            <!-- Workspace Specific Locations of Interest -->
             <div class="row">
+                <h3>Specific Workspaces</h3>
+            </div>
+            <div class="row">
+                <p>
+                    In this section, please indicate which Workspaces you would like to be notified for by LES when it has information that matches your above preferences <i>and</i> you are nearby (but not in the immediate vicinity).  <span class="instruction-purpose-text">These responses will be used by LES to determine if you should be notified about a specific Workspace.</span>
+                    <br><br>
+                    Please note: if you specify <b>No</b> for a Workspace below, you will <b>never be notified with information about that Workspace regardless of your notification preferences above.</b> However, LES may still ask you for additional information about the Workspace if you pass directly in front of it.
+                </p>
+            </div>
+
+            <div class="row light-bottom-border">
                 <div class="col col-md-8 no-padding">
-                    <p>
-                        a nearby workspace has <b>shared seating (communal tables)</b> available.
-                    </p>
+                    <h4>Location</h4>
                 </div>
                 <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-sharedseating" id="preference-workspace-sharedseating-yes" value="yes" required>
-                        <label class="form-check-label" for="preference-workspace-sharedseating-yes">Yes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-sharedseating" id="preference-workspace-sharedseating-no" value="no" required>
-                        <label class="form-check-label" for="preference-workspace-sharedseating-no">No</label>
-                    </div>
+                    <h4>Should LES notify you about this place?</h4>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
+            <div class="preferences-location-form">
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
                         <p>
-                            a nearby workspace has <b>shared seating (communal tables) near outlets</b> available.
+                            Mudd Common Area (outside library)
                         </p>
                     </div>
-                </div>
-                <div class="col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-sharedseating-outlet" id="preference-workspace-sharedseating-outlet-yes" value="yes" required>
-                        <label class="form-check-label" for="preference-workspace-sharedseating-outlet-yes">Yes</label>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="location-workspace-mudd" id="location-workspace-mudd-yes" value="yes" required>
+                            <label class="form-check-label" for="location-workspace-mudd-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="location-workspace-mudd" id="location-workspace-mudd-no" value="no" required>
+                            <label class="form-check-label" for="location-workspace-mudd-no">No</label>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-sharedseating-outlet" id="preference-workspace-sharedseating-outlet-no" value="no" required>
-                        <label class="form-check-label" for="preference-workspace-sharedseating-outlet-no">No</label>
-                    </div>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
                         <p>
-                            a nearby workspace has <b>shared seating (communal tables) near windows</b> available.
+                            Main 1South
                         </p>
                     </div>
-                </div>
-                <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-sharedseating-window" id="preference-workspace-sharedseating-window-yes" value="yes" required>
-                        <label class="form-check-label" for="preference-workspace-sharedseating-window-yes">Yes</label>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="location-workspace-main" id="location-workspace-main-yes" value="yes" required>
+                            <label class="form-check-label" for="location-workspace-main-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="location-workspace-main" id="location-workspace-main-no" value="no" required>
+                            <label class="form-check-label" for="location-workspace-main-no">No</label>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="preference-workspace-sharedseating-window" id="preference-workspace-sharedseating-window-no" value="no" required>
-                        <label class="form-check-label" for="preference-workspace-sharedseating-window-no">No</label>
-                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Workspace Specific Locations of Interest -->
-        <div class="row">
-            <h3>Specific Workspaces</h3>
-        </div>
-        <div class="row">
-            <p>
-                In this section, please indicate which Workspaces you would like to be notified for by LES when it has information that matches your above preferences <i>and</i> you are nearby (but not in the immediate vicinity).
-                <br><br>
-                Please note: if you specify <b>No</b> for a Workspace below, you will <b>never be notified with information about that Workspace regardless of your notification preferences above.</b> However, LES may still ask you for additional information about the Workspace if you pass directly in front of it.
-            </p>
-        </div>
-
-        <div class="row light-bottom-border">
-            <div class="col col-md-8 no-padding">
-                <h4>Location</h4>
-            </div>
-            <div class="col col-md-4 no-padding">
-                <h4>Should LES notify you about this place?</h4>
-            </div>
-        </div>
-
-        <div class="preferences-location-form">
+            <!-- Workspace Notification Preference Section -->
             <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <p>
-                        Mudd Common Area (outside library)
-                    </p>
-                </div>
-                <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="location-workspace-mudd" id="location-workspace-mudd-yes" value="yes" required>
-                        <label class="form-check-label" for="location-workspace-mudd-yes">Yes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="location-workspace-mudd" id="location-workspace-mudd-no" value="no" required>
-                        <label class="form-check-label" for="location-workspace-mudd-no">No</label>
-                    </div>
-                </div>
+                <h3>Likelihood to Go out of Your Way</h3>
             </div>
             <div class="row">
+                <p>
+                    In this section, please indicate how often you would go out of your way to a nearby Workspace if LES notified you with a certain amount of information. <span class="instruction-purpose-text">These responses will only be used by the researchers for analysis, and will not affect the notifications you get from LES.</span>
+                    <br><br>
+                    Please respond <b>assuming that you are able to go and don't have anything else scheduled to be at </b> (ex. class, meetings, etc).
+                </p>
+            </div>
+
+            <div class="row light-bottom-border">
                 <div class="col col-md-8 no-padding">
-                    <p>
-                        Main 1South
-                    </p>
+                    <h4>LES notifies you that...</h4>
                 </div>
                 <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="location-workspace-main" id="location-workspace-main-yes" value="yes" required>
-                        <label class="form-check-label" for="location-workspace-main-yes">Yes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="location-workspace-main" id="location-workspace-main-no" value="no" required>
-                        <label class="form-check-label" for="location-workspace-main-no">No</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Workspace Notification Preference Section -->
-        <div class="row">
-            <h3>Likelihood to Go out of Your Way</h3>
-        </div>
-        <div class="row">
-            <p>
-                In this section, please indicate how often you would go out of your way to a nearby Workspace if LES notified you with a certain amount of information. Please respond <b>assuming that you are able to go and don't have anything else scheduled to be at </b> (ex. class, meetings, etc).
-            </p>
-        </div>
-
-        <div class="row light-bottom-border">
-            <div class="col col-md-8 no-padding">
-                <h4>LES notifies you that...</h4>
-            </div>
-            <div class="col col-md-4 no-padding">
-                <h4>How often would you go out of your way to the place, given this much information?</h4>
-            </div>
-        </div>
-
-        <div class="preferences-likelihood-form">
-            <!-- Private Seating -->
-            <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <p>
-                        a nearby workspace has <b>private seating (individual tables)</b> available.
-                    </p>
-                </div>
-                <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating" id="likelihood-workspace-privateseating-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-always">Always</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating" id="likelihood-workspace-privateseating-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-sometimes">Sometimes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating" id="likelihood-workspace-privateseating-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-rarely">Rarely</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating" id="likelihood-workspace-privateseating-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-never">Never</label>
-                    </div>
+                    <h4>How often would you go out of your way to the place, given this much information?</h4>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
+            <div class="preferences-likelihood-form">
+                <!-- Private Seating -->
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
                         <p>
-                            a nearby workspace has <b>private seating (individual tables) near outlets</b> available.
+                            a nearby workspace has <b>private seating (individual tables)</b> available.
                         </p>
                     </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating" id="likelihood-workspace-privateseating-always" value="always" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-always">Always</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating" id="likelihood-workspace-privateseating-sometimes" value="sometimes" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-sometimes">Sometimes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating" id="likelihood-workspace-privateseating-rarely" value="rarely" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-rarely">Rarely</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating" id="likelihood-workspace-privateseating-never" value="never" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-never">Never</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-outlet" id="likelihood-workspace-privateseating-outlet-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-outlet-always">Always</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-outlet" id="likelihood-workspace-privateseating-outlet-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-outlet-sometimes">Sometimes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-outlet" id="likelihood-workspace-privateseating-outlet-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-outlet-rarely">Rarely</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-outlet" id="likelihood-workspace-privateseating-outlet-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-outlet-never">Never</label>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby workspace has <b>private seating (individual tables) near outlets</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-outlet" id="likelihood-workspace-privateseating-outlet-always" value="always" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-outlet-always">Always</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-outlet" id="likelihood-workspace-privateseating-outlet-sometimes" value="sometimes" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-outlet-sometimes">Sometimes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-outlet" id="likelihood-workspace-privateseating-outlet-rarely" value="rarely" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-outlet-rarely">Rarely</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-outlet" id="likelihood-workspace-privateseating-outlet-never" value="never" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-outlet-never">Never</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby workspace has <b>private seating (individual tables) near windows</b> available.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-window" id="likelihood-workspace-privateseating-window-always" value="always" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-window-always">Always</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-window" id="likelihood-workspace-privateseating-window-sometimes" value="sometimes" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-window-sometimes">Sometimes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-window" id="likelihood-workspace-privateseating-window-rarely" value="rarely" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-window-rarely">Rarely</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-window" id="likelihood-workspace-privateseating-window-never" value="never" required>
+                            <label class="form-check-label" for="likelihood-workspace-privateseating-window-never">Never</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shared Seating -->
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
                         <p>
-                            a nearby workspace has <b>private seating (individual tables) near windows</b> available.
+                            a nearby workspace has <b>shared seating (communal tables)</b> available.
                         </p>
                     </div>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating" id="likelihood-workspace-sharedseating-always" value="always" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-always">Always</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating" id="likelihood-workspace-sharedseating-sometimes" value="sometimes" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-sometimes">Sometimes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating" id="likelihood-workspace-sharedseating-rarely" value="rarely" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-rarely">Rarely</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating" id="likelihood-workspace-sharedseating-never" value="never" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-never">Never</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-window" id="likelihood-workspace-privateseating-window-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-window-always">Always</label>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby workspace has <b>shared seating (communal tables) near outlets</b> available.
+                            </p>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-window" id="likelihood-workspace-privateseating-window-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-window-sometimes">Sometimes</label>
+                    <div class="col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-outlet" id="likelihood-workspace-sharedseating-outlet-always" value="always" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-outlet-always">Always</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-outlet" id="likelihood-workspace-sharedseating-outlet-sometimes" value="sometimes" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-outlet-sometimes">Sometimes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-outlet" id="likelihood-workspace-sharedseating-outlet-rarely" value="rarely" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-outlet-rarely">Rarely</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-outlet" id="likelihood-workspace-sharedseating-outlet-never" value="never" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-outlet-never">Never</label>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-window" id="likelihood-workspace-privateseating-window-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-window-rarely">Rarely</label>
+                </div>
+
+                <div class="row">
+                    <div class="col col-md-8 no-padding">
+                        <div class="offset-md-1">
+                            <p>
+                                a nearby workspace has <b>shared seating (communal tables) near windows</b> available.
+                            </p>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-privateseating-window" id="likelihood-workspace-privateseating-window-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-workspace-privateseating-window-never">Never</label>
+                    <div class="col col-md-4 no-padding">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-window" id="likelihood-workspace-sharedseating-window-always" value="always" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-window-always">Always</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-window" id="likelihood-workspace-sharedseating-window-sometimes" value="sometimes" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-window-sometimes">Sometimes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-window" id="likelihood-workspace-sharedseating-window-rarely" value="rarely" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-window-rarely">Rarely</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-window" id="likelihood-workspace-sharedseating-window-never" value="never" required>
+                            <label class="form-check-label" for="likelihood-workspace-sharedseating-window-never">Never</label>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Shared Seating -->
+            <!-- Submit Button -->
+            <div class="row continue-button">
+                <div class="col col-6 offset-3">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Next Section</button>
+                    <span class="error text-danger" id="signup-error" style="display: none;">Some Errors related to something</span>
+                </div>
+            </div>
+        </form>
+
+        <!-- Progress Bar -->
+        <div id="progress-bar-wrapper">
+            <div class="row progress">
+                <div class="progress-bar progress-bar-striped" id="completion-progress" role="progressbar" style="width: 25%;">25%</div>
+            </div>
             <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <p>
-                        a nearby workspace has <b>shared seating (communal tables)</b> available.
-                    </p>
+                <div class="col-md-3 progress-text">
+                    Coffee Shops
                 </div>
-                <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating" id="likelihood-workspace-sharedseating-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-always">Always</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating" id="likelihood-workspace-sharedseating-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-sometimes">Sometimes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating" id="likelihood-workspace-sharedseating-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-rarely">Rarely</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating" id="likelihood-workspace-sharedseating-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-never">Never</label>
-                    </div>
+                <div class="col-md-3 progress-text">
+                    Workspaces
+                </div>
+                <div class="col-md-3 progress-text">
+                    Gyms
+                </div>
+                <div class="col-md-3 progress-text">
+                    Free Food
                 </div>
             </div>
-
             <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
-                        <p>
-                            a nearby workspace has <b>shared seating (communal tables) near outlets</b> available.
-                        </p>
-                    </div>
+                <div class="col-md-3 progress-text">
+                    <!-- Coffee Shop Checkbox --> ✅
                 </div>
-                <div class="col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-outlet" id="likelihood-workspace-sharedseating-outlet-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-outlet-always">Always</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-outlet" id="likelihood-workspace-sharedseating-outlet-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-outlet-sometimes">Sometimes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-outlet" id="likelihood-workspace-sharedseating-outlet-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-outlet-rarely">Rarely</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-outlet" id="likelihood-workspace-sharedseating-outlet-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-outlet-never">Never</label>
-                    </div>
+                <div class="col-md-3 progress-text">
+                    <!-- Workspace Checkbox -->
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
-                        <p>
-                            a nearby workspace has <b>shared seating (communal tables) near windows</b> available.
-                        </p>
-                    </div>
+                <div class="col-md-3 progress-text">
+                    <!-- Gym Checkbox -->
                 </div>
-                <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-window" id="likelihood-workspace-sharedseating-window-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-window-always">Always</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-window" id="likelihood-workspace-sharedseating-window-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-window-sometimes">Sometimes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-window" id="likelihood-workspace-sharedseating-window-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-window-rarely">Rarely</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-workspace-sharedseating-window" id="likelihood-workspace-sharedseating-window-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-workspace-sharedseating-window-never">Never</label>
-                    </div>
+                <div class="col-md-3 progress-text">
+                    <!-- Free Food Checkbox -->
                 </div>
             </div>
         </div>
+    </main>
 
-        <!-- Submit Button -->
-        <div class="row continue-button">
-            <div class="col col-6 offset-3">
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Next Section</button>
-                <span class="error text-danger" id="signup-error" style="display: none;">Some Errors related to something</span>
-            </div>
+    <!-- jQuery and Bootstrap-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <!-- Parse -->
+    <script src="https://npmcdn.com/parse/dist/parse.min.js" crossorigin="anonymous"></script>
+
+    <!-- Custom JS -->
+    <script src="/public/assets/js/init.js"></script>
+    <script src="/public/assets/js/preferences/preferenceShared.js"></script>
+    <script src="/public/assets/js/preferences/workspaces.js"></script>
+
+    <footer class="footer bg-primary">
+        <div class="container">
+            Made with ♥ by <a href="http://delta.northwestern.edu/" target="_blank">Delta Lab</a>
+            <br>
+            Questions? Comments? Bugs? Email <a href="mailto:kapilgarg2017@u.northwestern.edu">kapilgarg2017@u.northwestern.edu</a>
         </div>
-    </form>
-
-    <!-- Progress Bar -->
-    <div id="progress-bar-wrapper">
-        <div class="row progress">
-            <div class="progress-bar progress-bar-striped" id="completion-progress" role="progressbar" style="width: 25%;">25%</div>
-        </div>
-        <div class="row">
-            <div class="col-md-3 progress-text">
-                Coffee Shops
-            </div>
-            <div class="col-md-3 progress-text">
-                Workspaces
-            </div>
-            <div class="col-md-3 progress-text">
-                Gyms
-            </div>
-            <div class="col-md-3 progress-text">
-                Free Food
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3 progress-text">
-                <!-- Coffee Shop Checkbox --> ✅
-            </div>
-            <div class="col-md-3 progress-text">
-                <!-- Workspace Checkbox -->
-            </div>
-            <div class="col-md-3 progress-text">
-                <!-- Gym Checkbox -->
-            </div>
-            <div class="col-md-3 progress-text">
-                <!-- Free Food Checkbox -->
-            </div>
-        </div>
-    </div>
-</main>
-
-<!-- jQuery and Bootstrap-->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-<!-- Parse -->
-<script src="https://npmcdn.com/parse/dist/parse.min.js" crossorigin="anonymous"></script>
-
-<!-- Custom JS -->
-<script src="/public/assets/js/init.js"></script>
-<script src="/public/assets/js/preferences/preferenceShared.js"></script>
-<script src="/public/assets/js/preferences/workspaces.js"></script>
-
-<footer class="footer bg-primary">
-    <div class="container">
-        Made with ♥ by <a href="http://delta.northwestern.edu/" target="_blank">Delta Lab</a>
-        <br>
-        Questions? Comments? Bugs? Email <a href="mailto:kapilgarg2017@u.northwestern.edu">kapilgarg2017@u.northwestern.edu</a>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>

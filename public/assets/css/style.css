@@ -122,3 +122,17 @@ div .no-padding {
     font-size: 0.8rem;
     height: 1.5rem;
 }
+
+.instruction-purpose-text {
+    color: green;
+}
+
+span.li  {
+    display: list-item;
+    margin-left: 2rem
+}
+
+span.li2  {
+    display: list-item;
+    margin-left: 3rem
+}
