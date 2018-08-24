@@ -16,31 +16,32 @@ $(document).ready(function() {
   });
 
   //////////////////////////////////
-  /* Coffee Shop Specific Content */
+  /* Workspace Specific Content */
   //////////////////////////////////
 
   /* progress tracker */
-  const progressStartPoint = 0;
+  const progressStartPoint = 25;
   let hasMadeChanges = false;
 
   /* scaffold info */
-  const locationScaffoldName = 'coffeeshop';
-  const nextSectionName = 'workspace';
+  const locationScaffoldName = 'workspace';
+  const nextSectionName = 'gym';
 
   let answeredQuestions = {
-    'preference-coffeeshop-privateseating': false,
-    'preference-coffeeshop-privateseating-outlet': false,
-    'preference-coffeeshop-privateseating-window': false,
-    'preference-coffeeshop-sharedseating': false,
-    'preference-coffeeshop-sharedseating-outlet': false,
-    'preference-coffeeshop-sharedseating-window': false,
-    'location-coffeeshop-coffeelab': false,
-    'likelihood-coffeeshop-privateseating': false,
-    'likelihood-coffeeshop-privateseating-outlet': false,
-    'likelihood-coffeeshop-privateseating-window': false,
-    'likelihood-coffeeshop-sharedseating': false,
-    'likelihood-coffeeshop-sharedseating-outlet': false,
-    'likelihood-coffeeshop-sharedseating-window': false
+    'preference-workspace-privateseating': false,
+    'preference-workspace-privateseating-outlet': false,
+    'preference-workspace-privateseating-window': false,
+    'preference-workspace-sharedseating': false,
+    'preference-workspace-sharedseating-outlet': false,
+    'preference-workspace-sharedseating-window': false,
+    'location-workspace-mudd': false,
+    'location-workspace-main': false,
+    'likelihood-workspace-privateseating': false,
+    'likelihood-workspace-privateseating-outlet': false,
+    'likelihood-workspace-privateseating-window': false,
+    'likelihood-workspace-sharedseating': false,
+    'likelihood-workspace-sharedseating-outlet': false,
+    'likelihood-workspace-sharedseating-window': false
   };
 
   const scaffoldKeys = [
@@ -89,10 +90,16 @@ $(document).ready(function() {
         'yes': 'yes'
       }
     },
-    'coffeelab': {
+    'mudd': {
       scaffoldKey: '',
       valueMapping: {
-        'yes': 'Coffee Lab'
+        'yes': 'Mudd Common Area (outside library)'
+      }
+    },
+    'main': {
+      scaffoldKey: '',
+      valueMapping: {
+        'yes': 'Main 1South'
       }
     }
   };
@@ -133,6 +140,6 @@ $(document).ready(function() {
     window.onbeforeunload = null;
 
     saveFormDataAndRedirect(formData, scaffoldKeys, questionScaffoldMapping, locationScaffoldName,
-                            nextSectionName, '/preferences/create/workspaces');
+                            nextSectionName, '/preferences/create/gyms');
   })
 });

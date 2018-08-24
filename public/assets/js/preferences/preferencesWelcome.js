@@ -12,10 +12,10 @@ $(document).ready(function() {
           window.location.href = '/preferences/create/coffee-shops';
         break;
         case 'workspace':
-          window.location.href = '/preferences/create/libraries';
+          window.location.href = '/preferences/create/workspaces';
           break;
         case 'gym':
-          window.location.href = '/preferences/create/gym';
+          window.location.href = '/preferences/create/gyms';
           break;
         case 'freefood':
           window.location.href = '/preferences/create/free-food';

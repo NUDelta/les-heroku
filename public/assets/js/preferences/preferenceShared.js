@@ -57,11 +57,11 @@ function updateProgress(targetQuestion, answeredQuestions, progressStartPoint, s
 
       // update progress bar
       total = total > 0 ? total : 1;
-      const newProgressValue = 25 * (answeredQuestionCount / total) + progressStartPoint;
+      const newProgressValue = (25 * (answeredQuestionCount / total)) + progressStartPoint;
 
       const $progressBarSelector = $(selectorString);
       $progressBarSelector.css('width', newProgressValue + '%');
-      $progressBarSelector.text((progressStartPoint + Math.round(newProgressValue)) + '%');
+      $progressBarSelector.text(Math.round(newProgressValue) + '%');
 
       // return to caller
       return {
@@ -88,6 +88,7 @@ function saveFormDataAndRedirect(formData, scaffoldKeys, questionScaffoldMapping
                                  locationScaffoldName, nextSectionName, redirectUrl) {
   // create output scaffold
   const preferenceScaffoldToSave = generateScaffoldObjFromKeys(scaffoldKeys, []);
+  const locationPreferencesToSave = [];
   const notificationScaffoldToSave = {};
 
   for (let i = 0; i < formData.length; i++) {
@@ -110,6 +111,13 @@ function saveFormDataAndRedirect(formData, scaffoldKeys, questionScaffoldMapping
         const remappedValue = currentScaffoldMapping.valueMapping[currentQuestionResponse];
         preferenceScaffoldToSave[scaffoldKey].push(remappedValue);
       }
+    } else if (questionType === 'location') {
+      // only add value to scaffold if it has a valid remapping
+      const currentScaffoldMapping = questionScaffoldMapping[scaffoldMappingKey];
+      if (currentScaffoldMapping.valueMapping.hasOwnProperty(currentQuestionResponse)) {
+        const remappedValue = currentScaffoldMapping.valueMapping[currentQuestionResponse];
+        locationPreferencesToSave.push(remappedValue);
+      }
     } else if (questionType === 'likelihood') {
       notificationScaffoldToSave[scaffoldMappingKey] = currentQuestionResponse;
     }
@@ -122,11 +130,15 @@ function saveFormDataAndRedirect(formData, scaffoldKeys, questionScaffoldMapping
   let currentUserLikelihood = currentUser.get('likelihoodToGo');
 
   currentUserInformationPreferences[locationScaffoldName] = preferenceScaffoldToSave;
+  currentUserLocationPreferences[locationScaffoldName] = locationPreferencesToSave;
   currentUserLikelihood[locationScaffoldName] = notificationScaffoldToSave;
 
   currentUser.set('informationPreferences', currentUserInformationPreferences);
+  currentUser.set('locationPreferences', currentUserLocationPreferences);
   currentUser.set('likelihoodToGo', currentUserLikelihood);
   currentUser.set('preferenceProgress', nextSectionName);
+
+  console.log(currentUserLocationPreferences);
 
   // save data
   currentUser.save().then(user => {
