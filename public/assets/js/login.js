@@ -41,10 +41,18 @@ $(document).ready(function() {
     $signupError.hide();
 
     // get inputs from user
-    const firstName = $('#signupInputFirstName').val(),
-          lastName = $('#signupInputLastName').val(),
-          email = $('#signupInputEmail').val(),
-          pwd = $('#signupInputPassword').val();
+    const firstName = $('#signupInputFirstName').val().trim(),
+          lastName = $('#signupInputLastName').val().trim(),
+          email = $('#signupInputEmail').val().trim(),
+          pwd = $('#signupInputPassword').val(),
+          pwdConfirmation = $('#signupInputPasswordConfirmation').val();
+
+    // check if ped and pwdConfirmation are the same
+    if (pwd !== pwdConfirmation) {
+      $signupError.text("Error: Password and Password Confirmation must match.");
+      $signupError.show();
+      return;
+    }
 
     const user = new Parse.User();
     user.save({
@@ -69,7 +77,7 @@ $(document).ready(function() {
         console.log('error', error);
       });
     }).catch(error => {
-      $signupError.text("Error: " + error.message);
+      $signupError.text("Error: " + error.message.replace('username', 'email address'));
       $signupError.show();
     });
   });
@@ -91,7 +99,7 @@ $(document).ready(function() {
       console.log('success', user);
       window.location.href = '/home';
     }).catch(error => {
-      $signinError.text("Error: " + error.message);
+      $signinError.text("Error: " + error.message.replace('username', 'email address'));
       $signinError.show();
     })
   });
