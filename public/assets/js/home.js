@@ -6,9 +6,8 @@ $(document).ready(function() {
     const user = verifyLoggedIn();
     if (user) {
       // if user's preferences are not filled, then redirect them to preference capture. else, home.
-      console.log(user.get('preferenceProgress'));
       if (user.get('preferenceProgress') !== 'completed') {
-        // window.location.href = '/preferences/welcome';
+        window.location.href = '/preferences/welcome';
       } else {
         const $welcomeMessage = $('#welcomemessage');
         $welcomeMessage.text('Welcome back, ' + user.get('firstName') + '!');
