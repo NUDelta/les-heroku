@@ -15,9 +15,9 @@ $(document).ready(function() {
     logoutUser();
   });
 
-  //////////////////////////////////
+  //////////////////////////
   /* Gym Specific Content */
-  //////////////////////////////////
+  //////////////////////////
 
   /* progress tracker */
   const progressStartPoint = 50;

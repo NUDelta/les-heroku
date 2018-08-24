@@ -59,6 +59,10 @@ app.get('/preferences/create/free-food', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/preferences/freefood.html'));
 });
 
+app.get('/preferences/create/preferences-completed', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/preferences-completed.html'));
+});
+
 app.all('*', function(req, res) {
   res.redirect('/');
 });

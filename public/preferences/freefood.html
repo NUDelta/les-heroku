@@ -520,168 +520,596 @@
         </div>
 
         <div class="preferences-likelihood-form">
-            <!-- Private Seating -->
+            <!-- Free Food Event -->
             <div class="row">
                 <div class="col col-md-8 no-padding">
                     <p>
-                        a nearby library has <b>private seating (individual tables)</b> available.
+                        there's a <b>free food event</b> happening nearby.
                     </p>
                 </div>
                 <div class="col col-md-4 no-padding">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-always">Always</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-foodevent" id="likelihood-freefood-foodevent-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-foodevent-always">Always</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-sometimes">Sometimes</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-foodevent" id="likelihood-freefood-foodevent-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-foodevent-sometimes">Sometimes</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-rarely">Rarely</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-foodevent" id="likelihood-freefood-foodevent-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-foodevent-rarely">Rarely</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating" id="likelihood-coffeeshop-privateseating-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-never">Never</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-foodevent" id="likelihood-freefood-foodevent-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-foodevent-never">Never</label>
                     </div>
                 </div>
             </div>
 
+            <!-- Savory Snacks -->
             <div class="row">
                 <div class="col col-md-8 no-padding">
                     <div class="offset-md-1">
                         <p>
-                            a nearby library has <b>private seating (individual tables) near outlets</b> available.
+                            there's a free food event with <b>savory snacks</b> happening nearby.
                         </p>
                     </div>
                 </div>
                 <div class="col col-md-4 no-padding">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-always">Always</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory" id="likelihood-freefood-savory-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-always">Always</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-sometimes">Sometimes</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory" id="likelihood-freefood-savory-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-sometimes">Sometimes</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-rarely">Rarely</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory" id="likelihood-freefood-savory-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-rarely">Rarely</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-outlet" id="likelihood-coffeeshop-privateseating-outlet-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-outlet-never">Never</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory" id="likelihood-freefood-savory-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-never">Never</label>
                     </div>
                 </div>
             </div>
 
+            <!-- Pizza -->
             <div class="row">
                 <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
+                    <div class="offset-md-2">
                         <p>
-                            a nearby library has <b>private seating (individual tables) near windows</b> available.
+                            there's a free food event with <b>pizza</b> happening nearby.
                         </p>
                     </div>
                 </div>
                 <div class="col col-md-4 no-padding">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-always">Always</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza" id="likelihood-freefood-savory-pizza-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-always">Always</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-sometimes">Sometimes</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza" id="likelihood-freefood-savory-pizza-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-sometimes">Sometimes</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-rarely">Rarely</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza" id="likelihood-freefood-savory-pizza-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-rarely">Rarely</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-privateseating-window" id="likelihood-coffeeshop-privateseating-window-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-privateseating-window-never">Never</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Shared Seating -->
-            <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <p>
-                        a nearby library has <b>shared seating (communal tables)</b> available.
-                    </p>
-                </div>
-                <div class="col col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-always">Always</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-sometimes">Sometimes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-rarely">Rarely</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating" id="likelihood-coffeeshop-sharedseating-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-never">Never</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza" id="likelihood-freefood-savory-pizza-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-never">Never</label>
                     </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
+                    <div class="offset-md-3">
                         <p>
-                            a nearby library has <b>shared seating (communal tables) near outlets</b> available.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-4 no-padding">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-always">Always</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-sometimes">Sometimes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-rarely">Rarely</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-outlet" id="likelihood-coffeeshop-sharedseating-outlet-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-outlet-never">Never</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col col-md-8 no-padding">
-                    <div class="offset-md-1">
-                        <p>
-                            a nearby library has <b>shared seating (communal tables) near windows</b> available.
+                            there's a free food event with <b>cheese pizza</b> happening nearby.
                         </p>
                     </div>
                 </div>
                 <div class="col col-md-4 no-padding">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-always" value="always" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-always">Always</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza-cheese" id="likelihood-freefood-savory-pizza-cheese-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-cheese-always">Always</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-sometimes" value="sometimes" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-sometimes">Sometimes</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza-cheese" id="likelihood-freefood-savory-pizza-cheese-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-cheese-sometimes">Sometimes</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-rarely" value="rarely" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-rarely">Rarely</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza-cheese" id="likelihood-freefood-savory-pizza-cheese-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-cheese-rarely">Rarely</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="likelihood-coffeeshop-sharedseating-window" id="likelihood-coffeeshop-sharedseating-window-never" value="never" required>
-                        <label class="form-check-label" for="likelihood-coffeeshop-sharedseating-window-never">Never</label>
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza-cheese" id="likelihood-freefood-savory-pizza-cheese-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-cheese-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>pepperoni pizza</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza-pepperoni" id="likelihood-freefood-savory-pizza-pepperoni-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-pepperoni-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza-pepperoni" id="likelihood-freefood-savory-pizza-pepperoni-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-pepperoni-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza-pepperoni" id="likelihood-freefood-savory-pizza-pepperoni-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-pepperoni-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-pizza-pepperoni" id="likelihood-freefood-savory-pizza-pepperoni-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-pizza-pepperoni-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bags of Nuts/Chips -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-2">
+                        <p>
+                            there's a free food event with <b>bags of nuts/chips</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks" id="likelihood-freefood-savory-baggedsnacks-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks" id="likelihood-freefood-savory-baggedsnacks-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks" id="likelihood-freefood-savory-baggedsnacks-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks" id="likelihood-freefood-savory-baggedsnacks-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>bags of almonds</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-almonds" id="likelihood-freefood-savory-baggedsnacks-almonds-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-almonds-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-almonds" id="likelihood-freefood-savory-baggedsnacks-almonds-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-almonds-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-almonds" id="likelihood-freefood-savory-baggedsnacks-almonds-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-almonds-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-almonds" id="likelihood-freefood-savory-baggedsnacks-almonds-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-almonds-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>bags of popcorn</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-popcorn" id="likelihood-freefood-savory-baggedsnacks-popcorn-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-popcorn-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-popcorn" id="likelihood-freefood-savory-baggedsnacks-popcorn-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-popcorn-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-popcorn" id="likelihood-freefood-savory-baggedsnacks-popcorn-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-popcorn-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-popcorn" id="likelihood-freefood-savory-baggedsnacks-popcorn-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-popcorn-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>bags of potato chips</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-potatochips" id="likelihood-freefood-savory-baggedsnacks-potatochips-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-potatochips-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-potatochips" id="likelihood-freefood-savory-baggedsnacks-potatochips-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-potatochips-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-potatochips" id="likelihood-freefood-savory-baggedsnacks-potatochips-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-potatochips-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-potatochips" id="likelihood-freefood-savory-baggedsnacks-potatochips-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-potatochips-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>bags of pretzels</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-pretzels" id="likelihood-freefood-savory-baggedsnacks-pretzels-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-pretzels-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-pretzels" id="likelihood-freefood-savory-baggedsnacks-pretzels-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-pretzels-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-pretzels" id="likelihood-freefood-savory-baggedsnacks-pretzels-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-pretzels-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-savory-baggedsnacks-pretzels" id="likelihood-freefood-savory-baggedsnacks-pretzels-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-savory-baggedsnacks-pretzels-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sweet Snacks -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-1">
+                        <p>
+                            there's a free food event with <b>sweet snacks</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet" id="likelihood-freefood-sweet-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet" id="likelihood-freefood-sweet-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet" id="likelihood-freefood-sweet-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet" id="likelihood-freefood-sweet-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ice Cream Bars -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-2">
+                        <p>
+                            there's a free food event with <b>ice cream bars</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream" id="likelihood-freefood-sweet-icecream-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream" id="likelihood-freefood-sweet-icecream-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream" id="likelihood-freefood-sweet-icecream-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream" id="likelihood-freefood-sweet-icecream-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>chocolate ice cream bars</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream-chocolate" id="likelihood-freefood-sweet-icecream-chocolate-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-chocolate-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream-chocolate" id="likelihood-freefood-sweet-icecream-chocolate-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-chocolate-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream-chocolate" id="likelihood-freefood-sweet-icecream-chocolate-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-chocolate-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream-chocolate" id="likelihood-freefood-sweet-icecream-chocolate-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-chocolate-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>vanilla ice cream bars</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream-vanilla" id="likelihood-freefood-sweet-icecream-vanilla-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-vanilla-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream-vanilla" id="likelihood-freefood-sweet-icecream-vanilla-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-vanilla-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream-vanilla" id="likelihood-freefood-sweet-icecream-vanilla-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-vanilla-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-icecream-vanilla" id="likelihood-freefood-sweet-icecream-vanilla-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-icecream-vanilla-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popsicles -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-2">
+                        <p>
+                            there's a free food event with <b>popsicles</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles" id="likelihood-freefood-sweet-popsicles-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles" id="likelihood-freefood-sweet-popsicles-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles" id="likelihood-freefood-sweet-popsicles-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles" id="likelihood-freefood-sweet-popsicles-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>cherry popsicles</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-cherry" id="likelihood-freefood-sweet-popsicles-cherry-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-cherry-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-cherry" id="likelihood-freefood-sweet-popsicles-cherry-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-cherry-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-cherry" id="likelihood-freefood-sweet-popsicles-cherry-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-cherry-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-cherry" id="likelihood-freefood-sweet-popsicles-cherry-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-cherry-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>grape popsicles</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-grape" id="likelihood-freefood-sweet-popsicles-grape-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-grape-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-grape" id="likelihood-freefood-sweet-popsicles-grape-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-grape-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-grape" id="likelihood-freefood-sweet-popsicles-grape-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-grape-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-grape" id="likelihood-freefood-sweet-popsicles-grape-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-grape-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>orange popsicles</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-orange" id="likelihood-freefood-sweet-popsicles-orange-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-orange-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-orange" id="likelihood-freefood-sweet-popsicles-orange-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-orange-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-orange" id="likelihood-freefood-sweet-popsicles-orange-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-orange-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-popsicles-orange" id="likelihood-freefood-sweet-popsicles-orange-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-popsicles-orange-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Candy -->
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-2">
+                        <p>
+                            there's a free food event with <b>candy</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy" id="likelihood-freefood-sweet-candy-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy" id="likelihood-freefood-sweet-candy-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy" id="likelihood-freefood-sweet-candy-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy" id="likelihood-freefood-sweet-candy-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>chocolate bars</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy-chocolatebar" id="likelihood-freefood-sweet-candy-chocolatebar-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-chocolatebar-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy-chocolatebar" id="likelihood-freefood-sweet-candy-chocolatebar-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-chocolatebar-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy-chocolatebar" id="likelihood-freefood-sweet-candy-chocolatebar-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-chocolatebar-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy-chocolatebar" id="likelihood-freefood-sweet-candy-chocolatebar-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-chocolatebar-never">Never</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-8 no-padding">
+                    <div class="offset-md-3">
+                        <p>
+                            there's a free food event with <b>fruit snacks</b> happening nearby.
+                        </p>
+                    </div>
+                </div>
+                <div class="col col-md-4 no-padding">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy-fruitsnacks" id="likelihood-freefood-sweet-candy-fruitsnacks-always" value="always" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-fruitsnacks-always">Always</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy-fruitsnacks" id="likelihood-freefood-sweet-candy-fruitsnacks-sometimes" value="sometimes" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-fruitsnacks-sometimes">Sometimes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy-fruitsnacks" id="likelihood-freefood-sweet-candy-fruitsnacks-rarely" value="rarely" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-fruitsnacks-rarely">Rarely</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="likelihood-freefood-sweet-candy-fruitsnacks" id="likelihood-freefood-sweet-candy-fruitsnacks-never" value="never" required>
+                        <label class="form-check-label" for="likelihood-freefood-sweet-candy-fruitsnacks-never">Never</label>
                     </div>
                 </div>
             </div>
@@ -743,7 +1171,7 @@
 <!-- Custom JS -->
 <script src="/public/assets/js/init.js"></script>
 <script src="/public/assets/js/preferences/preferenceShared.js"></script>
-<script src="/public/assets/js/preferences/coffeeshops.js"></script>
+<script src="/public/assets/js/preferences/freefood.js"></script>
 
 <footer class="footer bg-primary">
     <div class="container">

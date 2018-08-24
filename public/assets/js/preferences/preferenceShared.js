@@ -138,8 +138,6 @@ function saveFormDataAndRedirect(formData, scaffoldKeys, questionScaffoldMapping
   currentUser.set('likelihoodToGo', currentUserLikelihood);
   currentUser.set('preferenceProgress', nextSectionName);
 
-  console.log(currentUserLocationPreferences);
-
   // save data
   currentUser.save().then(user => {
     console.log(locationScaffoldName + ' data saved successfully for user ' +

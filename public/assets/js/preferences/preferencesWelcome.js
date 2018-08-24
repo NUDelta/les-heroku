@@ -1,8 +1,8 @@
 $(document).ready(function() {
   /**
-   * Checks if user is logged in and show content.
+   * Checks if user is logged in and show content, redirecting if necessary.
    */
-  function showPreferenceContent() {
+  function redirectOrShowContent() {
     const user = verifyLoggedIn();
     if (user) {
       // check what preferences have been filled, and redirect appropriately
@@ -31,7 +31,7 @@ $(document).ready(function() {
       window.location.href = '/';
     }
   }
-  showPreferenceContent();
+  redirectOrShowContent();
 
   // logout user
   $('#logout').click(function(e) {
