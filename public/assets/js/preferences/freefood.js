@@ -113,7 +113,7 @@ $(document).ready(function() {
     'savory-baggedsnacks': {
       scaffoldKey: 'specificfood',
       valueMapping: {
-        'yes': 'baggednutschips'
+        'yes': 'bagged nuts/chips'
       }
     },
     'savory-baggedsnacks-almonds': {
@@ -131,7 +131,7 @@ $(document).ready(function() {
     'savory-baggedsnacks-potatochips': {
       scaffoldKey: 'typefood',
       valueMapping: {
-        'yes': 'potatochips'
+        'yes': 'potato chips'
       }
     },
     'savory-baggedsnacks-pretzels': {
@@ -149,19 +149,19 @@ $(document).ready(function() {
     'sweet-icecream': {
       scaffoldKey: 'specificfood',
       valueMapping: {
-        'yes': 'icecream'
+        'yes': 'ice cream'
       }
     },
     'sweet-icecream-chocolate': {
       scaffoldKey: 'typefood',
       valueMapping: {
-        'yes': 'chocolatebar'
+        'yes': 'chocolate'
       }
     },
     'sweet-icecream-vanilla': {
       scaffoldKey: 'typefood',
       valueMapping: {
-        'yes': 'vanillabar'
+        'yes': 'vanilla'
       }
     },
     'sweet-popsicles': {
@@ -197,13 +197,13 @@ $(document).ready(function() {
     'sweet-candy-chocolatebar': {
       scaffoldKey: 'typefood',
       valueMapping: {
-        'yes': 'chocolate'
+        'yes': 'chocolate bar'
       }
     },
     'sweet-candy-fruitsnacks': {
       scaffoldKey: 'typefood',
       valueMapping: {
-        'yes': 'fruitsnacks'
+        'yes': 'fruit snacks'
       }
     }
   };
