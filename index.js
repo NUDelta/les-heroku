@@ -39,6 +39,10 @@ app.get('/home', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/home.html'));
 });
 
+app.get('/home/instructions', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/preferences-completed.html'));
+});
+
 app.get('/preferences/welcome', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/preferences/preferences-welcome.html'));
 });

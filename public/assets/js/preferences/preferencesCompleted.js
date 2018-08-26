@@ -28,8 +28,14 @@ $(document).ready(function() {
     window.location.href = '/home';
   });
 
-  const installationLink = 'https://i.diawi.com/ExASsV';
+  /**
+   * Sets diawi and yellkey links for installation
+   */
   function updateInstallationLinks() {
+    // installation link
+    const installationLink = 'https://i.diawi.com/ExASsV';
+
+    // setup selectors
     let $diawiLink = $('#diawi-link'),
         $yellkeyLink = $('#yellkey-link'),
         $yellkeyText = $('#yellkey-text');
@@ -56,5 +62,15 @@ $(document).ready(function() {
     });
   }
 
+  function setEmailAddressFromUser() {
+    // get current user
+    const user = Parse.User.current();
+    if (user) {
+      console.log('User authenticated.');
+      $('#email-address').text(user.get('username'));
+    }
+  }
+
   updateInstallationLinks();
+  setEmailAddressFromUser();
 });

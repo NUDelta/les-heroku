@@ -17,7 +17,6 @@ $(document).ready(function() {
  * @returns {object} user if exists, otherwise undefined.
  */
 function verifyLoggedIn() {
-  // var $welcomeMessage = $('#welcomemessage');
   var user = Parse.User.current();
   if (user) {
     console.log('User authenticated.');

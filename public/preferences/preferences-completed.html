@@ -34,12 +34,20 @@
 <body style="display: none;">
 <!-- Nav Bar -->
 <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
-    <span class="navbar-brand abs">LES | Creating Your Preferences</span>
+    <span class="navbar-brand abs">LES | Installation</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/home/instructions">Installation and Usage Instructions</a>
+            </li>
+        </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a class="nav-link" href="#" id="logout">Logout</a>
@@ -47,38 +55,176 @@
         </ul>
     </div>
 </nav>
+
 <main role="main" class="container">
     <div class="row preference-header">
-        <h1>Installing and Using LES</h1>
+        <div class="col col-md-12">
+            <h1>Installing and Using LES</h1>
+        </div>
     </div>
 
     <div class="row">
-        <p>
-            Thank you for telling us about your notification preferences! Your account is now created and fully setup. Please follow the instructions below to install LES on your phone. These instructions will also be on your home page whenever you log back into this website.
-        </p>
+        <div class="col col-md-12">
+            <p>
+                Thank you for telling us about your notification preferences! Your account is now created and fully setup. Please follow the instructions below to install LES on your phone. These instructions will also be on your home page whenever you log back into this website.
+            </p>
+        </div>
     </div>
 
-    <!-- Login Information -->
-    <div class="row preference-header">
-        <h3>Installation Instructions</h3>
-    </div>
-    <div class="row">
-        <p>
-            To install LES, launch <b>Safari on your iPhone</b> and go to <a href="https://i.diawi.com/" id="diawi-link" target="_blank">https://i.diawi.com/</a>. <span id="yellkey-text">Alternatively, you can go to <a href="http://www.yellkey.com/" id="yellkey-link" target="_blank">http://www.yellkey.com/</a>, but this link will expire in 10 minutes.</span> Your credentials will be the same <b>Email Address</b> and <b>Password</b> you used to create your account with.
-        </p>
+    <!-- Installation Instructions -->
+    <div class="preference-card">
+        <div class="row preference-header">
+            <div class="col col-md-12">
+                <h3>Installation Instructions</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-12">
+                <p>
+                    <b style="color: red;">If you have previously participated in a Delta Lab study for LES, delete any old version of LES before installing.</b> To install LES, launch <b>Safari on your iPhone</b> and go to <a href="https://i.diawi.com/" id="diawi-link" target="_blank">https://i.diawi.com/</a>. <span id="yellkey-text">Alternatively, you can go to <a href="http://www.yellkey.com/" id="yellkey-link" target="_blank">http://www.yellkey.com/</a>, but this link will expire in 10 minutes.</span> See image 1 for how to install.</p>
+                <p>
+                    After installation, attempt to open LES; you will likely need to trust the Enterprise Developer (image 2). To fix this, go to <b>Settings -> General -> Device Management.</b> On this screen, you will see image 3. Click on <b>Northwestern University</b> and then click <b>Trust "Northwestern University"</b> (image 4). After this, you will be able to run the application.
+                </p>
+            </div>
+        </div>
+        <div class="row preference-explanation">
+            <div class="col col-md-3 image">
+                <img src="/public/assets/images/installation/diawi-install.PNG" class="installation-image">
+                <span>1. Diawi Installation Link</span>
+            </div>
+            <div class="col col-md-3 image">
+                <img src="/public/assets/images/installation/untrusted-developer.PNG" class="installation-image">
+                <span>2. Untrusted Developer Error</span>
+            </div>
+            <div class="col col-md-3 image">
+                <img src="/public/assets/images/installation/developer-profiles.PNG" class="installation-image">
+                <span>3. Profiles Under Settings -> General -> Device Management</span>
+            </div>
+            <div class="col col-md-3 image">
+                <img src="/public/assets/images/installation/trust-developer.PNG" class="installation-image">
+                <span>4. Trusting Profile</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-12">
+                <p>
+                    Once you launch LES, you will be asked for permission to track your location when you are near a place we are monitoring (ex. Coffee Lab, Free Food Event, etc) <b style="color: red;">You must select "Always Allow" or your application will not work</b> (image 4).
+                </p>
+                <p>
+                    On the next screen, enter your account credentials (image 5). Your credentials will be the same <b>Email Address</b> and <b>Password</b> you used to create your account with.
+                    <br>
+                    <b>Email Address:</b> <span id="email-address"><i>your email address</i></span> <br>
+                    <span><b>Password:</b> <i>whatever you set your password to</i></span>
+                </p>
+                <p>
+                    Finally, provide authorization for notifications so that LES can notify you when you pass tracked locations, or it has information that you may find valuable, based on your earlier preferences (image 6).
+                </p>
+            </div>
+        </div>
+        <div class="row preference-explanation">
+            <div class="col col-md-3 offset-md-2 image">
+                <img src="/public/assets/images/installation/location-access.PNG" class="installation-image">
+                <span>4. Allow Location Authorization</span>
+            </div>
+            <div class="col col-md-3 image">
+                <img src="/public/assets/images/installation/login-page.PNG" class="installation-image">
+                <span>5. Login Page</span>
+            </div>
+            <div class="col col-md-3 image">
+                <img src="/public/assets/images/installation/notification-access.PNG" class="installation-image">
+                <span>6. Notification Authorization</span>
+            </div>
+        </div>
     </div>
 
-    <!-- Usage Information -->
-    <div class="row preference-header">
-        <h3>How to Use LES</h3>
-    </div>
-    <div class="row">
-        <p>
-            coming soon...need screenshots
-        </p>
+    <!-- Responding to Notifications -->
+    <div class="preference-card">
+        <div class="row preference-header">
+            <div class="col col-md-12">
+                <h3>Receiving and Responding to Notifications</h3>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="row">
+            <div class="col col-md-12">
+                <p>
+                    There are generally 3 ways to respond to notifications that LES sends you.
+                </p>
+            </div>
+            <div class="col col-md-12">
+                <h4>Swiping Left: iPhone 6/6+ and iPhone SE</h4>
+                <p>
+                    When notified, <b>swipe the notification to the <u>left</u> and click view</b> (see image 2). As a result, you will see multiple options that can be selected as a response to the notification (image 3). Please choose the one that best answers the question.
+                </p>
+            </div>
+            <div class="col col-md-12">
+                <h4>3D Touch: iPhone 6S/6S+ and above</h4>
+                <p>
+                    When notified, <b>press deeply info the notification</b> (see image 3). As a result, you will see multiple options that can be selected as a response to the notification. Please choose the one that best answers the question.
+                </p>
+            </div>
+            <div class="col col-md-12">
+                <h4>Swiping Right: All iPhones</h4>
+                <p>
+                    You can also <b>tap or swipe right on the notification</b> to respond to notifications (see image 4). We recommend the above interactions instead since they are much faster and you don't need to open your app to do it.
+                </p>
+            </div>
+        </div>
+        <div class="row preference-explanation">
+            <div class="col col-md-3 image">
+                <img src="/public/assets/images/installation/notification-received.PNG" class="installation-image">
+                <span>1. Receiving a Notification</span>
+            </div>
+            <div class="col col-md-3 image">
+                <img src="/public/assets/images/installation/notification-swipe.PNG" class="installation-image">
+                <span>2. Swiping Left on Notification</span>
+            </div>
+            <div class="col col-md-3 image">
+                <img src="/public/assets/images/installation/notification-force.PNG" class="installation-image">
+                <span>3. Force Pressing Notification<br>Note: this is also shown when pressing "View" on image 2</span>
+            </div>
+            <div class="col col-md-3 image">
+                <img src="/public/assets/images/installation/notification-app-response.PNG" class="installation-image">
+                <span>4. Respond Through Application <br>(swipe right on notification)</span>
+            </div>
+        </div>
     </div>
 
-    <!-- Submit Button -->
+    <!-- Usage Instructions -->
+    <div class="preference-card">
+        <div class="row preference-header">
+            <div class="col col-md-12">
+                <h3>Daily Usage</h3>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="row">
+            <div class="col col-md-12">
+                <h4>General Usage Instructions</h4>
+                <p>
+                    Please use the application in your daily life. You may be notified as you pass places, like Coffee Lab, or as tou go inside places, like SPAC, to contribute more information about the location. Additionally, you may also be notified about going to locations that may not be nearby.
+                    <br><br>
+                    Go only if you are interested and able to at that time. Your participation is completely voluntary (in fact, we want to know why you do and don't go!) and will not affect your compensation as long as you complete the post-study survey.
+                </p>
+            </div>
+            <div class="col col-md-12">
+                <h4>Getting Information You Care About</h4>
+                <p>
+                    A big part of LES is getting information about places and things you care about (ex. free food, seating at coffee shops). LES will notify you about places that have community-sourced information you care about (based on your preferences) when you are somewhat nearby. You can also view this information on the For You page (see below).
+                </p>
+            </div>
+        </div>
+        <div class="row preference-explanation">
+            <div class="col col-md-3 offset-md-5 image">
+                <img src="/public/assets/images/installation/for-you.PNG" class="installation-image">
+                <span>1. For You Page</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Go Home Button -->
     <div class="row continue-button">
         <div class="col col-6 offset-3">
             <button class="btn btn-lg btn-primary btn-block" id="go-home-button">Go Home</button>

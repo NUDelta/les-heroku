@@ -82,6 +82,10 @@ div .no-padding {
     text-align: center;
 }
 
+/* Home */
+.home-container {
+    text-align: center;
+}
 
 /* Preferences */
 .progress-text {
@@ -112,18 +116,6 @@ div .no-padding {
     margin-bottom: 1rem;
 }
 
-/*.preferences-notification-form {*/
-    /*margin-bottom: 2rem;*/
-/*}*/
-
-/*.preferences-location-form {*/
-    /*margin-bottom: 2rem;*/
-/*}*/
-
-/*.preferences-likelihood-form {*/
-    /*margin-bottom: 2rem;*/
-/*}*/
-
 .continue-button {
     margin-bottom: 1rem;
     text-align: center;
@@ -146,4 +138,14 @@ span.li  {
 span.li2  {
     display: list-item;
     margin-left: 3rem
+}
+
+.image {
+    text-align:center;
+    font-size: 0.8rem;
+}
+
+.installation-image {
+    width: 100%;
+    border: 1px groove black;
 }
