@@ -39,6 +39,10 @@ div .no-padding {
     padding: 0;
 }
 
+.text-danger {
+    color: red;
+}
+
 /* Login Page */
 .login div {
     text-align: center;
