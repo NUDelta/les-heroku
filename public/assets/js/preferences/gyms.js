@@ -35,7 +35,6 @@ $(document).ready(function() {
     'preference-gym-stretch': false,
     'preference-gym-stretch-mats': false,
     'preference-gym-stretch-rollers': false,
-    'location-gym-spac': false,
     'likelihood-gym-treadmills': false,
     'likelihood-gym-freeweights': false,
     'likelihood-gym-freeweights-benches': false,

@@ -34,8 +34,6 @@ $(document).ready(function() {
     'preference-workspace-sharedseating': false,
     'preference-workspace-sharedseating-outlet': false,
     'preference-workspace-sharedseating-window': false,
-    'location-workspace-mudd': false,
-    'location-workspace-main': false,
     'likelihood-workspace-privateseating': false,
     'likelihood-workspace-privateseating-outlet': false,
     'likelihood-workspace-privateseating-window': false,

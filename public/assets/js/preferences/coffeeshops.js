@@ -34,7 +34,6 @@ $(document).ready(function() {
     'preference-coffeeshop-sharedseating': false,
     'preference-coffeeshop-sharedseating-outlet': false,
     'preference-coffeeshop-sharedseating-window': false,
-    'location-coffeeshop-coffeelab': false,
     'likelihood-coffeeshop-privateseating': false,
     'likelihood-coffeeshop-privateseating-outlet': false,
     'likelihood-coffeeshop-privateseating-window': false,
