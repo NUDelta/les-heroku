@@ -1,6 +1,6 @@
 {
   "name": "les-heroku",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "A backend for LES built on Parse Server and deployed to Heroku",
   "main": "index.js",
   "repository": {
@@ -15,14 +15,14 @@
     "geo-tz": "^4.0.1",
     "kerberos": "0.0.24",
     "lodash": "^4.17.10",
-    "moment": "^2.22.1",
+    "moment": "^2.22.2",
     "node-schedule": "^1.3.0",
     "parse": "^2.0.1",
     "parse-server": "^2.8.4"
   },
   "scripts": {
     "start": "node index.js",
-    "start-dev": "node -r dotenv/config index.js",
+    "dev": "nodemon -r dotenv/config index.js",
     "test": "mocha"
   },
   "engines": {
@@ -31,6 +31,8 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "dotenv": "^6.0.0",
-    "mocha": "^5.1.1"
+    "mocha": "^5.1.1",
+    "nodemon": "^1.18.3",
+    "chokidar": "^2.0.4"
   }
 }

@@ -9,19 +9,18 @@ Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse';
 
 const notifyDeadApps = function notifyDeadApps() {
   // setup time threshold
-  const timeExpiryThreshold = moment().subtract(8, 'hours').toDate();
+  const timeExpiryThreshold = moment.utc().subtract(12, 'hours').toDate();
 
-  // find all users who have had a heartbeat in the last 8 hours
-  const heartbeatQuery = new Parse.Query('ApplicationHeartbeat');
-  heartbeatQuery.equalTo('logString', 'Application heartbeat');
-  heartbeatQuery.greaterThanOrEqualTo('createdAt', timeExpiryThreshold);
-  heartbeatQuery.descending('createdAt');
-  heartbeatQuery.limit(10000);
-  heartbeatQuery.find().then(heartbeats => {
-    // get all users with valid heartbeats
+  // find all users who have had a location update in the last 12 hours
+  const locationUpdateQuery = new Parse.Query('LocationUpdates');
+  locationUpdateQuery.greaterThanOrEqualTo('createdAt', timeExpiryThreshold);
+  locationUpdateQuery.descending('createdAt');
+  locationUpdateQuery.limit(10000);
+  locationUpdateQuery.find().then(locationUpdates => {
+    // get all users with valid location updates
     const vendorIdSet = new Set();
-    _.forEach(heartbeats, (currentHeartbeat) => {
-      vendorIdSet.add(currentHeartbeat.get('vendorId'));
+    _.forEach(locationUpdates, (currentLocationUpdate) => {
+      vendorIdSet.add(currentLocationUpdate.get('vendorId'));
     });
 
     // query for all users who do not have valid heartbeats
@@ -41,7 +40,7 @@ const notifyDeadApps = function notifyDeadApps() {
     });
 
     const message = 'Hi! Looks like LES closed on your phone. ' +
-      'Remember! don\'t swipe up to terminate LES, and please limit low-battery mode usage. ' +
+      'Remember not to swipe up and terminate LES, and please limit low-battery mode usage. ' +
       'Tap/swipe on me start it up again!';
     push.sendPushWithMessage(pushTokens, message, undefined);
 

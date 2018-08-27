@@ -11,12 +11,13 @@ const moment = require('moment');
  * @param refreshTime
  * @param scaffold
  * @param scaffoldStructure
+ * @param queryStructure
  * @param loopbackQuestion
  * @param queries
  * @param queryAnswers
  */
 const addLocationTypeMetadataToDB = function (locationType, refreshTime, scaffold,
-                                              scaffoldStructure, loopbackQuestion,
+                                              scaffoldStructure, queryStructure, loopbackQuestion,
                                               queries, queryAnswers) {
   // check if locationType already exists in DB
   let locationTypeMetadataQuery = new Parse.Query('LocationTypeMetadata');
@@ -30,6 +31,7 @@ const addLocationTypeMetadataToDB = function (locationType, refreshTime, scaffol
       newLocationTypeMetadata.set('refreshTime', refreshTime);
       newLocationTypeMetadata.set('scaffold', scaffold);
       newLocationTypeMetadata.set('scaffoldStructure', scaffoldStructure);
+      newLocationTypeMetadata.set('queryStructure', queryStructure);
       newLocationTypeMetadata.set('loopbackQuestion', loopbackQuestion);
       newLocationTypeMetadata.set('queries', queries);
       newLocationTypeMetadata.set('queryAnswers', queryAnswers);
@@ -115,8 +117,7 @@ const addTaskLocationToDB = function (location, beaconId, locationType, location
       return '';
     }
 
-    // setup data
-    let currentData = JSON.parse(JSON.stringify(results[0].get('scaffold')));
+    // setup data regularly
     let currentTime = Math.round(Date.now() / 1000);
     let saveTimes = JSON.parse(JSON.stringify(results[0].get('scaffold')));
     _.forEach(saveTimes, (queryValue, queryKey) => {
@@ -125,6 +126,14 @@ const addTaskLocationToDB = function (location, beaconId, locationType, location
 
     let locationTimezone = geoTz(location.latitude, location.longitude);
     let utcTimezoneOffsetSeconds = moment.tz.zone(locationTimezone).utcOffset(currentTime) * -60;
+
+    // special case for freefood data:  set foodevent to yes by default so people get notified
+    let currentData = JSON.parse(JSON.stringify(results[0].get('scaffold')));
+    if (locationType === 'freefood') {
+      if (currentData.hasOwnProperty('foodevent')) {
+        currentData['foodevent'] = 'yes';
+      }
+    }
 
     // create new location object
     let TaskLocation = Parse.Object.extend('TaskLocations');

@@ -1,10 +1,8 @@
-// Example express application adding the parse-server module to expose Parse
-// compatible API routes.
-
 const express = require('express');
 const ParseServer = require('parse-server').ParseServer;
 const path = require('path');
 
+// setup Parse Server API
 let databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
 if (!databaseUri) {
@@ -21,10 +19,8 @@ const api = new ParseServer({
     classNames: ['Posts', 'Comments'] // List of classes to support for query subscriptions
   }
 });
-// Client-keys like the javascript key or the .NET key are not necessary with parse-server
-// If you wish you require them, you can set them as options in the initialization above:
-// javascriptKey, restAPIKey, dotNetKey, clientKey
 
+// create app
 const app = express();
 
 // Serve static assets from the /public folder
@@ -34,17 +30,48 @@ app.use('/public', express.static(path.join(__dirname, '/public')));
 const mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
 
-// Parse Server plays nicely with the rest of your web routes
+// routes
 app.get('/', function (req, res) {
-  res.status(200).send('Welcome to LES! I\'m not currently a web page, but will be someday!');
+  res.sendFile(path.join(__dirname, '/public/login.html'));
 });
 
-// There will be a test page available on the /test path of your server url
-// Remove this before launching your app
-app.get('/test', function (req, res) {
-  res.sendFile(path.join(__dirname, '/public/test.html'));
+app.get('/home', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/home.html'));
 });
 
+app.get('/home/instructions', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/preferences-completed.html'));
+});
+
+app.get('/preferences/welcome', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/preferences-welcome.html'));
+});
+
+app.get('/preferences/create/coffee-shops', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/coffeeshops.html'));
+});
+
+app.get('/preferences/create/workspaces', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/workspaces.html'));
+});
+
+app.get('/preferences/create/gyms', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/gyms.html'));
+});
+
+app.get('/preferences/create/free-food', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/freefood.html'));
+});
+
+app.get('/preferences/create/preferences-completed', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public/preferences/preferences-completed.html'));
+});
+
+app.all('*', function(req, res) {
+  res.redirect('/');
+});
+
+// launch application
 const port = process.env.PORT || 5000;
 const httpServer = require('http').createServer(app);
 httpServer.listen(port, function () {
@@ -81,7 +108,7 @@ schedule.scheduleJob(scheduleRule, function () {
     console.log('Sending location request to: ', pushTokens);
     push.sendSilentRefreshNotification(pushTokens, 'location', undefined);
 
-    // successfully sent heartbeat request
+    // successfully sent location request
     let ServerLog = Parse.Object.extend('ServerLog');
     let newServerLog = new ServerLog();
     newServerLog.set('caller', 'sendLocationRequest');
@@ -91,7 +118,7 @@ schedule.scheduleJob(scheduleRule, function () {
   }).catch(error => {
     console.error('Requesting locations failed with error: ' + JSON.stringify(error));
 
-    // unsuccessfully notified dead apps
+    // unsuccessfully sent location request
     let ServerLog = Parse.Object.extend('ServerLog');
     let newServerLog = new ServerLog();
     newServerLog.set('caller', 'sendLocationRequest');
