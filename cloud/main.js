@@ -223,10 +223,10 @@ Parse.Cloud.afterSave('TaskLocations', (request, response) => {
   locationTypeMetadataQuery.equalTo('objectId', locationMetadataId);
   locationTypeMetadataQuery.first().then(currentLocationMetadata => {
     if (currentLocationMetadata !== undefined) {
-      const scaffoldStructure = currentLocationMetadata.get('scaffoldStructure');
+      const queryStructure = currentLocationMetadata.get('queryStructure');
       const loopbackQuestion = currentLocationMetadata.get('loopbackQuestion');
 
-      let queryKey = composer.getNextQueryKey(scaffoldStructure, taskLocationInfo);
+      let queryKey = composer.getNextQueryKey(queryStructure, taskLocationInfo);
       if (queryKey === '') {
         // check if a loopback question is specified and positive value in scaffoldData
         if (loopbackQuestion !== '' &&

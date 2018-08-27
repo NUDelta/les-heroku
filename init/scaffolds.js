@@ -8,7 +8,7 @@ const coffeeshops = {
     sharedseating: '',
     sharedseatingoutlets: '',
     sharedseatingwindows: '',
-    stillcorrect: '',
+    stillcorrect: ''
   },
   scaffoldStructure: {
     key: '',
@@ -160,12 +160,13 @@ const gyms = {
     freeweightssquatracks: '',
     stretch: '',
     stretchmats: '',
-    stretchrollers: ''
+    stretchrollers: '',
+    stillcorrect: ''
   },
   scaffoldStructure: {
     key: '',
     prefixText: 'There are',
-    suffixText: 'available at {{locationname}}.',
+    suffixText: ' available at {{locationname}}.',
     joinText: '/',
     components: [
       {
@@ -329,7 +330,7 @@ const workspaces = {
     sharedseating: '',
     sharedseatingoutlets: '',
     sharedseatingwindows: '',
-    stillcorrect: '',
+    stillcorrect: ''
   },
   scaffoldStructure: {
     key: '',
@@ -483,29 +484,37 @@ const freefood = {
   },
   scaffoldStructure: {
     key: '',
-    prefixText: 'There is ',
+    prefixText: 'There is',
     suffixText: ' available at {{locationname}}.',
     joinText: '',
     components: [
       {
-        key: 'kindfood',
-        prefixText: 'free',
+        key: 'foodevent',
+        prefixText: 'free food',
         suffixText: '',
-        joinText: ' ',
+        joinText: '',
         components: [
           {
-            key: 'typefood',
-            prefixText: '',
-            suffixText: '',
-            joinText: '',
-            components: ''
-          },
-          {
-            key: 'specificfood',
-            prefixText: '',
-            suffixText: '',
-            joinText: '',
-            components: ''
+            key: 'kindfood',
+            prefixText: '({{kindfood}} snacks',
+            suffixText: ')',
+            joinText: ' ',
+            components: [
+              {
+                key: 'specificfood',
+                prefixText: ': {{specificfood}}',
+                suffixText: '',
+                joinText: '',
+                components: []
+              },
+              {
+                key: 'typefood',
+                prefixText: ' of {{typefood}} flavor',
+                suffixText: '',
+                joinText: '',
+                components: ''
+              }
+            ]
           }
         ]
       },
@@ -520,33 +529,42 @@ const freefood = {
   },
   queryStructure: [
     {
-      key: 'kindfood',
-      prompt: 'What kind of food is the free food in {{locationname}}?',
+      key: 'foodevent',
+      prompt: 'Do you see free food in {{locationname}}?',
       answers: {
-        'default': ['savory', 'sweet']
+        'default': ['yes', 'no']
       },
       children: [
         {
-          key: 'specificfood',
-          prompt: 'What specific food is the {{kindfood}} in {{locationname}}?',
+          key: 'kindfood',
+          prompt: 'What kind free food is in {{locationname}}?',
           answers: {
-            'savory': ['pizza', 'bags of nuts/chips'],
-            'sweet': ['ice cream', 'popsicles', 'candy'],
-            'default': []
+            'default': ['savory', 'sweet']
           },
           children: [
             {
-              key: 'typefood',
-              prompt: 'What type of food is the {{specificfood}}in {{locationname}}?',
+              key: 'specificfood',
+              prompt: 'What specifically is the {{kindfood}} food in {{locationname}}?',
               answers: {
-                'pizza': ['cheese', 'pepperoni'],
-                'bags of nuts/chips': ['almonds', 'potato chips', 'pretzels'],
-                'ice cream': ['chocolate', 'vanilla'],
-                'popsicles': ['cherry', 'grape', 'orange'],
-                'candy': ['chocolate bar', 'fruit snacks'],
+                'savory': ['pizza', 'bags of nuts/chips'],
+                'sweet': ['ice cream', 'popsicles', 'candy'],
                 'default': []
               },
-              children: []
+              children: [
+                {
+                  key: 'typefood',
+                  prompt: 'What type of {{specificfood}} is in {{locationname}}?',
+                  answers: {
+                    'pizza': ['cheese', 'pepperoni'],
+                    'bags of nuts/chips': ['almonds', 'potato chips', 'pretzels'],
+                    'ice cream': ['chocolate', 'vanilla'],
+                    'popsicles': ['cherry', 'grape', 'orange'],
+                    'candy': ['chocolate bar', 'fruit snacks'],
+                    'default': []
+                  },
+                  children: []
+                }
+              ]
             }
           ]
         }
@@ -554,9 +572,9 @@ const freefood = {
     },
     {
       key: 'stillleft',
-      prompt: 'Is there still free food left at {{locationname}}?',
+      prompt: 'Is there still free food left in {{locationname}}?',
       answers: {
-        default: ['yes', 'no']
+        'default': ['yes', 'no']
       },
       children: []
     }
@@ -564,10 +582,10 @@ const freefood = {
   loopbackQuestion: 'stillleft',
   queries: {
     foodevent: 'Do you see free food in {{locationname}}?',
-    kindfood: 'What kind of food is the free food in {{locationname}}?',
-    specificfood: 'What specific food is the {{kindfood}} in {{locationname}}?',
-    typefood: 'What type of food is the {{specificfood}}in {{locationname}}?',
-    stillleft: 'Is there still free food left at {{locationname}}?'
+    kindfood: 'What kind free food is in {{locationname}}?',
+    specificfood: 'What specifically is the {{kindfood}} in {{locationname}}?',
+    typefood: 'What type of {{specificfood}} is in {{locationname}}?',
+    stillleft: 'Is there still free food left in {{locationname}}?'
   },
   queryAnswers: {
     foodevent: ['yes', 'no'],

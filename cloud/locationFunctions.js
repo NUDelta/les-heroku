@@ -45,7 +45,7 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
 
     // AtDistance notification already sent to user
     const atDistanceResponsesExclude = [
-      'No. This info is useful but I have to be somewhere.',
+      'No. This info is useful, but I can\'t go there now.',
       'No. This info isn\'t useful to me.',
       'No. I don\'t want to go out of my way there.',
       'No. Other reason.'
@@ -101,7 +101,9 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
       const relevantInfoPreferences = informationPreferences[currTaskLocation.get('locationType')];
       const relevantLocationPreferences = locationPreferences[currTaskLocation.get('locationType')];
 
-      const notification = composer.createNotifcationWithPreferences(relevantInfoPreferences,
+      const notification = composer.createNotificationWithPreferences(
+        relevantInfoPreferences,
+        relevantLocationPreferences,
         includeWithoutPref,
         currTaskLocation.get('metadataObject').toJSON(),
         currTaskLocation.get('currentData'),
