@@ -1,6 +1,6 @@
 {
   "name": "les-heroku",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "A backend for LES built on Parse Server and deployed to Heroku",
   "main": "index.js",
   "repository": {
