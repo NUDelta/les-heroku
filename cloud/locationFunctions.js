@@ -77,9 +77,11 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
     const enRouteLocations = values[3];
 
     // set preference variable if not undefined. if undefined, no preferences will be used
-    let preferences = {};
+    let informationPreferences = {};
+    let locationPreferences = {};
     if (values[2] !== undefined) {
-      preferences = values[2].get('preferences');
+      informationPreferences = values[2].get('informationPreferences');
+      locationPreferences = values[2].get('locationPreferences');
     }
 
     // ignore location if user was already notified AtDistance
@@ -96,8 +98,10 @@ const fetchLocationsToTrack = function (includeDistance, includeEnRoute, include
       // TODO: check if location is open before notifying
 
       // create at location and at distance notifications
-      const relevantPreferences = preferences[currTaskLocation.get('locationType')];
-      const notification = composer.createNotifcationWithPreferences(relevantPreferences,
+      const relevantInfoPreferences = informationPreferences[currTaskLocation.get('locationType')];
+      const relevantLocationPreferences = locationPreferences[currTaskLocation.get('locationType')];
+
+      const notification = composer.createNotifcationWithPreferences(relevantInfoPreferences,
         includeWithoutPref,
         currTaskLocation.get('metadataObject').toJSON(),
         currTaskLocation.get('currentData'),

@@ -7,6 +7,9 @@ const Parse = require('parse/node');
 Parse.initialize('PkngqKtJygU9WiQ1GXM9eC0a17tKmioKKmpWftYr');
 Parse.serverURL = 'http://localhost:5000/parse/';
 
+/**
+ * Coffee Shop Test Cases
+ */
 describe('coffee shop notification generation', () => {
   // specify overall structure
   let structure = scaffolds.coffeeshops;
@@ -27,8 +30,8 @@ describe('coffee shop notification generation', () => {
     let coffeeshopNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
       notificationCategory: 'coffeeshop_privateseating',
-      message: 'Do you see private seating (individual tables/chairs) available at Coffee Lab?',
-      contextualResponses: ['tables', 'couches/chairs', 'tables and couches/chairs', 'no']
+      message: 'Do you see private seating (individual tables) available at Coffee Lab?',
+      contextualResponses: ['yes', 'no']
     };
 
     expect(coffeeshopNotif).to.deep.equal(expectedOutput);
@@ -56,10 +59,10 @@ describe('coffee shop notification generation', () => {
     expect(coffeeshopNotif).to.deep.equal(expectedOutput);
   });
 
-  it('privateseating as tables and couches/chairs should redirect to outlets', function () {
+  it('privateseating (individual tables) should redirect to outlets', function () {
     // setup input data
     let scaffoldData = {
-      privateseating: 'tables and couches/chairs',
+      privateseating: 'yes',
       privateseatingoutlets: '',
       privateseatingwindows: '',
       sharedseating: '',
@@ -71,17 +74,17 @@ describe('coffee shop notification generation', () => {
     let coffeeshopNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
       notificationCategory: 'coffeeshop_privateseatingoutlets',
-      message: 'There is private seating (tables and couches/chairs), available at Coffee Lab. Do you see private seating (individual tables/chairs) near outlets at Coffee Lab?',
+      message: 'There is private seating (individual tables), available at Coffee Lab. Do you see private seating (individual tables) near outlets at Coffee Lab?',
       contextualResponses: ['yes', 'no']
     };
 
     expect(coffeeshopNotif).to.deep.equal(expectedOutput);
   });
 
-  it('privateseating as tables and couches/chairs and no outlets should redirect to windows', function () {
+  it('privateseating (individual tables) and no outlets should redirect to windows', function () {
     // setup input data
     let scaffoldData = {
-      privateseating: 'tables and couches/chairs',
+      privateseating: 'yes',
       privateseatingoutlets: 'no',
       privateseatingwindows: '',
       sharedseating: '',
@@ -93,7 +96,7 @@ describe('coffee shop notification generation', () => {
     let coffeeshopNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
       notificationCategory: 'coffeeshop_privateseatingwindows',
-      message: 'There is private seating (tables and couches/chairs), available at Coffee Lab. Do you see private seating (individual tables/chairs) near the windows at Coffee Lab?',
+      message: 'There is private seating (individual tables), available at Coffee Lab. Do you see private seating (individual tables) near the windows at Coffee Lab?',
       contextualResponses: ['yes', 'no']
     };
 
@@ -103,7 +106,7 @@ describe('coffee shop notification generation', () => {
   it('shared seating yes, outlets no should redirect to windows', function () {
     // setup input data
     let scaffoldData = {
-      privateseating: 'tables and couches/chairs',
+      privateseating: 'yes',
       privateseatingoutlets: 'no',
       privateseatingwindows: 'no',
       sharedseating: 'yes',
@@ -115,17 +118,17 @@ describe('coffee shop notification generation', () => {
     let coffeeshopNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
       notificationCategory: 'coffeeshop_sharedseatingwindows',
-      message: 'There is private seating (tables and couches/chairs), and also shared seating (communal tables), available at Coffee Lab. Do you see shared seating (communal tables) near the windows available at Coffee Lab?',
+      message: 'There is private seating (individual tables), and also shared seating (communal tables), available at Coffee Lab. Do you see shared seating (communal tables) near the windows available at Coffee Lab?',
       contextualResponses: ['yes', 'no']
     };
 
     expect(coffeeshopNotif).to.deep.equal(expectedOutput);
   });
 
-  it('full scaffold should return undefined since nothing further can be asked', function () {
+  it('full scaffold should return still correct loopback question', function () {
     // setup input data
     let scaffoldData = {
-      privateseating: 'tables and couches/chairs',
+      privateseating: 'yes',
       privateseatingoutlets: 'no',
       privateseatingwindows: 'no',
       sharedseating: 'yes',
@@ -135,7 +138,11 @@ describe('coffee shop notification generation', () => {
 
     // generate notification and compare
     let coffeeshopNotif = composer.composeNotification(structure, scaffoldData, locationName);
-    let expectedOutput = undefined;
+    let expectedOutput = {
+      notificationCategory: 'coffeeshop_stillcorrect',
+      message: 'There is private seating (individual tables), and also shared seating (communal tables), available at Coffee Lab. Is this information still correct?',
+      contextualResponses: ['yes', 'no']
+    };
 
     expect(coffeeshopNotif).to.deep.equal(expectedOutput);
   });
@@ -143,7 +150,7 @@ describe('coffee shop notification generation', () => {
   it('check fully scaffolded message', function () {
     // setup input data
     let scaffoldData = {
-      privateseating: 'tables and couches/chairs',
+      privateseating: 'yes',
       privateseatingoutlets: 'yes',
       privateseatingwindows: 'yes',
       sharedseating: 'yes',
@@ -153,12 +160,15 @@ describe('coffee shop notification generation', () => {
 
     // generate notification and compare
     let coffeeshopText = composer.createTextForScaffold(structure.scaffoldStructure, scaffoldData, locationName);
-    let expectedOutput = 'There is private seating (tables and couches/chairs) near outlets and near windows, and also shared seating (communal tables) near windows, available at Coffee Lab.';
+    let expectedOutput = 'There is private seating (individual tables) near outlets and near windows, and also shared seating (communal tables) near windows, available at Coffee Lab.';
 
     expect(coffeeshopText).to.deep.equal(expectedOutput);
   });
 });
 
+/**
+* Gym Test Cases
+*/
 describe('gym notification generation', () => {
   // specify overall structure
   let structure = scaffolds.gyms;
@@ -168,7 +178,6 @@ describe('gym notification generation', () => {
     // setup input data
     let scaffoldData = {
       treadmills: '',
-      ellipticals: '',
       freeweights: '',
       freeweightsbenches: '',
       freeweightssquatracks: '',
@@ -188,11 +197,10 @@ describe('gym notification generation', () => {
     expect(gymNotif).to.deep.equal(expectedOutput);
   });
 
-  it('treadmills as no should redirect to ellipticals', function () {
+  it('treadmills as no should redirect to freeweights', function () {
     // setup input data
     let scaffoldData = {
       treadmills: 'no',
-      ellipticals: '',
       freeweights: '',
       freeweightsbenches: '',
       freeweightssquatracks: '',
@@ -204,19 +212,18 @@ describe('gym notification generation', () => {
     // generate notification and compare
     let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
-      notificationCategory: 'gym_ellipticals',
-      message: 'Do you see ellipticals available at SPAC?',
+      notificationCategory: 'gym_freeweights',
+      message: 'Do you see free weights (dumbbells or barbells) available at SPAC?',
       contextualResponses: ['yes', 'no']
     };
 
     expect(gymNotif).to.deep.equal(expectedOutput);
   });
 
-  it('treadmills, elliptical, free weights as no should redirect to stretch', function () {
+  it('treadmills, free weights as no should redirect to stretch', function () {
     // setup input data
     let scaffoldData = {
       treadmills: 'no',
-      ellipticals: 'no',
       freeweights: 'no',
       freeweightsbenches: '',
       freeweightssquatracks: '',
@@ -240,7 +247,6 @@ describe('gym notification generation', () => {
     // setup input data
     let scaffoldData = {
       treadmills: 'yes',
-      ellipticals: 'no',
       freeweights: 'yes',
       freeweightsbenches: '',
       freeweightssquatracks: '',
@@ -264,7 +270,6 @@ describe('gym notification generation', () => {
     // setup input data
     let scaffoldData = {
       treadmills: 'yes',
-      ellipticals: 'no',
       freeweights: 'yes',
       freeweightsbenches: 'yes',
       freeweightssquatracks: 'yes',
@@ -284,11 +289,10 @@ describe('gym notification generation', () => {
     expect(gymNotif).to.deep.equal(expectedOutput);
   });
 
-  it('full scaffold should return undefined since nothing further can be asked', function () {
+  it('full scaffold should return still correct loopback question', function () {
     // setup input data
     let scaffoldData = {
       treadmills: 'yes',
-      ellipticals: 'no',
       freeweights: 'yes',
       freeweightsbenches: 'yes',
       freeweightssquatracks: 'yes',
@@ -299,7 +303,11 @@ describe('gym notification generation', () => {
 
     // generate notification and compare
     let gymNotif = composer.composeNotification(structure, scaffoldData, locationName);
-    let expectedOutput = undefined;
+    let expectedOutput = {
+      notificationCategory: 'gym_stillcorrect',
+      message: 'There are treadmills/free weights with benches and with squat racks/stretching space available at SPAC. Is this information still correct?',
+      contextualResponses: ['yes', 'no']
+    };
 
     expect(gymNotif).to.deep.equal(expectedOutput);
   });
@@ -325,6 +333,9 @@ describe('gym notification generation', () => {
   });
 });
 
+/**
+ * Workspaces Test Cases
+ */
 describe('workspace notification generation', () => {
   // specify overall structure
   let structure = scaffolds.workspaces;
@@ -335,18 +346,18 @@ describe('workspace notification generation', () => {
     let scaffoldData = {
       privateseating: '',
       privateseatingoutlets: '',
+      privateseatingwindows: '',
       sharedseating: '',
       sharedseatingoutlets: '',
-      whiteboards: '',
-      whiteboardsmarkers: ''
+      sharedseatingwindows: ''
     };
 
     // generate notification and compare
     let workspaceNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
       notificationCategory: 'workspace_privateseating',
-      message: 'Do you see private seating (individual tables/chairs) available at Main Library 1South?',
-      contextualResponses: ['tables', 'couches/chairs', 'tables and couches/chairs', 'no']
+      message: 'Do you see private seating (individual tables) available at Main Library 1South?',
+      contextualResponses: ['yes', 'no']
     };
 
     expect(workspaceNotif).to.deep.equal(expectedOutput);
@@ -357,10 +368,10 @@ describe('workspace notification generation', () => {
     let scaffoldData = {
       privateseating: 'no',
       privateseatingoutlets: '',
+      privateseatingwindows: '',
       sharedseating: '',
       sharedseatingoutlets: '',
-      whiteboards: '',
-      whiteboardsmarkers: ''
+      sharedseatingwindows: ''
     };
 
     // generate notification and compare
@@ -374,64 +385,90 @@ describe('workspace notification generation', () => {
     expect(workspaceNotif).to.deep.equal(expectedOutput);
   });
 
-  it('privateseating as tables and couches/chairs should redirect to outlets', function () {
+  it('privateseating (individual tables) should redirect to outlets', function () {
     // setup input data
     let scaffoldData = {
-      privateseating: 'tables and couches/chairs',
+      privateseating: 'yes',
       privateseatingoutlets: '',
+      privateseatingwindows: '',
       sharedseating: '',
       sharedseatingoutlets: '',
-      whiteboards: '',
-      whiteboardsmarkers: ''
+      sharedseatingwindows: ''
     };
 
     // generate notification and compare
     let workspaceNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
       notificationCategory: 'workspace_privateseatingoutlets',
-      message: 'There is private seating (tables and couches/chairs), available at Main Library 1South. Do you see private seating (individual tables/chairs) near outlets at Main Library 1South?',
+      message: 'There is private seating (individual tables), available at Main Library 1South. Do you see private seating (individual tables) near outlets at Main Library 1South?',
       contextualResponses: ['yes', 'no']
     };
 
     expect(workspaceNotif).to.deep.equal(expectedOutput);
   });
 
-  it('shared seating yes, outlets no should redirect to whiteboards', function () {
+  it('privateseating (individual tables) and no outlets should redirect to windows', function () {
     // setup input data
     let scaffoldData = {
-      privateseating: 'tables and couches/chairs',
+      privateseating: 'yes',
       privateseatingoutlets: 'no',
-      sharedseating: 'yes',
-      sharedseatingoutlets: 'no',
-      whiteboards: '',
-      whiteboardsmarkers: ''
+      privateseatingwindows: '',
+      sharedseating: '',
+      sharedseatingoutlets: '',
+      sharedseatingwindows: ''
     };
 
     // generate notification and compare
     let workspaceNotif = composer.composeNotification(structure, scaffoldData, locationName);
     let expectedOutput = {
-      notificationCategory: 'workspace_whiteboards',
-      message: 'There is private seating (tables and couches/chairs), and also shared seating (communal tables), available at Main Library 1South. Do you see any whiteboards currently available to use at Main Library 1South?',
+      notificationCategory: 'workspace_privateseatingwindows',
+      message: 'There is private seating (individual tables), available at Main Library 1South. Do you see private seating (individual tables) near the windows at Main Library 1South?',
       contextualResponses: ['yes', 'no']
     };
 
     expect(workspaceNotif).to.deep.equal(expectedOutput);
   });
 
-  it('full scaffold should return undefined since nothing further can be asked', function () {
+  it('shared seating yes, outlets no should redirect to windows', function () {
     // setup input data
     let scaffoldData = {
-      privateseating: 'tables and couches/chairs',
+      privateseating: 'yes',
       privateseatingoutlets: 'no',
+      privateseatingwindows: 'no',
       sharedseating: 'yes',
       sharedseatingoutlets: 'no',
-      whiteboards: 'yes',
-      whiteboardsmarkers: 'no'
+      sharedseatingwindows: ''
     };
 
     // generate notification and compare
     let workspaceNotif = composer.composeNotification(structure, scaffoldData, locationName);
-    let expectedOutput = undefined;
+    let expectedOutput = {
+      notificationCategory: 'workspace_sharedseatingwindows',
+      message: 'There is private seating (individual tables), and also shared seating (communal tables), available at Main Library 1South. Do you see shared seating (communal tables) near the windows available at Main Library 1South?',
+      contextualResponses: ['yes', 'no']
+    };
+
+    expect(workspaceNotif).to.deep.equal(expectedOutput);
+  });
+
+  it('full scaffold should return still correct loopback question', function () {
+    // setup input data
+    let scaffoldData = {
+      privateseating: 'yes',
+      privateseatingoutlets: 'no',
+      privateseatingwindows: 'no',
+      sharedseating: 'yes',
+      sharedseatingoutlets: 'no',
+      sharedseatingwindows: 'no'
+    };
+
+    // generate notification and compare
+    let workspaceNotif = composer.composeNotification(structure, scaffoldData, locationName);
+    let expectedOutput = {
+      notificationCategory: 'workspace_stillcorrect',
+      message: 'There is private seating (individual tables), and also shared seating (communal tables), available at Main Library 1South. Is this information still correct?',
+      contextualResponses: ['yes', 'no']
+    };
 
     expect(workspaceNotif).to.deep.equal(expectedOutput);
   });
@@ -439,22 +476,25 @@ describe('workspace notification generation', () => {
   it('check fully scaffolded message', function () {
     // setup input data
     let scaffoldData = {
-      privateseating: 'tables and couches/chairs',
-      privateseatingoutlets: 'no',
+      privateseating: 'yes',
+      privateseatingoutlets: 'yes',
+      privateseatingwindows: 'yes',
       sharedseating: 'yes',
       sharedseatingoutlets: 'no',
-      whiteboards: 'yes',
-      whiteboardsmarkers: 'yes'
+      sharedseatingwindows: 'yes'
     };
 
     // generate notification and compare
     let workspaceText = composer.createTextForScaffold(structure.scaffoldStructure, scaffoldData, locationName);
-    let expectedOutput = 'There is private seating (tables and couches/chairs), and also shared seating (communal tables), and also whiteboards markers to borrow nearby, available at Main Library 1South.';
+    let expectedOutput = 'There is private seating (individual tables) near outlets and near windows, and also shared seating (communal tables) near windows, available at Main Library 1South.';
 
     expect(workspaceText).to.deep.equal(expectedOutput);
   });
 });
 
+/**
+ * Free Food Test Cases
+ */
 describe('freefood notification generation', () => {
   // specify overall structure
   let structure = scaffolds.freefood;
@@ -544,6 +584,9 @@ describe('freefood notification generation', () => {
 });
 
 // TODO: write proper test cases
+/**
+ * Location Retrieving Test Cases
+ */
 describe('retrieving locations for tracking', () => {
   it('opp at location', function () {
     // includeDistance, includeEnRoute, includeWithoutPref, lat, lng, atDistanceNotifDistance, vendorId, response

@@ -11,12 +11,13 @@ const moment = require('moment');
  * @param refreshTime
  * @param scaffold
  * @param scaffoldStructure
+ * @param queryStructure
  * @param loopbackQuestion
  * @param queries
  * @param queryAnswers
  */
 const addLocationTypeMetadataToDB = function (locationType, refreshTime, scaffold,
-                                              scaffoldStructure, loopbackQuestion,
+                                              scaffoldStructure, queryStructure, loopbackQuestion,
                                               queries, queryAnswers) {
   // check if locationType already exists in DB
   let locationTypeMetadataQuery = new Parse.Query('LocationTypeMetadata');
@@ -30,6 +31,7 @@ const addLocationTypeMetadataToDB = function (locationType, refreshTime, scaffol
       newLocationTypeMetadata.set('refreshTime', refreshTime);
       newLocationTypeMetadata.set('scaffold', scaffold);
       newLocationTypeMetadata.set('scaffoldStructure', scaffoldStructure);
+      newLocationTypeMetadata.set('queryStructure', queryStructure);
       newLocationTypeMetadata.set('loopbackQuestion', loopbackQuestion);
       newLocationTypeMetadata.set('queries', queries);
       newLocationTypeMetadata.set('queryAnswers', queryAnswers);

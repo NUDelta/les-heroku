@@ -1,7 +1,12 @@
 const _ = require('lodash');
 const push = require('./push.js');
-const locationFunctions = require('./locationFunctions');
+
 const dbFunctions = require('../init/dbFunctions');
+const beaconInit = require('../init/populateBeacons');
+const locationMetadataInit = require('../init/populateLocationMetadata');
+const taskLocationInit = require('../init/populateTaskLocations');
+
+const locationFunctions = require('./locationFunctions');
 const composer = require('./notificationComposer');
 
 /*
@@ -358,6 +363,9 @@ Parse.Cloud.define('retrieveLocations', (request, response) => {
     lat, lng, atDistanceNotifDistance, vendorId, response);
 });
 
+/*
+ * Initialization Functions
+ */
 Parse.Cloud.define('createNewTaskLocation', (request, response) => {
   const geopoint = new Parse.GeoPoint({
     latitude: request.params.latitude,
@@ -376,6 +384,21 @@ Parse.Cloud.define('createNewTaskLocation', (request, response) => {
   } else {
     response.success(result);
   }
+});
+
+Parse.Cloud.define('initializeBeacons', (request, response) => {
+  beaconInit.populateBeacons();
+  response.success();
+});
+
+Parse.Cloud.define('initializeMetaData', (request, response) => {
+  locationMetadataInit.populateLocationMetadata();
+  response.success();
+});
+
+Parse.Cloud.define('initializeTaskLocations', (request, response) => {
+  taskLocationInit.populateTaskLocations();
+  response.success();
 });
 
 /*
