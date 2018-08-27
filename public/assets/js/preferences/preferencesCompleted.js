@@ -33,7 +33,7 @@ $(document).ready(function() {
    */
   function updateInstallationLinks() {
     // installation link
-    const installationLink = 'https://i.diawi.com/ExASsV';
+    const installationLink = 'https://i.diawi.com/V4ZXuu';
 
     // setup selectors
     let $diawiLink = $('#diawi-link'),
