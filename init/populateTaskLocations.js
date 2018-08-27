@@ -89,13 +89,13 @@ const populateTaskLocations = function populateAllTaskLocations() {
     });
 
   // EnRoute Locations
-  dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.051548, -87.675907), 'misc',
-    'The Rock', 'Do you see anyone currently guarding The Rock?', ['yes', 'no']);
+  // dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.051548, -87.675907), 'misc',
+  //   'The Rock', 'Do you see anyone currently guarding The Rock?', ['yes', 'no']);
 
   dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.055636, -87.676695), 'parkingspace',
     'Garrett Parking Lot', 'Do you see any open parking spots in the Garrett Parking Lot?', ['yes', 'no']);
 
-  dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.058066, -87.677523), 'parkingspace',
+  dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.058223, -87.677265), 'parkingspace',
     'Tech Parking Lot', 'Do you see any open parking spots in the Tech Parking Lot?', ['yes', 'no']);
 
   dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.053649, -87.676635), 'bikerack',
@@ -103,6 +103,9 @@ const populateTaskLocations = function populateAllTaskLocations() {
 
   dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.057282, -87.674867), 'bikerack',
     'Tech Rear Bike Rack', 'Do you see any open bike racks behind Tech?', ['yes', 'no']);
+
+  dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.057011, -87.677052), 'bikerack',
+    'Ford Bike Rack', 'Do you see any open bike racks in front of Ford?', ['yes', 'no']);
 
   dbFunctions.addEnRouteLocationsToDB(new Parse.GeoPoint(42.059284, -87.673826), 'bikerack',
     'SPAC Bike Rack', 'Do you see any open bike racks by SPAC?', ['yes', 'no']);
